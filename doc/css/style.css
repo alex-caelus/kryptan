@@ -1,0 +1,45 @@
+html, body{
+    background-color: #ebe4cd;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background-image: url('../images/Kryptan.png');
+    background-position: center top;
+    text-align: center;
+    min-height: 100%;
+}
+
+.content{
+    padding-top: 200px;
+    width: 800px;
+    margin: 0 auto;
+}
+
+#toc{
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+ol, ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+dl{
+}
+
+dl dt{
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+dl dd{
+    margin: 0;
+    padding: 0;
+}
