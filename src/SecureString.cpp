@@ -128,6 +128,8 @@ void SecureString::append(const SecureString& str){
 		this->allocate(totlen);
 	}
 	for(ssnr i=0; i<len; i++){
+		char c = str.at(i);
+		char cc = (str._data[i] ^ str._key[i]);
 		this->_data[i+oldlen] = this->_key[oldlen+i] ^ (str._data[i] ^ str._key[i]);
 	}
 	_length =  ((ssnr)*_key) ^ totlen;
@@ -169,6 +171,8 @@ const SecureString::ssarr SecureString::getUnsecureString(){
 	_plaintextcopy = new ssbyte[size+1];
 	_plaintextcopy[size] = '\0';
 	for(ssnr i=0; i < size; i++){
+		char c = at(i);
+		char cc = _key[i] ^ _data[i];
 		_plaintextcopy[i] = _key[i] ^ _data[i];
 	}
 	_mutableplaintextcopy = false;
@@ -229,6 +233,8 @@ void SecureString::UnsecuredStringFinished(){
 		assign(_plaintextcopy);
 	} else {
 		int length = strlen(_plaintextcopy);
+		int l = this->length();
+		char* buff = getUnsecureString();
 		memset(_plaintextcopy, 0, length);
 		delete[] _plaintextcopy;
 	}

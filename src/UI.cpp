@@ -121,8 +121,11 @@ void Ui::showDialog(UiElementList message, UiElement caption, bool centered, boo
             col = colMin + (WPADDING + 1);
 
 		//do the actual printing with correct text attributes set
+		char* string = message[i].getString();
+		int offset = message[i].getAttributesOffset();
+		mvprintw(row, col, "%.*s", offset, string);
 		attrset(message[i].getAttributes());
-		mvprintw(row, col, "%s", message[i].getString());
+		printw("%s", &(string[offset]));
 		message[i].stringDone(); //Secures the string again IMPORTANT
 		standend();
     }

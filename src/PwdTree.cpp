@@ -43,9 +43,9 @@ Pwd* PwdTree::getPasswordOnScreen(){
 
 	//add first row
 	if(parent){
-		list.push_back(UiElement(MENUSTRING_GO_UP_TREE, A_NORMAL));
+		list.push_back(UiElement(MENUSTRING_GO_UP_TREE));
 	} else {
-		list.push_back(UiElement(MENUSTRING_GO_TO_MAIN, A_NORMAL));
+		list.push_back(UiElement(MENUSTRING_GO_TO_MAIN));
 	}
 
 	//Add divisor element
@@ -63,7 +63,7 @@ Pwd* PwdTree::getPasswordOnScreen(){
 			sprintf(buff, "%i. ", i);
 			SecureString* line = new SecureString(buff);
 			line->append(*(*it)->getName());
-			list.push_back(*(new UiElement(line, A_BOLD, true))); //delete it when done
+			list.push_back(UiElement(line, A_BOLD | A_UNDERLINE, 2+numDigits(i), true)); //delete it when done
 		}
 	}
 
@@ -75,7 +75,7 @@ Pwd* PwdTree::getPasswordOnScreen(){
 			sprintf(buff, "%i. ", i);
 			SecureString* line = new SecureString(buff);
 			line->append(*(*it)->getDescription());
-			list.push_back(UiElement(line));
+			list.push_back(UiElement(line, A_BOLD, 2+numDigits(i), true));
 		}
 	}
 

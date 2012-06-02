@@ -141,7 +141,7 @@ public:
 	* @return character at position pos, 0 on failure
 	*/
 	inline ssbyte at(ssnr pos) const{
-		if(pos > 0 && pos < length())
+		if(pos >= 0 && pos < length())
 			return _key[pos] ^_data[pos];
 		else
 			return 0;

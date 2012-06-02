@@ -24,6 +24,7 @@ class UiElement{
 		SecureString* dataSecure;
 		char* dataUnsecure;
 		chtype attributes;
+		int attributeOffset;
 	public:
 	/* VARABLES */
 	private:
@@ -31,17 +32,19 @@ class UiElement{
 	public:
 	/* METHODS */
 		
-		UiElement(char* data, chtype attrib=A_BOLD, bool deleteWhenDone=false);
-		UiElement(SecureString* data, chtype attrib=A_BOLD, bool deleteWhenDone=false);
+		UiElement(char* data, chtype attrib=A_BOLD, int attribOffset=0, bool deleteWhenDone=false);
+		UiElement(SecureString* data, chtype attrib=A_BOLD, int attribOffset=0, bool deleteWhenDone=false);
+		UiElement(const UiElement& obj);
 		~UiElement();
 
 		/* Call dataDone when finished with the data! */
 		char* getString();
 		void stringDone();
 
-		int getStringLength();
+		int getStringLength() const;
 		
 		chtype getAttributes();
+		int getAttributesOffset();
 };
 
 #endif
