@@ -1,41 +1,52 @@
-/* 
- * File:   Cryptospwdus.h
- * Author: Alexander-i7
- *
- * Created on den 8 februari 2012, 09:51
- */
+#ifndef KRYPTAN_H
+#define KRYPTAN_H
 
-#ifndef CRYPTOSPWDUS_H
-#define	CRYPTOSPWDUS_H
+#include "CONSTANTS.h"
+#include "PwdFile.h"
+#include "Ui.h"
 
-#include "EncryptedFile.h"
-#include "PasswordList.h"
-#include "UI.h"
 
-class Kryptan {
-public:
-    static void run(bool useAntiKeylogging);
-private:
-    static bool hasRun;
-    static PasswordList* list;
-    static UI* ui;
-    static EncryptedFile* pwdfile;
-    
-    static void setUp();
-    static void showPwd();
-    static void createNewFile();
+class Kryptan{
+	private:
+	/* VARIBLES */
+		static Kryptan* instance;
+		PwdFile* file;
+		Ui* ui;
 
-    static void addPwd();
-    static void editPwd();
-    static void removePwd();
-    static void generatePwd();
-    static void changeMaster();
-    static void showHelp();
-    
-    Kryptan();
-    Kryptan(const Kryptan& orig);
-    virtual ~Kryptan();
+	public:
+	/* VARABLES */
+
+	private:
+	/* METHODS */
+		Kryptan(bool useAntiKeylogging);
+		~Kryptan();
+
+		void mainloop();
+
+		void showPwd();
+		void addPwd();
+		void editPwd();
+		void removePwd();
+		void generatePwd();
+		void changeMaster();
+		void showHelp();
+
+	public:
+	/* METHODS */
+		static void run(bool useAntiKeylogging);
+		static void exit();
 };
 
-#endif	/* CRYPTOSPWDUS_H */
 
+#endif
+
+#if 0
+	private:
+	/* VARIBLES */
+	public:
+	/* VARABLES */
+	private:
+	/* METHODS */
+	public:
+	/* METHODS */
+#endif

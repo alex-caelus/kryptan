@@ -10,6 +10,27 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\CONSTANTS.h" />
+    <ClInclude Include="..\src\Exceptions.h" />
+    <ClInclude Include="..\src\Kryptan.h" />
+    <ClInclude Include="..\src\Pwd.h" />
+    <ClInclude Include="..\src\PwdFile.h" />
+    <ClInclude Include="..\src\PwdTree.h" />
+    <ClInclude Include="..\src\SecureString.h" />
+    <ClInclude Include="..\src\UI.h" />
+    <ClInclude Include="..\src\UIElement.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Kryptan.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Pwd.cpp" />
+    <ClCompile Include="..\src\PwdFile.cpp" />
+    <ClCompile Include="..\src\PwdTree.cpp" />
+    <ClCompile Include="..\src\SecureString.cpp" />
+    <ClCompile Include="..\src\UI.cpp" />
+    <ClCompile Include="..\src\UiElement.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A064B998-8052-45B2-9200-AC0A7C694FAE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -51,7 +72,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../../Libs/</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,21 +103,6 @@
       <AdditionalDependencies>pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\CONSTANTS.h" />
-    <ClInclude Include="..\src\EncryptedFile.h" />
-    <ClInclude Include="..\src\Kryptan.h" />
-    <ClInclude Include="..\src\PasswordList.h" />
-    <ClInclude Include="..\src\StringContainer.h" />
-    <ClInclude Include="..\src\UI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\EncryptedFile.cpp" />
-    <ClCompile Include="..\src\Kryptan.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\PasswordList.cpp" />
-    <ClCompile Include="..\src\UI.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

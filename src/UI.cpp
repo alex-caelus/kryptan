@@ -1,66 +1,38 @@
-/* 
- * File:   UI.cpp
- * Author: Alexander-i7
- * 
- * Created on den 8 februari 2012, 09:58
- */
+#include "Ui.h"
 
-#include "UI.h"
-
-#include <cstdlib>
-#include <iostream>
-#include <sstream>
-#include <string.h>
-#include <string>
-#include <vector>
 #include <list>
+#include <sstream>
 #include <time.h>
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
-using std::stringstream;
-using std::list;
-using std::string;
-
-
-
 #define _X_OPEN_SOURCE_EXTENDED
 
-#ifdef _WIN32
-#define PDC_WIDE
-//#define USE_KEYBOARD_LAYOUT_TRANSLATION_WIN_SWE //fixes windows keyboard layout error
-#include <pdcurses/curses.h>
-#else
-/*
- * Here comes linux :)
- */
-#include <curses.h>
-#endif
+Ui* Ui::_instance = NULL;
 
-UI* UI::_instance = NULL;
-
-UI::UI() {
-    initscr(); /* Start curses mode 		*/
+Ui::Ui() {
+	initscr(); /* Start curses mode 		*/
     _instance = this;
-    atexit(removeInstance);
     srand((unsigned int) time(0));
     useAntiKeylogger = false;
+    atexit(Ui::removeInstance);
 }
 
-UI::UI(const UI& orig) {
+Ui::Ui(const Ui& orig) {
 }
 
-UI::~UI() {
+Ui::~Ui() {
 }
 
-UI* UI::getInstance() {
+
+Ui* Ui::getInstance() {
     if (_instance == NULL)
-        return new UI();
+        return new Ui();
     else
         return _instance;
 }
 
-void UI::removeInstance() {
+void Ui::removeInstance() {
     if (_instance != NULL) {
         delete _instance;
         _instance = NULL;
@@ -72,7 +44,7 @@ void UI::removeInstance() {
  * This prints an error to the user and exits the application
  * @param msg
  */
-void UI::UnrecoverableError(string msg) {
+void Ui::UnrecoverableError(UiElement msg) {
     Error(msg);
     exit(EXIT_FAILURE);
 }
@@ -81,55 +53,17 @@ void UI::UnrecoverableError(string msg) {
  * This prints an error to the user
  * @param msg
  */
-void UI::Error(string msg) {
-    showDialog(msg, ERROR_CAPTION);
+void Ui::Error(UiElement msg) {
+    showDialog(msg, UiElement(ERROR_CAPTION));
 }
 
-#if 0
-string UI::getOneLine() {
-    noecho();
-    cbreak();
-    string ret;
-    unsigned int maxLength = 0;
-    int y, x;
-    getyx(stdscr, y, x);
-    int c = '\0';
-    while (true) {
-        do{
-            c = translateKey(getch());
-        }while(c == 27); //escape sequence follows
-        
-        if (c == KEY_BACKSPACE || c == 127 || c == '\b') {
-            if (ret.length() > 0) {
-                ret.erase(ret.end() - 1);
-            }
-        } else if (c == KEY_ENTER || c == '\n') {
-            break; //Do not add '\n' to the string!
-        } else {
-            ret += (char)c;
-        }
-        if (echoKeys) {
-            if (ret.length() > maxLength)
-                maxLength = ret.length();
-            string erase(maxLength, ' ');
-            mvprintw(y, x, "%s", erase.c_str());
-            mvprintw(y, x, "%s", ret.c_str());
-        }
-    }
-    
-    echo();
-    nocbreak();
-    return ret;
-}
-#endif
-
-void UI::showDialog(string message, string caption, bool centered, bool waitForKeypress, bool hideCursor, bool clearScreen) {
-    vector<string> vec;
+void Ui::showDialog(UiElement message, UiElement caption, bool centered, bool waitForKeypress, bool hideCursor, bool clearScreen) {
+    UiElementList vec;
     vec.push_back(message);
     showDialog(vec, caption, centered, waitForKeypress, hideCursor, 0, clearScreen);
 }
 
-void UI::showDialog(vector<string> message, string caption, bool centered, bool waitForKeypress, bool hideCursor, int minWidth, bool clearScreen) {
+void Ui::showDialog(UiElementList message, UiElement caption, bool centered, bool waitForKeypress, bool hideCursor, int minWidth, bool clearScreen) {
     const int HPADDING = 1;
     const int WPADDING = 2;
     const int TPADDING = 2;
@@ -138,18 +72,21 @@ void UI::showDialog(vector<string> message, string caption, bool centered, bool 
     if (hideCursor)
         curs_set(0);
 
-    int srow, scol; /* to store the number of rows and */
+    int srow, scol; /* to store the number of rows and columns*/
     getmaxyx(stdscr, srow, scol); /* get the number of rows and columns */
+
     //find max width of all rows
     unsigned int strMaxWidth = minWidth;
     int strHeight = message.size();
+
     for (int i = 0; i < strHeight; i++) {
-        if (message[i].length() > strMaxWidth)
-            strMaxWidth = message[i].length();
+        if (message[i].getStringLength() > strMaxWidth)
+            strMaxWidth = message[i].getStringLength();
     }
+
     //Also check the caption width
-    if (caption.length() + TPADDING * 2 > strMaxWidth)
-        strMaxWidth = caption.length() + TPADDING * 2;
+    if (caption.getStringLength() + TPADDING * 2 > strMaxWidth)
+        strMaxWidth = caption.getStringLength() + TPADDING * 2;
 
     int colMin = scol / 2 - strMaxWidth / 2 - (WPADDING + 1);
     int colMax = scol / 2 + strMaxWidth / 2 + (WPADDING + 1);
@@ -169,24 +106,33 @@ void UI::showDialog(vector<string> message, string caption, bool centered, bool 
         move(i, colMax);
         printw("*");
     }
+
     //prints caption
-    mvprintw(rowMin, scol / 2 - caption.length() / 2, "%s", caption.c_str());
+	mvprintw(rowMin, scol / 2 - caption.getStringLength() / 2, "%s", caption.getString()); 
+	caption.stringDone(); //secures the string again IMPORTANT
+	
     //print message
-    attron(A_BOLD); /* cut bold on */
     for (int i = 0; i < strHeight; i++) {
         int row = i + rowMin + (HPADDING + 1);
         int col;
         if (centered)
-            col = scol / 2 - message[i].length() / 2;
+            col = scol / 2 - message[i].getStringLength() / 2;
         else
             col = colMin + (WPADDING + 1);
-        mvprintw(row, col, "%s", message[i].c_str());
+
+		//do the actual printing with correct text attributes set
+		attrset(message[i].getAttributes());
+		mvprintw(row, col, "%s", message[i].getString());
+		message[i].stringDone(); //Secures the string again IMPORTANT
+		standend();
     }
-    attroff(A_BOLD); /* Switch it off once we are done*/
+
+
     /* save our position for input selection later*/
     int selRow, selCol;
     getyx(stdscr, selRow, selCol);
-    /* print the message at the center of the screen */
+
+    /* print the footer at the bottom of the screen */
     mvprintw(srow - 2, 0, VERSION, srow, scol);
     mvprintw(srow - 1, 0, CREATEDBY, srow, scol);
     move(selRow, selCol);
@@ -197,7 +143,7 @@ void UI::showDialog(vector<string> message, string caption, bool centered, bool 
         curs_set(1);
 }
 
-int UI::PromtList(vector<string> message, string caption) {
+int Ui::PromtList(UiElementList message, UiElement caption) {
     int choice = -1;
     /* Fix the vector... by adding an empty row and space for selection input*/
     if (message.size() > MAXLISTHEIGHT + RUBBEREFFEKT) {
@@ -205,33 +151,38 @@ int UI::PromtList(vector<string> message, string caption) {
         noecho();
         keypad(stdscr, TRUE);
         bool finished = false;
-        vector<string>::iterator start = message.begin();
-        vector<string>::iterator uplimit = message.begin();
-        vector<string>::iterator downlimit = message.end();
-        vector<string>::iterator end;
+        UiElementList::iterator start = message.begin();
+        UiElementList::iterator uplimit = message.begin();
+        UiElementList::iterator downlimit = message.end();
+        UiElementList::iterator end;
         unsigned int strMaxWidth = 0;
         for (unsigned int i = 0; i < message.size(); i++) {
-            if (message[i].length() > strMaxWidth)
-                strMaxWidth = message[i].length();
+			if (message[i].getStringLength() > strMaxWidth)
+                strMaxWidth = message[i].getStringLength();
         }
         while (!finished) {
             end = start + MAXLISTHEIGHT;
-            list<string> subList(start, end);
-            string dots = "";
-            for (vector<string>::iterator it = message.begin(); it != start; it++) {
-                dots += '.';
-            }
-            subList.push_front(dots);
+			std::list<UiElement> subList(start, end);
 
-            dots = "";
-            for (vector<string>::iterator it = end; it != message.end(); it++) {
-                dots += '.';
-            }
-            subList.push_back(dots);
+			{
+				int nrOfDots = start - uplimit;
+				char* dots = new char[nrOfDots+1];
+				memset(dots, '.', nrOfDots);
+				dots[nrOfDots] = '\0';
+				subList.push_front(UiElement(dots));
+			}
 
-            subList.push_back("");
-            subList.push_back(MAKE_YOUR_SELECTION);
-            showDialog(vector<string > (subList.begin(), subList.end()), caption, false, false, false, strMaxWidth);
+			{
+				int nrOfDots = downlimit - end;
+				char* dots = new char[nrOfDots+1];
+				memset(dots, '.', nrOfDots);
+				dots[nrOfDots] = '\0';
+				subList.push_back(UiElement(dots));
+			}
+
+            subList.push_back(UiElement(""));
+            subList.push_back(UiElement(MAKE_YOUR_SELECTION));
+            showDialog(UiElementList(subList.begin(), subList.end()), caption, false, false, false, strMaxWidth);
             if (choice >= 0) {
                 printw("%i", choice);
             }
@@ -250,7 +201,7 @@ int UI::PromtList(vector<string> message, string caption) {
                 else
                     choice /= 10;
             } else if (c >= '0' && c <= '9') {
-                stringstream tmp;
+                std::stringstream tmp;
                 if (choice > 0)
                     tmp << choice;
                 tmp << (char) c;
@@ -261,8 +212,8 @@ int UI::PromtList(vector<string> message, string caption) {
         echo();
         nocbreak();
     } else {
-        message.push_back("");
-        message.push_back(MAKE_YOUR_SELECTION);
+		message.push_back(UiElement(""));
+        message.push_back(UiElement(MAKE_YOUR_SELECTION));
         /* Start dialog */
         showDialog(message, caption, false, false, false, 4);
         /* Get choice */
@@ -272,33 +223,33 @@ int UI::PromtList(vector<string> message, string caption) {
     return choice;
 }
 
-string UI::PromtString(string message, string caption, bool canBeEmpty) {
-    vector<string> vec;
+SecureString* Ui::PromtString(UiElement message, UiElement caption, bool canBeEmpty) {
+    UiElementList vec;
     vec.push_back(message);
     return PromtString(vec, caption, canBeEmpty);
 }
 
-string UI::PromtString(vector<string> message, string caption, bool canBeEmpty) {
-    message.push_back("");
+SecureString* Ui::PromtString(UiElementList message, UiElement caption, bool canBeEmpty) {
+    message.push_back(UiElement(""));
     showDialog(message, caption, false, false, false);
-    char str[80];
-	getstr(str);
-	string ret(str);
-    if (!canBeEmpty && ret.empty())
+	char* input = new char[80];
+	getstr(input);
+	SecureString* retstr = new SecureString(input, 80, true);
+	if (!canBeEmpty && retstr->length() == 0)
         return PromtString(message, caption, canBeEmpty);
-    return ret;
+    return retstr;
 }
 
-string UI::PromtPwd(string message, string caption) {
-    vector<string> vec;
+SecureString* Ui::PromtPwd(UiElement message, UiElement caption) {
+    UiElementList vec;
     vec.push_back(message);
     return PromtPwd(vec, caption);
 }
 
-string UI::PromtPwd(vector<string> message, string caption) {
+SecureString* Ui::PromtPwd(UiElementList message, UiElement caption) {
     if (useAntiKeylogger)
         return PromtPwdAntiKeylogger(message, caption);
-    string pwd;
+    SecureString* pwd;
     noecho();
     cbreak();
     pwd = PromtString(message, caption, false);
@@ -307,15 +258,15 @@ string UI::PromtPwd(vector<string> message, string caption) {
     return pwd;
 }
 
-string UI::PromtPwdAntiKeylogger(vector<string> message, string caption) {
-    const string REF = PASSWORD_CHARACTERS_ALL;
-    string pwd = "";
+SecureString* Ui::PromtPwdAntiKeylogger(UiElementList message, UiElement caption) {
+    const std::string REF = PASSWORD_CHARACTERS_ALL;
+	SecureString* pwd = new SecureString();
     char c;
     noecho();
     cbreak();
     do {
         clear();
-        string vigenere = REF;
+        std::string vigenere = REF;
         for (unsigned int i = 0; i < vigenere.length(); i++) {
             int r = rand() % vigenere.length();
             char t = vigenere[i];
@@ -333,12 +284,17 @@ string UI::PromtPwdAntiKeylogger(vector<string> message, string caption) {
         refresh();
         c = getch();
         if (c == KEY_BACKSPACE || c == 127) {
-            if (!pwd.empty())
-                pwd.erase(pwd.end() - 1);
+			if (pwd->length() != 0){
+				pwd->getUnsecureStringM()[pwd->length()-1] = '\0';
+				pwd->UnsecuredStringFinished();
+			}
         } else {
             int i = vigenere.find(c);
             if (i != (int) vigenere.npos) {
-                pwd += REF[i];
+				char* add = new char[2];
+				add[0] = REF[i];
+				add[1] = '\0';
+				pwd->append(add, 1, false);
             }
         }
     } while (c != '\n');
@@ -347,13 +303,13 @@ string UI::PromtPwdAntiKeylogger(vector<string> message, string caption) {
     return pwd;
 }
 
-int UI::PromtInt(string message, string caption, int min, int max) {
-    vector<string> vec;
+int Ui::PromtInt(UiElement message, UiElement caption, int min, int max) {
+    UiElementList vec;
     vec.push_back(message);
     return PromtInt(vec, caption, min, max);
 }
 
-int UI::PromtInt(vector<string> message, string caption, int min, int max) {
+int Ui::PromtInt(UiElementList message, UiElement caption, int min, int max) {
     message.push_back("");
     showDialog(message, caption, false, false, false);
     int ans;
@@ -364,34 +320,33 @@ int UI::PromtInt(vector<string> message, string caption, int min, int max) {
     return ans;
 }
 
-bool UI::PromtBool(string message, string caption, char True, char False) {
-    vector<string> vec;
+bool Ui::PromtBool(UiElement message, UiElement caption, char True, char False) {
+    UiElementList vec;
     vec.push_back(message);
     return PromtBool(vec, caption, True, False);
 }
 
-bool UI::PromtBool(vector<string> message, string caption, char True, char False) {
-    /* settings */
+bool Ui::PromtBool(UiElementList message, UiElement caption, char True, char False) {
     /* dialog */
     showDialog(message, caption, false, false, true);
-    /* get asnwer */
+    /* get answer */
     char ans;
     char arg1[] = "%c";
     scanw(arg1, &ans);
-    /* cleanup */
     /* validate */
     if (ans == True)
         return true;
     else if (ans == False)
         return false;
-    return PromtBool(message, caption, True, False);
+	else
+		return PromtBool(message, caption, True, False);
 }
 
 /**
  * This displays the main menu.
  * @return 
  */
-MENU_CHOICES UI::mainMenu() {
+MENU_CHOICES Ui::mainMenu() {
     MENU_CHOICES MAP[] = {
         MENU_NULL, //Index zero is not used!
         MENU_SHOW_PWD,
@@ -404,15 +359,15 @@ MENU_CHOICES UI::mainMenu() {
         MENU_QUIT
     };
     int MAPlength = sizeof (MAP) / sizeof (MENU_CHOICES);
-    vector<string> list;
-    list.push_back("1. " MENUSTRING_SHOW_PWD);
-    list.push_back("2. " MENUSTRING_ADD_PWD);
-    list.push_back("3. " MENUSTRING_GENERATE_PWD);
-    list.push_back("4. " MENUSTRING_EDIT_PWD);
-    list.push_back("5. " MENUSTRING_REMOVE_PWD);
-    list.push_back("6. " MENUSTRING_CHANGE_MASTER);
-    list.push_back("7. " MENUSTRING_SHOW_HELP);
-    list.push_back("8. " MENUSTRING_QUIT);
+    UiElementList list;
+    list.push_back(UiElement("1. " MENUSTRING_SHOW_PWD));
+    list.push_back(UiElement("2. " MENUSTRING_ADD_PWD));
+    list.push_back(UiElement("3. " MENUSTRING_GENERATE_PWD));
+    list.push_back(UiElement("4. " MENUSTRING_EDIT_PWD));
+    list.push_back(UiElement("5. " MENUSTRING_REMOVE_PWD));
+    list.push_back(UiElement("6. " MENUSTRING_CHANGE_MASTER));
+    list.push_back(UiElement("7. " MENUSTRING_SHOW_HELP));
+    list.push_back(UiElement("8. " MENUSTRING_QUIT));
     int c = PromtList(list, MENUTITLE);
     if (c <= 0 || c >= MAPlength)
         return mainMenu();

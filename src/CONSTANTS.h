@@ -1,15 +1,17 @@
 #ifndef CONSTANTS_H
 #define	CONSTANTS_H
 
-#define VERSION_NUMBER "1.1.1"
+#define VERSION_NUMBER "2.0"
+#define PASSWORD_FILE_VERSION_NUMBER "2.0"
 #define PASSWORD_FILE "secret.pwd"
 #define MAX_FAILED_ATTEMPTS 3
 #define MAXLISTHEIGHT 8
 #define RUBBEREFFEKT 3
 #define ANTI_KEYLOGGING_ARGUMENT "--use-anti-keylogging"
-#define FILESTART "__SECRET-PASSWORD-FILE__"
-#define FILEEND "__END-FILE__"
+#define TREESTART "__SUB-TREE__"
+#define TREEEND "__END-SUB-TREE__"
 #define PASSWORDSTART "__PASSWORD-ENTRY__"
+#define PASSWORDEND "__END-PASSWORD-ENTRY__"
 #define EMPTYLINE "__EMPTY__"
 #define NEW_FILE_TMP_CONTENT "This is a new encrypted file with no internal file-structure yet."
 
@@ -20,6 +22,7 @@
 #define VERSION "Version " VERSION_NUMBER
 #define CREATEDBY "Program created by: Alexander Nilsson. All rights reserved."
 
+#define ROOT_TREE_NAME "All Passwords"
 #define NO_PASSWORDS "No passwords in the password file!"
 #define CAPTION_NEW_PWD_FILE "New Password File"
 #define CREATE_NEW_PWD_FILE_Y_N "Create new password file (y/n)? "
@@ -84,17 +87,20 @@ enum MENU_CHOICES {
 #define MENUSTRING_CHANGE_MASTER	"Change the MASTER key."
 #define MENUSTRING_SHOW_HELP		"Show help text."
 #define MENUSTRING_QUIT			"Quit."
-#define MENUSTRING_GO_TO_MAIN		"Go to main menu."
+#define MENUSTRING_GO_TO_MAIN		"0. Go to main menu."
+#define MENUSTRING_GO_UP_TREE	"0. Go up one level."
 #define MENU_SEPPARATOR			"----------------"
 
 
 #define WARNING_ERASE_CONTENT "Warning: This will erase the contents of the current file, are you sure you want to continue (y/n)? "
 
+#define INFO_CAPTION "INFO"
+#define WARNING_CAPTION "WARNING"
 #define ERROR_CAPTION "ERROR"
 #define NO_ERROR "No error reported!"
-#define ERROR_WRITE_FILE "Could not write to file!"
-#define ERROR_READ_FILE1 "File \""
-#define ERROR_READFILE2 "\" not found or is not readable!"
+#define ERROR_WRITE_FILE "Could not write to password file!"
+#define ERROR_CREATE_FILE "Could not create password file!"
+#define ERROR_READ_FILE "Password file not found or is not readable!"
 #define ERROR_MASTER_KEY "Invalid key!"
 #define ERROR_MAC_VALIDATION "MAC validation failed!"
 #define ERROR_KEY_CONFIRM "Keys do not match, please try again!"
@@ -106,5 +112,20 @@ enum MENU_CHOICES {
 #define ERROR_FILE_STRUCTURE "Structure of passwordfile is incorrect or missing!"
 #define ERROR_FILE_STRUCTURE_CORRUPT "Password file corrupt! Erroneous password delimiter. Passwords recovered: "
 #define ERROR_FILE_STRUCTURE_EOF "Password file corrupt! Unexpected end of file. Passwords recovered: "
+
+
+/* UTILITY FUNCTION */
+// generic solution
+template <class T>
+int numDigits(T number)
+{
+    int digits = 0;
+    if (number < 0) digits = 1; // remove this line if '-' counts as a digit
+    while (number) {
+        number /= 10;
+        digits++;
+    }
+    return digits;
+}
 
 #endif
