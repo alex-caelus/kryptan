@@ -1,55 +1,47 @@
-/* 
- * File:   UI.h
- * Author: Alexander-i7
- *
- * Created on den 8 februari 2012, 09:58
- */
-
 #ifndef UI_H
-#define	UI_H
+#define UI_H
 
 #include "CONSTANTS.h"
+#include "UIElement.h"
 
-#include <string>
-#include <vector>
-#include <limits.h>
+class Ui{
+	private:
+	/* VARIBLES */
+		static Ui* _instance;
+		bool useAntiKeylogger;
+	public:
+	/* VARABLES */
+	private:
+	/* METHODS */
+		Ui();
+		Ui(const Ui& orig);
+		~Ui();
 
-using std::string;
-using std::vector;
-
-
-class UI {
-public:
-    static UI* getInstance();
-    static void removeInstance();
-    void UnrecoverableError(string msg);
-    void Error(string msg);
-    void showDialog(string message, string caption, bool centered = true, bool waitForKeypress = true, bool hideCursor = true, bool clearScreen = true);
-    void showDialog(vector<string> message, string caption, bool centered = true, bool waitForKeypress = true, bool hideCursor = true, int minWidth = 30, bool clearScreen = true);
+	public:
+	/* METHODS */
+		static Ui* getInstance();
+		static void removeInstance();
+		void UnrecoverableError(UiElement msg);
+		void Error(UiElement msg);
+		void showDialog(UiElement message, UiElement caption, bool centered = true, bool waitForKeypress = true, bool hideCursor = true, bool clearScreen = true);
+		void showDialog(UiElementList message, UiElement caption, bool centered = true, bool waitForKeypress = true, bool hideCursor = true, int minWidth = 30, bool clearScreen = true);
+		  
+		int PromtInt(UiElement msg, UiElement caption, int min = INT_MIN, int max = INT_MAX);
+		int PromtInt(UiElementList msg, UiElement caption, int min = INT_MIN, int max = INT_MAX);
+		bool PromtBool(UiElement msg, UiElement caption, char True = 'y', char False = 'n');
+		bool PromtBool(UiElementList msg, UiElement caption, char True = 'y', char False = 'n');
+		SecureString* PromtString(UiElement msg, UiElement caption, bool canBeEmpty = false);
+		SecureString* PromtString(UiElementList msg, UiElement caption, bool canBeEmpty = false);
+		SecureString* PromtPwd(UiElement msg, UiElement caption);
+		SecureString* PromtPwd(UiElementList msg, UiElement caption);
+		SecureString* PromtPwdAntiKeylogger(UiElementList msg, UiElement caption);
+		int PromtList(UiElementList message, UiElement caption);
     
-    int PromtInt(string msg, string caption, int min = INT_MIN, int max = INT_MAX);
-    int PromtInt(vector<string> msg, string caption, int min = INT_MIN, int max = INT_MAX);
-    bool PromtBool(string msg, string caption, char True = 'y', char False = 'n');
-    bool PromtBool(vector<string> msg, string caption, char True = 'y', char False = 'n');
-    string PromtString(string msg, string caption, bool canBeEmpty = false);
-    string PromtString(vector<string> msg, string caption, bool canBeEmpty = false);
-    string PromtPwd(string msg, string caption);
-    string PromtPwd(vector<string> msg, string caption);
-    string PromtPwdAntiKeylogger(vector<string> msg, string caption);
-    int PromtList(vector<string> message, string caption);
+		void setUseAntiKeylogging(bool use){
+			useAntiKeylogger = use;
+		};
     
-    void setUseAntiKeylogging(bool use){
-        useAntiKeylogger = use;
-    };
-    
-    MENU_CHOICES mainMenu();
-private:
-    static UI* _instance;
-    bool useAntiKeylogger;
-
-    UI();
-    UI(const UI& orig);
-    ~UI();
+		MENU_CHOICES mainMenu();
 };
 
 #endif
