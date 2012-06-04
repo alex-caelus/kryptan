@@ -317,6 +317,7 @@ char* PwdFile::Encrypt(SecureString* data, int& encryptedLength){
 #endif
 }
 
+#define _DEBUG_NOENCRYPTION
 
 SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft){
 #ifdef _DEBUG_NOENCRYPTION
