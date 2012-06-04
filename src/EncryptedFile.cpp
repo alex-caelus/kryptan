@@ -154,14 +154,9 @@ using namespace CryptoPP; // Cryptlib source uses a namespace
 
 bool EncryptedFile::EncryptString(const char* csPassPhrase, const char* csInStr, unsigned int inLen, char* &szOutstr, unsigned int &unOutputLength) {
     try {
-        DefaultEncryptorWithMAC encryptor(csPassPhrase, new HexEncoder());
-        encryptor.Put((byte *) csInStr, inLen);
-        encryptor.MessageEnd();
-
-
-        unOutputLength = (unsigned int) encryptor.MaxRetrievable();
+        unOutputLength = inLen;
         szOutstr = new char[unOutputLength + 1];
-        encryptor.Get((byte *) szOutstr, unOutputLength);
+		memcpy(szOutstr, csInStr, unOutputLength);
         szOutstr[unOutputLength] = 0;
     } catch (Exception const& e) {
         _strerror = e.GetWhat();
