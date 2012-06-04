@@ -27,6 +27,7 @@ class Kryptan{
 		void addPwd();
 		void editPwd();
 		void removePwd();
+		void removeTree();
 		void generatePwd();
 		void changeMaster();
 		void showHelp();
@@ -38,15 +39,4 @@ class Kryptan{
 };
 
 
-#endif
-
-#if 0
-	private:
-	/* VARIBLES */
-	public:
-	/* VARABLES */
-	private:
-	/* METHODS */
-	public:
-	/* METHODS */
 #endif

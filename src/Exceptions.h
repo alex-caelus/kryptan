@@ -53,4 +53,14 @@ class FileParseException : public FileException{
 		FileParseException(char* caption, char* message):FileException(caption, message) {}
 };
 
+class FileEncryptException : public FileException{
+	public:
+		FileEncryptException(char* caption, char* message):FileException(caption, message) {}
+};
+
+class FileDecryptException : public FileException{
+	public:
+		FileDecryptException(char* caption, char* message):FileException(caption, message) {}
+};
+
 #endif

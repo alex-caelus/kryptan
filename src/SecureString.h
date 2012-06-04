@@ -179,6 +179,20 @@ public:
 		_nexlinefeedposition = ((ssnr)*_key) ^ 0;
 	}
 
+	/**
+	* This returns true if the argument contains an equal string
+	* @param s2 - the string to compare with
+	* @return true - if strings are equal
+	*/
+	bool equals(SecureString& s2);
+
+	/**
+	* This returns true if the argument contains an equal string
+	* @param s2 - the string to compare with
+	* @return true - if strings are equal
+	*/
+	bool equals(char* s2);
+
 private:
 	void init();
 

@@ -31,14 +31,19 @@ class PwdTree{
 		void addPassword(Pwd* pass);
 		void addSubTree(PwdTree* tree);
 
-		PwdTree* getTreeOnScreen();
-		Pwd* getPasswordOnScreen();
+		PwdTree* getTreeOnScreen(char* caption, bool allowNewCategories, char* textChooseThis);
+		Pwd* getPasswordOnScreen(char* caption);
 
-		void removePassword(Pwd* pass);
-		void removeSubTree(PwdTree* tree);
+		bool removePassword(Pwd* pass);
+		bool removeSubTree(PwdTree* tree);
 
 		void sortEntireSubTree();
-		void sortPasswords();
+
+		void writeTreeSecureString(SecureString* string);
+
+		bool empty(){
+			return passwords.size() == 0 && subtrees.size() == 0;
+		}
 };
 
 #endif

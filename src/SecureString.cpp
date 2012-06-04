@@ -81,9 +81,10 @@ void SecureString::allocate(ssnr size){
 
 	//copy existing data over to the new array
 	if(allocated()){
+		ssnr nrOfOldAllocatedBytes = allocated();
 		//After this the old key and data is zeroed out (length() and allocate() will not work)
-		for(ssnr i=0; i < strlen; i++){
-			newdata[i] = at(i) ^ newkey[i];
+		for(ssnr i=0; i < nrOfOldAllocatedBytes; i++){
+			newdata[i] = newkey[i] ^ (_key[i] ^ _data[i]);
 			//fill old data and key with zeroes
 			_data[i] = 0;
 			_key[i] = 0;
@@ -107,7 +108,7 @@ void SecureString::append(ssarr str, ssnr maxlen, bool deleteStr){
 	ssnr totlen = oldlen + len;
 	//Check if there is room for the new string
 	if(totlen > allocated()){
-		allocate(totlen);
+		allocate(totlen*2); //make more room than neccessary, just in case there will be more appends later
 	}
 	for(ssnr i=0; i<len; i++){
 		_data[oldlen+i] = _key[oldlen+i] ^ str[i];
@@ -125,11 +126,9 @@ void SecureString::append(const SecureString& str){
 	ssnr oldlen = this->length();
 	ssnr totlen = oldlen + len;
 	if(totlen > this->allocated()){
-		this->allocate(totlen);
+		this->allocate(totlen*2); //make more room than neccessary, just in case there will be more appends later
 	}
 	for(ssnr i=0; i<len; i++){
-		char c = str.at(i);
-		char cc = (str._data[i] ^ str._key[i]);
 		this->_data[i+oldlen] = this->_key[oldlen+i] ^ (str._data[i] ^ str._key[i]);
 	}
 	_length =  ((ssnr)*_key) ^ totlen;
@@ -139,12 +138,21 @@ void SecureString::append(const SecureString& str){
 void SecureString::assign(ssarr str, ssnr maxlen, bool deleteStr){
 	//set len to strlen(str) or maxlen, wichever is lowest (except if maxlen is 0 then set len to strlen(0))
 	ssnr len = (maxlen == 0) ? strlen(str) : std::min(strlen(str), maxlen);
+
+	//remove old data
+	if(length() > 0){
+		ssnr oldlen = length();
+		memcpy(_data, _key, oldlen);
+	} 
+	
+	//allocate enough space
 	if(len > allocated()){
-		allocate(len);
+		allocate(len*2); //make more room than neccessary, just in case there will be more appends later
 	}
 	for(ssnr i=0; i<len; i++){
 		_data[i] = _key[i] ^ str[i];
 	}
+	_data[len] = _key[len];
 	_length =  ((ssnr)*_key) ^ len;
 	if(deleteStr){
 		memset(str, 0, len);
@@ -153,9 +161,15 @@ void SecureString::assign(ssarr str, ssnr maxlen, bool deleteStr){
 }
 
 void SecureString::assign(const SecureString& str){
+	//remove old data
+	if(length() > 0){
+		ssnr oldlen = length();
+		memcpy(_data, _key, oldlen);
+	} 
+
 	ssnr len = str.length();
 	if(len > this->allocated()){
-		this->allocate(len);
+		this->allocate(len*2); //make more room than neccessary, just in case there will be more appends later
 	}
 	for(ssnr i=0; i<len; i++){
 		this->_data[i] = this->_key[i] ^ (str._key[i] ^ str._data[i]);
@@ -239,4 +253,30 @@ void SecureString::UnsecuredStringFinished(){
 		delete[] _plaintextcopy;
 	}
 	_plaintextcopy = NULL;
+}
+
+bool SecureString::equals(SecureString& s2){
+	if(s2.length() != this->length()){
+		return false;
+	}
+	int len = this->length();
+	for(int i=0; i<len; i++){
+		if(s2.at(i) != this->at(i)){
+			return false;
+		}
+	}
+	return true;
+}
+
+bool SecureString::equals(char* s2){
+	if(strlen(s2) != this->length()){
+		return false;
+	}
+	int len = this->length();
+	for(int i=0; i<len; i++){
+		if(s2[i] != this->at(i)){
+			return false;
+		}
+	}
+	return true;
 }

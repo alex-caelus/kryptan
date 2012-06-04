@@ -21,7 +21,7 @@ class Pwd{
 
 		/* Screen dialogs */
 		void displayOnScreen();
-		void wizardOnScreen();
+		void wizardOnScreen(bool editable=true);
 
 		/* GETTERS */
 		SecureString* getDescription(){

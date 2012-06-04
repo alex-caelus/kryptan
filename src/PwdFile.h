@@ -16,10 +16,9 @@ class PwdFile{
 	private:
 	/* METHODS */
 		SecureString* read();
-		char* Encrypt(SecureString* data);
-		SecureString* Decrypt(char* data, int length);
+		char* Encrypt(SecureString* data, int& encryptedLength);
+		SecureString* Decrypt(char* data, int length, int NrOfTriesLeft);
 		void parse(SecureString*);
-		void createNewFile();
 	public:
 		PwdFile(char* filename);
 		~PwdFile();
@@ -27,6 +26,8 @@ class PwdFile{
 		PwdTree* getRootPwdTree();
 		
 		void save();
+
+		void changeMasterKey();
 };
 
 

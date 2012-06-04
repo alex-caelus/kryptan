@@ -187,7 +187,7 @@ int Ui::PromtList(UiElementList message, UiElement caption) {
             subList.push_back(UiElement(MAKE_YOUR_SELECTION));
             showDialog(UiElementList(subList.begin(), subList.end()), caption, false, false, false, strMaxWidth);
             if (choice >= 0) {
-                printw("%i", choice);
+                printw("%d", choice);
             }
             int c = getch();
             if (c == KEY_UP) {
@@ -220,8 +220,7 @@ int Ui::PromtList(UiElementList message, UiElement caption) {
         /* Start dialog */
         showDialog(message, caption, false, false, false, 4);
         /* Get choice */
-        char arg1[] = "%i";
-        scanw(arg1, &choice);
+        scanw("%d", &choice);
     }
     return choice;
 }
@@ -314,10 +313,9 @@ int Ui::PromtInt(UiElement message, UiElement caption, int min, int max) {
 
 int Ui::PromtInt(UiElementList message, UiElement caption, int min, int max) {
     message.push_back("");
-    showDialog(message, caption, false, false, false);
+    showDialog(message, caption, true, false, false);
     int ans;
-    char arg1[] = "%i";
-    int length = scanw(arg1, &ans);
+    int length = scanw("%d", &ans);
     if (length <= 0 || ans < min || ans > max)
         return PromtInt(message, caption, min, max);
     return ans;
@@ -331,11 +329,10 @@ bool Ui::PromtBool(UiElement message, UiElement caption, char True, char False) 
 
 bool Ui::PromtBool(UiElementList message, UiElement caption, char True, char False) {
     /* dialog */
-    showDialog(message, caption, false, false, true);
+    showDialog(message, caption, true, false, true);
     /* get answer */
     char ans;
-    char arg1[] = "%c";
-    scanw(arg1, &ans);
+    scanw("%c", &ans);
     /* validate */
     if (ans == True)
         return true;
@@ -357,6 +354,7 @@ MENU_CHOICES Ui::mainMenu() {
         MENU_GENERATE_PWD,
         MENU_EDIT_PWD,
         MENU_REMOVE_PWD,
+		MENU_REMOVE_TREE,
         MENU_CHANGE_MASTER,
         MENU_SHOW_HELP,
         MENU_QUIT
@@ -368,9 +366,10 @@ MENU_CHOICES Ui::mainMenu() {
     list.push_back(UiElement("3. " MENUSTRING_GENERATE_PWD));
     list.push_back(UiElement("4. " MENUSTRING_EDIT_PWD));
     list.push_back(UiElement("5. " MENUSTRING_REMOVE_PWD));
-    list.push_back(UiElement("6. " MENUSTRING_CHANGE_MASTER));
-    list.push_back(UiElement("7. " MENUSTRING_SHOW_HELP));
-    list.push_back(UiElement("8. " MENUSTRING_QUIT));
+    list.push_back(UiElement("6. " MENUSTRING_REMOVE_TREE));
+    list.push_back(UiElement("7. " MENUSTRING_CHANGE_MASTER));
+    list.push_back(UiElement("8. " MENUSTRING_SHOW_HELP));
+    list.push_back(UiElement("9. " MENUSTRING_QUIT));
     int c = PromtList(list, MENUTITLE);
     if (c <= 0 || c >= MAPlength)
         return mainMenu();

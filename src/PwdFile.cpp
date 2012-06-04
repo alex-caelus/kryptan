@@ -5,12 +5,14 @@
 #include "Ui.h"
 #include "Exceptions.h"
 
+#ifdef _DEBUG
 #define _DEBUG_NOENCRYPTION
+#endif
 
 
 PwdFile::PwdFile(char* fname){
-	masterkey = NULL;
-	Root = NULL;
+	masterkey = new SecureString("", 0, false);
+	Root = new PwdTree(NULL);
 
 	this->filename = fname;
 	bool success=false;
@@ -28,7 +30,8 @@ PwdFile::PwdFile(char* fname){
 			try{
 				if(Ui::getInstance()->PromtBool(UiElement(CREATE_NEW_PWD_FILE_Y_N), UiElement(CAPTION_NEW_PWD_FILE))){
 					//So create a new file instead
-					createNewFile();
+					changeMasterKey();
+					save();
 				} else {
 					//if not we give up
 					throw UnresolvableException(ERROR_NO_PWD_FILE);
@@ -71,17 +74,23 @@ void PwdFile::save(){
 		throw FileWriteException(ERROR_CAPTION, ERROR_WRITE_FILE);
 	}
 
-	//Code to save the entire thing goes here!
-}
+	SecureString* contents = new SecureString();
 
-void PwdFile::createNewFile(){
-	std::ofstream of;
+	contents->append(PASSWORD_FILE_VERSION_NUMBER NEWLINE, 0, false);
 
-	of.open(filename, std::ios::out | std::ios::binary | std::ios::trunc);
+	//Get all information as string
+	Root->writeTreeSecureString(contents);
 
-	if(!of){
-		throw FileWriteException(ERROR_CAPTION, ERROR_CREATE_FILE);
-	}
+	int elen;
+
+	char* encryptedBuff = Encrypt(contents, elen);
+
+	of.write(encryptedBuff, elen);
+
+	//secure the information
+	delete contents;
+	memset(encryptedBuff, 0, elen);
+	delete[] encryptedBuff;
 
 	of.close();
 }
@@ -116,7 +125,7 @@ SecureString* PwdFile::read(){
 	buffer[length] = '\0';
 
 	//Decrypt the input (not realy neccesary since the contents is still encrypted)
-	return Decrypt(buffer, length+1);
+	return Decrypt(buffer, length+1, MAX_FAILED_ATTEMPTS);
 }
 
 
@@ -152,7 +161,7 @@ void PwdFile::parse(SecureString* filecontent){
 		switch(state){
 			case GET_VERSION:
 				if( strcmp(currentLine, PASSWORD_FILE_VERSION_NUMBER) != 0){
-					throw FileParseException("Password file version mismatch", "Visit http://www.caelus.org/proj/kryptan for help");
+					throw FileParseException(ERROR_FILE_VERSION, ERROR_FILE_VERSION_HELP);
 				}
 				state = GET_NEXTENTRY;
 				break;
@@ -222,17 +231,134 @@ void PwdFile::parse(SecureString* filecontent){
 	}
 }
 
+void PwdFile::changeMasterKey(){
+	bool allowed = false;
+	Ui* ui = Ui::getInstance();
 
-char* PwdFile::Encrypt(SecureString* data){
-	return NULL;
+	//is allowd to change key
+	if(masterkey->length() == 0)
+		allowed = true;
+	else {
+		SecureString* confirmOld = ui->PromtPwd(UiElement(OLD_MASTER_PWD), UiElement(CAPTION_EDIT_MASTER));
+		if(masterkey->equals(*confirmOld)){
+			allowed = true;
+		}
+		delete confirmOld;
+	}
+
+	//change the key
+	if(allowed){
+		SecureString* newMaster = ui->PromtPwd(UiElement(NEW_MASTER_PWD), UiElement(CAPTION_EDIT_MASTER));
+		SecureString* newConfirm= ui->PromtPwd(UiElement(CONFIRM_MASTER_PWD), UiElement(CAPTION_EDIT_MASTER));
+		while(!newMaster->equals(*newConfirm)){
+			ui->Error(ERROR_KEY_CONFIRM);
+			delete newMaster;
+			delete newConfirm;
+			newMaster = ui->PromtPwd(UiElement(NEW_MASTER_PWD), UiElement(CAPTION_EDIT_MASTER));
+			newConfirm= ui->PromtPwd(UiElement(CONFIRM_MASTER_PWD), UiElement(CAPTION_EDIT_MASTER));
+		}
+		delete masterkey;
+		masterkey = newMaster;
+		delete newConfirm;
+	}
+}
+
+#ifndef _DEBUG_NOENCRYPTION
+
+/* OS-independent sleep function */
+#ifdef _WIN32
+    #include <windows.h>
+    inline void mySleep(unsigned pMilliseconds)
+    {
+        ::Sleep(pMilliseconds);
+    }
+#else
+    #include <unistd.h>
+    inline void mySleep(unsigned pMilliseconds)
+    {
+        static const unsigned MilliToMicro = 1000;
+        ::usleep(pMilliseconds * MilliToMicro);
+    }
+#endif
+
+#include <cryptopp/default.h>
+#include <cryptopp/hex.h>
+#include <stdlib.h>
+
+using namespace CryptoPP; // Cryptlib source uses a namespace
+
+#endif
+
+char* PwdFile::Encrypt(SecureString* data, int& encryptedLength){
+#ifdef _DEBUG_NOENCRYPTION
+	char* oldBuff = data->getUnsecureString();
+	char* newBuff = new char[data->length()+1];
+	strcpy(newBuff, oldBuff);
+	data->UnsecuredStringFinished();
+	encryptedLength = data->length();
+	return newBuff;
+#else
+	try{
+		DefaultEncryptorWithMAC encryptor(masterkey->getUnsecureString(), new HexEncoder());
+		encryptor.Put((byte*) data->getUnsecureString(), data->length());
+		encryptor.MessageEnd();
+
+		encryptedLength = (int) encryptor.MaxRetrievable();
+		char* newBuff = new char[encryptedLength+1];
+		encryptor.Get((byte*) newBuff, encryptedLength);
+		newBuff[encryptedLength] = 0;
+		masterkey->UnsecuredStringFinished();
+		data->UnsecuredStringFinished();
+		return newBuff;
+	} catch (Exception const& e) {
+		throw FileEncryptException( ERROR_ENCRYPTION_CAPTION, (char*)e.GetWhat().c_str());
+        return NULL;
+    }
+#endif
 }
 
 
-SecureString* PwdFile::Decrypt(char* data, int length){
-	//data must be deallocated by SecureString
+SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft){
 #ifdef _DEBUG_NOENCRYPTION
+	//data must be deallocated by SecureString
 	return new SecureString(data, length, true);
 #else
-	//Decrypt code goes here
+	DefaultDecryptorWithMAC *p;
+	Ui* ui = Ui::getInstance();
+	nrOfTriesLeft--;
+
+	if(masterkey->length() == 0){
+		masterkey = ui->PromtPwd(UiElement(PROMT_PWD), UiElement(CAPTION_DECRYPT));
+	}
+	
+	try{
+		HexDecoder decryptor(p = new DefaultDecryptorWithMAC(masterkey->getUnsecureString()));
+		decryptor.Put((byte*) data, length);
+		decryptor.MessageEnd();
+
+		int outputLength = decryptor.MaxRetrievable();
+		char* unsafeDecrypt = new char[outputLength + 1];
+		decryptor.Get((byte*) unsafeDecrypt, outputLength);
+		unsafeDecrypt[outputLength] = 0;
+
+		masterkey->UnsecuredStringFinished();
+
+		return new SecureString(unsafeDecrypt);
+	} catch (DefaultDecryptor::KeyBadErr const& e) {
+		mySleep(1000);
+		ui->Error(UiElement( ERROR_MASTER_KEY ));
+		if(nrOfTriesLeft){
+			masterkey->assign("",  0, false);
+			return Decrypt(data, length, nrOfTriesLeft);
+		} else {
+			throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);
+		}
+    } catch (DefaultDecryptorWithMAC::MACBadErr const& e) {
+		throw FileDecryptException( ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION );
+        return false;
+    } catch (Exception const& e) {
+		throw FileDecryptException( ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str() );
+        return false;
+    }
 #endif
 }
