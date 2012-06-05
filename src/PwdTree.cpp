@@ -3,6 +3,7 @@
 
 #include <ctype.h>
 #include <fstream>
+#include <string.h>
 
 
 PwdTree::PwdTree(PwdTree* parent){

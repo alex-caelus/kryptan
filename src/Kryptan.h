@@ -3,7 +3,7 @@
 
 #include "CONSTANTS.h"
 #include "PwdFile.h"
-#include "Ui.h"
+#include "UI.h"
 
 
 class Kryptan{

@@ -43,8 +43,6 @@
 #
 # NOCDDL
 
-#Configuration
-CONF=Release
 
 # Environment 
 MKDIR=mkdir

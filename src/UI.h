@@ -3,6 +3,7 @@
 
 #include "CONSTANTS.h"
 #include "UIElement.h"
+#include "climits"
 
 class Ui{
 	private:

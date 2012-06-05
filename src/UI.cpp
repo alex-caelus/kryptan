@@ -1,8 +1,9 @@
-#include "Ui.h"
+#include "UI.h"
 
 #include <list>
 #include <sstream>
 #include <time.h>
+#include <string.h>
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 

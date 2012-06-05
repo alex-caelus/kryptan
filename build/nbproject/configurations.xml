@@ -5,11 +5,14 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>../src/CONSTANTS.h</itemPath>
-      <itemPath>../src/EncryptedFile.h</itemPath>
+      <itemPath>../src/Exceptions.h</itemPath>
       <itemPath>../src/Kryptan.h</itemPath>
-      <itemPath>../src/PasswordList.h</itemPath>
-      <itemPath>../src/StringContainer.h</itemPath>
+      <itemPath>../src/Pwd.h</itemPath>
+      <itemPath>../src/PwdFile.h</itemPath>
+      <itemPath>../src/PwdTree.h</itemPath>
+      <itemPath>../src/SecureString.h</itemPath>
       <itemPath>../src/UI.h</itemPath>
+      <itemPath>../src/UIElement.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -18,10 +21,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../src/EncryptedFile.cpp</itemPath>
       <itemPath>../src/Kryptan.cpp</itemPath>
-      <itemPath>../src/PasswordList.cpp</itemPath>
+      <itemPath>../src/Pwd.cpp</itemPath>
+      <itemPath>../src/PwdFile.cpp</itemPath>
+      <itemPath>../src/PwdTree.cpp</itemPath>
+      <itemPath>../src/SecureString.cpp</itemPath>
       <itemPath>../src/UI.cpp</itemPath>
+      <itemPath>../src/UiElement.cpp</itemPath>
       <itemPath>../src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

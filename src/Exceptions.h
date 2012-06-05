@@ -2,7 +2,7 @@
 #define EXCEPTIONS_H
 
 #include <cstdlib>
-#include "Ui.h"
+#include "UI.h"
 
 class BaseException : std::exception{
 	protected:

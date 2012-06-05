@@ -1,5 +1,6 @@
 #include "Kryptan.h"
 #include "Exceptions.h"
+#include <string.h>
 
 Kryptan* Kryptan::instance = NULL;
 

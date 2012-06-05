@@ -1,4 +1,5 @@
 #include "UIElement.h"
+#include <string.h>
 
 
 UiElement::UiElement(char* data, chtype attrib, int attribOffset, bool deleteWhenDone){

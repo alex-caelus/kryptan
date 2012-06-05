@@ -41,8 +41,8 @@ SecureString::~SecureString(void)
 }
 
 void SecureString::init(){
-	_data = new ssbyte[sizeof ssnr];
-	_key  = new ssbyte[sizeof ssnr];
+	_data = new ssbyte[sizeof(ssnr)];
+	_key  = new ssbyte[sizeof(ssnr)];
 	//fill key with zeros, this keeps the length() and allocated() from failing before any call to allocate(x)
 	*((ssnr*)_data) = 0; 
 	*((ssnr*)_key) = 0;
@@ -57,8 +57,8 @@ void SecureString::allocate(ssnr size){
 	//increase size by one to include last '\0'
 	size += 1;
 	//the new array must at least be able to hold a key the size of ssnr
-	if(size <= sizeof ssnr){
-		size = sizeof ssnr + 1; //include last '\0'
+	if(size <= sizeof(ssnr)){
+		size = sizeof(ssnr) + 1; //include last '\0'
 	}
 	//check if new size is larger than current string length
 	if(size <= length()){
@@ -102,7 +102,7 @@ void SecureString::allocate(ssnr size){
 
 void SecureString::append(ssarr str, ssnr maxlen, bool deleteStr){
 	//set len to strlen(str) or maxlen, wichever is lowest (except if maxlen is 0 then set len to strlen(0))
-	ssnr len = (maxlen == 0) ? strlen(str) : std::min(strlen(str), maxlen);
+	ssnr len = (maxlen == 0) ? strlen(str) : std::min((ssnr)strlen(str), maxlen);
 	ssnr oldlen = length();
 	//calculate the new total length
 	ssnr totlen = oldlen + len;
@@ -137,7 +137,7 @@ void SecureString::append(const SecureString& str){
 
 void SecureString::assign(ssarr str, ssnr maxlen, bool deleteStr){
 	//set len to strlen(str) or maxlen, wichever is lowest (except if maxlen is 0 then set len to strlen(0))
-	ssnr len = (maxlen == 0) ? strlen(str) : std::min(strlen(str), maxlen);
+	ssnr len = (maxlen == 0) ? strlen(str) : std::min((ssnr)strlen(str), maxlen);
 
 	//remove old data
 	if(length() > 0){

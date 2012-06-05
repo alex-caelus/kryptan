@@ -34,11 +34,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/1360937237/EncryptedFile.o \
 	${OBJECTDIR}/_ext/1360937237/Kryptan.o \
 	${OBJECTDIR}/_ext/1360937237/main.o \
+	${OBJECTDIR}/_ext/1360937237/PwdFile.o \
+	${OBJECTDIR}/_ext/1360937237/Pwd.o \
 	${OBJECTDIR}/_ext/1360937237/UI.o \
-	${OBJECTDIR}/_ext/1360937237/PasswordList.o
+	${OBJECTDIR}/_ext/1360937237/UiElement.o \
+	${OBJECTDIR}/_ext/1360937237/PwdTree.o \
+	${OBJECTDIR}/_ext/1360937237/SecureString.o
 
 
 # C Compiler Flags
@@ -65,11 +68,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/1360937237/EncryptedFile.o: ../src/EncryptedFile.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/EncryptedFile.o ../src/EncryptedFile.cpp
-
 ${OBJECTDIR}/_ext/1360937237/Kryptan.o: ../src/Kryptan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
@@ -80,15 +78,35 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.cpp
 
+${OBJECTDIR}/_ext/1360937237/PwdFile.o: ../src/PwdFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdFile.o ../src/PwdFile.cpp
+
+${OBJECTDIR}/_ext/1360937237/Pwd.o: ../src/Pwd.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Pwd.o ../src/Pwd.cpp
+
 ${OBJECTDIR}/_ext/1360937237/UI.o: ../src/UI.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UI.o ../src/UI.cpp
 
-${OBJECTDIR}/_ext/1360937237/PasswordList.o: ../src/PasswordList.cpp 
+${OBJECTDIR}/_ext/1360937237/UiElement.o: ../src/UiElement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PasswordList.o ../src/PasswordList.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UiElement.o ../src/UiElement.cpp
+
+${OBJECTDIR}/_ext/1360937237/PwdTree.o: ../src/PwdTree.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdTree.o ../src/PwdTree.cpp
+
+${OBJECTDIR}/_ext/1360937237/SecureString.o: ../src/SecureString.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/SecureString.o ../src/SecureString.cpp
 
 # Subprojects
 .build-subprojects:

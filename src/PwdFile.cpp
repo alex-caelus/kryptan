@@ -2,8 +2,9 @@
 
 #include <fstream>
 
-#include "Ui.h"
+#include "UI.h"
 #include "Exceptions.h"
+#include <string.h>
 
 #ifdef _DEBUG
 #define _DEBUG_NOENCRYPTION
