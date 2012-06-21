@@ -11,7 +11,7 @@
             <div id="toc">Table Of Contents</div>
                 <ol>
                     <li><a href="#what-is">What is Kryptan?</a></li>
-                    <li><a href="#get-it">Where to get it? (DOWNLOAD)</a></li>
+                    <li><a href="#download">Where to get it? (DOWNLOAD)</a></li>
                     <li><a href="#get-source">Where do I get the source-code?</a></li>
                     <li><a href="#compile-source">How do I compile the source-code?</a></li>
                     <li><a href="#use-it">How do I use Kryptan?</a></li>
@@ -24,15 +24,15 @@
                 <p>List of features:</p>
                 <ul>
                     <li>All passwords are stored using industrial grade encryption. (3DES)</li>
-                    <li>Retrieval of passwords needs a decryption key. (MASTER-password)</li>
+                    <li>Retrieval of passwords needs a decryption key. (MASTER-KEY)</li>
                     <li>Local standalone application. (No internet access is neccesary)</li>
-                    <li>Separate password file, uses the same format in the Windows version and the Linux version</li>
-                    <li>Interface designed to minimze so called shoulder surfing</li>
                     <li>Multi platform. Works on both Windows and Linux.</li>
+                    <li>Password file that's platform independent (radable by both Windows and Linux versions).</li>
+                    <li>Interface designed to minimze so called shoulder surfing</li>
                     <li>OpenSource</li>
                 </ul>
             
-            <h1 id="get-it">Where to get it? (DOWNLOAD)</h1>
+            <h1 id="download">Where to get it? (DOWNLOAD)</h1>
                 <p>Precompiled windows binaries are <a href="https://bitbucket.org/Caelus/kryptan/downloads/kryptan-win.zip">here</a>.</p>
                 <p>For Linux I recommend that you build directly from the source-code, see below for instructions.</p>
             
@@ -45,19 +45,57 @@
                 </ul>
             
             <h1 id="compile-source">How do I compile the source-code?</h1>
-                <p>Instructions comming soon</p>
+                <p>You need to download and install the following prerequisites:</p>
+				<dl>
+					<dt>Crypto++</dt>
+					<dd>Crypto++, see <a href="http://www.cryptopp.com/wiki/Compiling">http://www.cryptopp.com/wiki/Compiling</a> for installation instructions for your platform. download it here: <a href="http://www.cryptopp.com/#download">http://www.cryptopp.com/#download</a></dd>
+					
+					<dt>(Linux only) Ncurses</dt>
+					<dd>It should probably already be installed. Please consult your distributions documentatian regarding installation instructions.</dd>
+					
+					<dt>(Windows only) Pdcurses win32a</dt>
+					<dd>Compilation can be a bit tricky, but read the instructions on the download page: <a href="http://www.projectpluto.com/win32a.htm#download">http://www.projectpluto.com/win32a.htm#download</a></dd>
+				</dl>
+				
+				<h2>Linux instructions</h2>
+				<p>Make sure you have the gcc build suite installed and operational, and the above requirements installed where gcc can find them. After that just <b>cd</b> into the build/ directory an type <b>make</b> on the console. If everything went smoothly the binary should be located in the dist/ directory</p>
+				
+				<h2>Windows instructions (Visual studio 2010)</h2>
+				<p>Open the file kryptan.sln with Visual studio. Open the project properties window and browse to "Configuration Properies -> C/C++ -> General -> Additional Include Directories" and change the value to where you have installed the the pdcurses and cryptopp directories. Next browse to "Configuration Properies -> Linker -> General -> Additional Library Directories" and change the value to include both the pdcurses/win32a and cryptopp/Win32/Output/Release directories.</p>
+				<p>Close the project property window and build the project, if everything went smoothly the binary should be located in the Release directory.</p>
             
             <h1 id="use-it">How do I use Kryptan?</h1>
-                <p>Content comming soon.</p>
+                <p>Hopefully the program should be rather self explanatory, but here is some useful information:</p>
+				
+				<h2>Copy paste (Windows)</h2>
+					<p>Copy/paste works a little bit differently than on normal windows applications.</p>
+					<p>To paste in a new password or uesrname, simply press the button "paste" in the menu above the main screen.</p>
+					<p>To copy a word, all you need is to select it. No CTRL+C is neccessary! To select a word drag the mouse pointer over it, alternatively you can double click on the text you want to select.</p>
+					
+				<h2>Anti keylogging</h2>
+					<p>To start Kryptan in this special mode, you need to specify the command line parameter "--use-anti-keylogging".</p>
+					<p>For windows you need to create a shortcut t the application and add the switch in the properties window, like <a href="http://www.ehow.com/how_7208987_add-line-parameter-windows-shortcut.html">so</a>.</p>
+					<p>Usage: In the upper left corener of the screen there are 2 rows (actually 4 since the window is to small to display the whole range of characters on one line) of the alfabet. One is in its correct order and the other is scrambled. If you want to input the password abc, you begin with the letter 'a' and press the key that is displayed above it (maybe captial 'X')</p>
+					<p>Repeat for every character of the password.</p>
                 
             <h1 id="report-bugs">Where do i report bugs/feature requests?</h1>
                 <p><a href="https://bitbucket.org/Caelus/kryptan/issues">Here</a>, please check wheather or not a simmilar issue/request already exists before you posts</p>
             
             <h1 id="contribute">How do I contribute?</h1>
                 <p>Visit the bitbucket project located <a href="https://bitbucket.org/Caelus/kryptan/">here</a> and make a fork of it, make any changes you want and then make a pull request and I'll look into it :).</p>
+				<p>Alternatively you can send the author an email (Alexander Nilsson: alex.caelus (at) gmail.com) and we can diskuss it further.</p>
                 
             <h1 id="changelog"> Change Log </h1>
                 <dl>
+                    <dt>2012-06-04 - VERSION 2.0</dt>
+                    <dd> 
+                        <ul>
+                            <li>Major update! Completely rewritten code base!</li>
+                            <li>Added capability to organize passwords into categories (or folders).</li>
+							<li>Updated passwordfile structure, that is incompatible with the old. Please move your passwords manualy to the new version.</li>
+							<li></li>
+                        </ul>
+                    </dd>
                     <dt>2012-05-09 - VERSION 1.1.1</dt>
                     <dd> 
                         <ul>
