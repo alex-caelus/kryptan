@@ -151,7 +151,7 @@ void Kryptan::generatePwd(){
 	const static char* azAZ09 = PASSWORD_CHARACTERS_ALNUM;
 	const static char* SPECIALS = PASSWORD_CHARACTERS_SPECIALS;
 	const static int azAZ09length = strlen(azAZ09);
-	const static int SPECIALSlength = strlen(azAZ09);
+	const static int SPECIALSlength = strlen(SPECIALS);
 	bool useSpecials = ui->PromtBool(UiElement(USE_SPECIALS_Y_N), UiElement(CAPTION_GENERATE_PWD));
 	int length = ui->PromtInt(UiElement(GENERATE_PWD_LENGTH), UiElement(CAPTION_GENERATE_PWD));
     char* newPwdChar = new char[length+1];
