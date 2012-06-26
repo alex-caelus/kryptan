@@ -34,6 +34,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/1360937237/cryptography.o \
 	${OBJECTDIR}/_ext/1360937237/Kryptan.o \
 	${OBJECTDIR}/_ext/1360937237/main.o \
 	${OBJECTDIR}/_ext/1360937237/PwdFile.o \
@@ -62,11 +63,16 @@ LDLIBSOPTIONS=-lcryptopp -lncurses -lpthread
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/_ext/1360937237/cryptography.o: ../src/cryptography.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/cryptography.o ../src/cryptography.cpp
 
 ${OBJECTDIR}/_ext/1360937237/Kryptan.o: ../src/Kryptan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
@@ -114,7 +120,7 @@ ${OBJECTDIR}/_ext/1360937237/SecureString.o: ../src/SecureString.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build
 
 # Subprojects
 .clean-subprojects:

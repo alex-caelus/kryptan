@@ -1,7 +1,7 @@
 #ifndef CONSTANTS_H
 #define	CONSTANTS_H
 
-#define VERSION_NUMBER "2.0"
+#define VERSION_NUMBER "2.1"
 #define PASSWORD_FILE_VERSION_NUMBER "2.0"
 #define PASSWORD_FILE "secret.pwd"
 #define MAX_FAILED_ATTEMPTS 3
@@ -75,7 +75,7 @@
 #define HELPTEXT  {                                                     \
     "Kryptan " VERSION,                                                  \
     "This program is created with crypto++ 5.6.1 and using:",           \
-    "\"Password-Based Encryptor with DES-EDE2 and HMAC/SHA-1\"",        \
+    "\"Password-Based Encryptor with AES256 and HMAC/SHA-1\"",        \
     "Contact Alexander Nilsson for further questions at:",              \
     "alex.caelus@gmail.com OR www.caelus.org/proj/kryptan",              \
 	0																	\

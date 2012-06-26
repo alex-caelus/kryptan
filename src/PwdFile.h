@@ -18,7 +18,9 @@ class PwdFile{
 		SecureString* read();
 		char* Encrypt(SecureString* data, int& encryptedLength);
 		SecureString* Decrypt(char* data, int length, int NrOfTriesLeft);
+		SecureString* OldDecrypt(char* data, int length, int NrOfTriesLeft);
 		void parse(SecureString*);
+
 	public:
 		PwdFile(char* filename);
 		~PwdFile();
@@ -27,6 +29,7 @@ class PwdFile{
 		
 		void save();
 
+		//Needs to call save after use
 		void changeMasterKey();
 };
 

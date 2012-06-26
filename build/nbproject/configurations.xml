@@ -13,6 +13,7 @@
       <itemPath>../src/SecureString.h</itemPath>
       <itemPath>../src/UI.h</itemPath>
       <itemPath>../src/UIElement.h</itemPath>
+      <itemPath>../src/cryptography.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -28,6 +29,7 @@
       <itemPath>../src/SecureString.cpp</itemPath>
       <itemPath>../src/UI.cpp</itemPath>
       <itemPath>../src/UiElement.cpp</itemPath>
+      <itemPath>../src/cryptography.cpp</itemPath>
       <itemPath>../src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
