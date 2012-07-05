@@ -31,8 +31,8 @@ class PwdTree{
 		void addPassword(Pwd* pass);
 		void addSubTree(PwdTree* tree);
 
-		PwdTree* getTreeOnScreen(char* caption, bool allowNewCategories, char* textChooseThis);
-		Pwd* getPasswordOnScreen(char* caption);
+		PwdTree* getTreeOnScreen(const char* caption, bool allowNewCategories, const char* textChooseThis);
+		Pwd* getPasswordOnScreen(const char* caption);
 
 		bool removePassword(Pwd* pass);
 		bool removeSubTree(PwdTree* tree);

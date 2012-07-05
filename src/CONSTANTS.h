@@ -116,7 +116,6 @@ enum MENU_CHOICES {
 #define INFO_CAPTION "INFO"
 #define WARNING_CAPTION "WARNING"
 #define ERROR_CAPTION "ERROR"
-#define NO_ERROR "No error reported!"
 #define ERROR_WRITE_FILE "Could not write to password file!"
 #define ERROR_CREATE_FILE "Could not create password file!"
 #define ERROR_READ_FILE "Password file not found or is not readable!"

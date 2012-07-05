@@ -8,7 +8,7 @@ class PwdFile{
 	private:
 	/* VARABLES */
 		PwdTree* Root;
-		char* filename;
+		const char* filename;
 		SecureString* masterkey;
 
 	public:
@@ -20,7 +20,7 @@ class PwdFile{
 		SecureString* Decrypt(char* data, int length, int NrOfTriesLeft);
 		void parse(SecureString*);
 	public:
-		PwdFile(char* filename);
+		PwdFile(const char* filename);
 		~PwdFile();
 
 		PwdTree* getRootPwdTree();

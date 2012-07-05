@@ -5,6 +5,10 @@
 #include <fstream>
 #include <string.h>
 
+#ifndef _WIN32
+//We make sprintf_s portable to the linux platform
+#define sprintf_s snprintf
+#endif
 
 PwdTree::PwdTree(PwdTree* parent){
 	this->parent = parent;
@@ -37,18 +41,17 @@ void PwdTree::addSubTree(PwdTree* tree){
 	subtrees.push_back(tree);
 }
 
-PwdTree* PwdTree::getTreeOnScreen(char* caption, bool allowNewCategories, char* textChooseThis){
+PwdTree* PwdTree::getTreeOnScreen(const char* caption, bool allowNewCategories, const char* textChooseThis){
 	UiElementList list;
-	SecureString* theCaption = new SecureString(caption, 0, false);
+	SecureString* theCaption = new SecureString(caption);
 	if(parent != NULL){
-		int len = strlen(caption);
-		theCaption->append(" - ", 0, false);
+		theCaption->append(" - ");
 		theCaption->append(*getName());
 	}
 
 	//list counter
 	int i=1;
-	int buffwidth = numDigits( 2 + subtrees.size() ) + 3;
+	int buffwidth = numDigits( 2 + subtrees.size() ) + 2;
 
 	//list choices
 	int UP_ONE_LEVEL = -1;
@@ -57,25 +60,28 @@ PwdTree* PwdTree::getTreeOnScreen(char* caption, bool allowNewCategories, char* 
 
 	//add first row
 	if(parent){
-		char* buff = new char[buffwidth+strlen(MENUSTRING_GO_UP_TREE)];
-		sprintf(buff, "%i. %s", i, MENUSTRING_GO_UP_TREE);
-		list.push_back(UiElement(buff, A_BOLD, 2+numDigits(i), true)); //delete when done
+		int len = buffwidth+strlen(MENUSTRING_GO_UP_TREE) + 1;
+		char* buff = new char[len];
+		sprintf_s(buff, len, "%i. %s", i, MENUSTRING_GO_UP_TREE);
+		list.push_back(UiElement(buff, true, A_BOLD, 2+numDigits(i))); //delete when done
 		UP_ONE_LEVEL = i++;
 	}
 
 	//add option to create a new category
 	if(allowNewCategories){
-		char* buff = new char[buffwidth+strlen(CREATE_NEW_CATEGORY)];
-		sprintf(buff, "%i. %s", i, CREATE_NEW_CATEGORY);
-		list.push_back(UiElement(buff, A_BOLD, 2+numDigits(i), true)); //delete when done
+		int len = buffwidth+strlen(CREATE_NEW_CATEGORY) + 1;
+		char* buff = new char[len];
+		sprintf_s(buff, len, "%i. %s", i, CREATE_NEW_CATEGORY);
+		list.push_back(UiElement(buff, true, A_BOLD, 2+numDigits(i))); //delete when done
 		NEW_CATEGORY = i++;
 	}
 
-	//add option to choos this category
+	//add option to choose this category
 	{
-		char* buff = new char[buffwidth+strlen(textChooseThis)];
-		sprintf(buff, "%i. %s", i, textChooseThis);
-		list.push_back(UiElement(buff, A_BOLD, 2+numDigits(i), true)); //delete when done
+		int len = buffwidth+strlen(textChooseThis) + 1;
+		char* buff = new char[len];
+		sprintf_s(buff, len, "%i. %s", i, textChooseThis);
+		list.push_back(UiElement(buff, true, A_BOLD, 2+numDigits(i))); //delete when done
 		PASSWORD_HERE = i++;
 	}
 
@@ -87,16 +93,17 @@ PwdTree* PwdTree::getTreeOnScreen(char* caption, bool allowNewCategories, char* 
 		//add all sub categories to the list
 		pwtreelist::iterator it = subtrees.begin();
 		for(; it != subtrees.end(); it++, i++){
-			char* buff = new char[buffwidth];
-			sprintf(buff, "%i. ", i);
+			int len = buffwidth+1;
+			char* buff = new char[len];
+			sprintf_s(buff, len, "%i. ", i);
 			SecureString* line = new SecureString(buff);
 			line->append(*(*it)->getName());
-			list.push_back(UiElement(line, A_BOLD | A_UNDERLINE, 2+numDigits(i), true)); //delete it when done
+			list.push_back(UiElement(line, true, A_BOLD | A_UNDERLINE, 2+numDigits(i))); //delete it when done
 		}
 	}
 
 	//display the list
-	unsigned int choice = Ui::getInstance()->PromtList(list, UiElement(theCaption));
+	int choice = Ui::getInstance()->PromtList(list, UiElement(theCaption, true));
 
 	//validate the choice
 	if(choice > 0 && choice <= i){
@@ -117,7 +124,7 @@ PwdTree* PwdTree::getTreeOnScreen(char* caption, bool allowNewCategories, char* 
 		} else{
 			pwtreelist::iterator ch = subtrees.begin();
 			int limit = choice-(i - subtrees.size());
-			for(unsigned int i=0; i < limit; i++){
+			for(int i=0; i < limit; i++){
 				ch++;
 			}
 			return (*ch)->getTreeOnScreen(caption, allowNewCategories, textChooseThis);
@@ -127,30 +134,31 @@ PwdTree* PwdTree::getTreeOnScreen(char* caption, bool allowNewCategories, char* 
 	return getTreeOnScreen(caption, allowNewCategories, textChooseThis); //if response is not valid, try again
 }
 
-Pwd* PwdTree::getPasswordOnScreen(char* caption){
+Pwd* PwdTree::getPasswordOnScreen(const char* caption){
 	UiElementList list;
-	SecureString* theCaption = new SecureString(caption, 0, false);
+	SecureString* theCaption = new SecureString(caption);
 	if(parent != NULL){
-		int len = strlen(caption);
-		theCaption->append(" - ", 0, false);
+		theCaption->append(" - ");
 		theCaption->append(*getName());
 	}
 
 	//list counter
 	int i=1;
-	int buffwidth = numDigits( 1 + subtrees.size() + passwords.size()) + 3;
+	int buffwidth = numDigits( 1 + subtrees.size() + passwords.size()) + 2;
 	int UP_ONE_LEVEL=-1, GO_TO_MAIN=-1;
 
 	//add first row
 	if(parent){
-		char* buff = new char[buffwidth+strlen(MENUSTRING_GO_UP_TREE)];
-		sprintf(buff, "%i. %s", i, MENUSTRING_GO_UP_TREE);
-		list.push_back(UiElement(buff, A_BOLD, 2+numDigits(i), true)); //delete when done
+		int len = buffwidth+strlen(MENUSTRING_GO_UP_TREE) + 1;
+		char* buff = new char[len];
+		sprintf_s(buff, len, "%i. %s", i, MENUSTRING_GO_UP_TREE);
+		list.push_back(UiElement(buff, true, A_BOLD, 2+numDigits(i))); //delete when done
 		UP_ONE_LEVEL = i++;
 	} else {
-		char* buff = new char[buffwidth+strlen(MENUSTRING_GO_TO_MAIN)];
-		sprintf(buff, "%i. %s", i, MENUSTRING_GO_TO_MAIN);
-		list.push_back(UiElement(buff, A_BOLD, 2+numDigits(i), true)); //delete when done
+		int len = buffwidth+strlen(MENUSTRING_GO_TO_MAIN) + 1;
+		char* buff = new char[len];
+		sprintf_s(buff, len, "%i. %s", i, MENUSTRING_GO_TO_MAIN);
+		list.push_back(UiElement(buff, true, A_BOLD, 2+numDigits(i))); //delete when done
 		GO_TO_MAIN = i++;
 	}
 
@@ -161,11 +169,12 @@ Pwd* PwdTree::getPasswordOnScreen(char* caption){
 		//add all sub categories to the list
 		pwtreelist::iterator it = subtrees.begin();
 		for(; it != subtrees.end(); it++, i++){
-			char* buff = new char[buffwidth];
-			sprintf(buff, "%i. ", i);
+			int len = buffwidth + 1;
+			char* buff = new char[len];
+			sprintf_s(buff, len, "%i. ", i);
 			SecureString* line = new SecureString(buff);
 			line->append(*(*it)->getName());
-			list.push_back(UiElement(line, A_BOLD | A_UNDERLINE, 2+numDigits(i), true)); //delete it when done
+			list.push_back(UiElement(line, true, A_BOLD | A_UNDERLINE, 2+numDigits(i))); //delete it when done
 		}
 	}
 
@@ -173,16 +182,17 @@ Pwd* PwdTree::getPasswordOnScreen(char* caption){
 		//add all passwords to the list
 		pwlist::iterator it = passwords.begin();
 		for(; it != passwords.end(); it++, i++){
-			char* buff = new char[buffwidth];
-			sprintf(buff, "%i. ", i);
+			int len = buffwidth + 1;
+			char* buff = new char[len];
+			sprintf_s(buff, len, "%i. ", i);
 			SecureString* line = new SecureString(buff);
 			line->append(*(*it)->getDescription());
-			list.push_back(UiElement(line, A_BOLD, 2+numDigits(i), true));
+			list.push_back(UiElement(line, true, A_BOLD, 2+numDigits(i)));
 		}
 	}
 
 	//display the list
-	unsigned int choice = Ui::getInstance()->PromtList(list, UiElement(theCaption));
+	int choice = Ui::getInstance()->PromtList(list, UiElement(theCaption, true));
 
 	//validate the choice
 	if(choice > 0 && choice <= i){
@@ -193,9 +203,9 @@ Pwd* PwdTree::getPasswordOnScreen(char* caption){
 			return NULL;
 		} 
 		choice -= (i - passwords.size() - subtrees.size() );
-		if(choice < subtrees.size()){
+		if((unsigned int)choice < subtrees.size()){
 			pwtreelist::iterator ch = subtrees.begin();
-			for(unsigned int i=0; i < choice; i++){
+			for(int i=0; i < choice; i++){
 				ch++;
 			}
 			return (*ch)->getPasswordOnScreen(caption);
@@ -244,11 +254,11 @@ bool PwdTree::removeSubTree(PwdTree* tree){
 	return false;
 }
 
-bool compareStrings(char* firstBuff, char* secondBuff){
+bool compareStrings(const char* firstBuff, const char* secondBuff){
 	int firstLength = strlen(firstBuff);
 	int secondLength = strlen(secondBuff);
 
-	unsigned int i=0;
+	int i=0;
 	while ( i < firstLength && i < secondLength )
 	{
 		if (tolower(firstBuff[i])<tolower(secondBuff[i])) 
@@ -264,8 +274,8 @@ bool compareStrings(char* firstBuff, char* secondBuff){
 }
 
 bool compareSubtrees(PwdTree* first, PwdTree* second){
-	char* firstBuff = first->getName()->getUnsecureString();
-	char* secondBuff = second->getName()->getUnsecureString();
+	const char* firstBuff = first->getName()->getUnsecureString();
+	const char* secondBuff = second->getName()->getUnsecureString();
 
 	bool returnValue = compareStrings(firstBuff, secondBuff);
 
@@ -276,8 +286,8 @@ bool compareSubtrees(PwdTree* first, PwdTree* second){
 }
 
 bool comparePasswords(Pwd* first, Pwd* second){
-	char* firstBuff = first->getDescription()->getUnsecureString();
-	char* secondBuff = second->getDescription()->getUnsecureString();
+	const char* firstBuff = first->getDescription()->getUnsecureString();
+	const char* secondBuff = second->getDescription()->getUnsecureString();
 
 	bool returnValue = compareStrings(firstBuff, secondBuff);
 
@@ -300,10 +310,10 @@ void PwdTree::writeTreeSecureString(SecureString* string){
 
 	if(parent){
 		//START SUBTREE
-		string->append(TREESTART NEWLINE, 0, false);
+		string->append(TREESTART NEWLINE);
 		//Write tree name
 		string->append( *getName());
-		string->append(NEWLINE, 0, false);
+		string->append(NEWLINE);
 		getName()->UnsecuredStringFinished();
 	}
 
@@ -315,24 +325,24 @@ void PwdTree::writeTreeSecureString(SecureString* string){
 	//write all passwords
 	for(pwlist::iterator it = passwords.begin(); it != passwords.end(); it++){
 		//START
-		string->append(PASSWORDSTART NEWLINE, 0, false);
+		string->append(PASSWORDSTART NEWLINE);
 		//write description
 		string->append( *((*it)->getDescription()));
-		string->append(NEWLINE, 0, false);
+		string->append(NEWLINE);
 		//write password
 		string->append( *((*it)->getPassword()));
-		string->append(NEWLINE, 0, false);
+		string->append(NEWLINE);
 		//write username (if it exists)
 		if((*it)->getUsername()){
 			string->append( *((*it)->getUsername()));
-			string->append(NEWLINE, 0, false);
+			string->append(NEWLINE);
 		}
 		//END
-		string->append(PASSWORDEND NEWLINE, 0, false);
+		string->append(PASSWORDEND NEWLINE);
 	}
 	
 	if(parent){
 		//END SUBTREE
-		string->append(TREEEND NEWLINE, 0, false);
+		string->append(TREEEND NEWLINE);
 	}
 }

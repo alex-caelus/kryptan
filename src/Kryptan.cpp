@@ -74,6 +74,8 @@ void Kryptan::mainloop(){
                 showHelp();
                 break;
             }
+                    default:
+                        break;
 		}
 	}while( (choice = ui->mainMenu()) != MENU_QUIT );
 }
@@ -116,7 +118,7 @@ void Kryptan::removePwd(){
 	if(pass){
 		UiElementList list;
 		list.push_back(UiElement(REMOVE_PWD, A_NORMAL));
-		list.push_back(UiElement(pass->getDescription()));
+		list.push_back(UiElement(pass->getDescription(), false));
 		list.push_back(UiElement(CONFIRM_QUESTION, A_NORMAL));
 
 		if( ui->PromtBool(list, UiElement(CAPTION_REMOVE_PWD)) &&
@@ -133,7 +135,7 @@ void Kryptan::removeTree(){
 		if(tree->empty()){
 			UiElementList list;
 			list.push_back(UiElement(REMOVE_TREE_CONFIRM_1));
-			list.push_back(UiElement(tree->getName()));
+			list.push_back(UiElement(tree->getName(), false));
 			list.push_back(UiElement(CONFIRM_QUESTION));
 
 			if( ui->PromtBool(list, UiElement(CAPTION_REMOVE_TREE)) &&
@@ -171,7 +173,7 @@ void Kryptan::generatePwd(){
 	SecureString* newPassword = new SecureString(newPwdChar); //securely deletes the 'newPwdChar' array
 	UiElementList text;
 	text.push_back(UiElement(GEN_PWD_RESULT));
-	text.push_back(UiElement(newPassword));
+	text.push_back(UiElement(newPassword, false));
 	text.push_back(UiElement(GEN_PWD_SAVE_Y_N));
 	if(ui->PromtBool(text, UiElement(CAPTION_GENERATE_PWD))){
 		PwdTree* tree = file->getRootPwdTree()->getTreeOnScreen(CAPTION_ADD_PWD, true, ADD_NEW_PASSWORD_HERE);
@@ -192,7 +194,7 @@ void Kryptan::changeMaster(){
 }
 
 void Kryptan::showHelp(){
-    char* helptext[] = HELPTEXT;
+    const char* helptext[] = HELPTEXT;
 	UiElementList text;
 
 	int i=0;

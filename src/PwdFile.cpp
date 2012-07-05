@@ -11,8 +11,8 @@
 #endif
 
 
-PwdFile::PwdFile(char* fname){
-	masterkey = new SecureString("", 0, false);
+PwdFile::PwdFile(const char* fname){
+	masterkey = new SecureString((char*)"", 0, false);
 	Root = new PwdTree(NULL);
 
 	this->filename = fname;
@@ -77,7 +77,7 @@ void PwdFile::save(){
 
 	SecureString* contents = new SecureString();
 
-	contents->append(PASSWORD_FILE_VERSION_NUMBER NEWLINE, 0, false);
+	contents->append((char*)PASSWORD_FILE_VERSION_NUMBER NEWLINE, 0, false);
 
 	//Get all information as string
 	Root->writeTreeSecureString(contents);
@@ -112,7 +112,7 @@ SecureString* PwdFile::read(){
 
 	// get length of file:
 	is.seekg (0, std::ios::end);
-	length = is.tellg();
+	length = (int)is.tellg();
 	is.seekg (0, std::ios::beg);
 
 	// allocate memory:
@@ -144,11 +144,11 @@ void PwdFile::parse(SecureString* filecontent){
 		GET_USERNAME
 	} state = GET_VERSION;
 
-	char* currentLine;
+	const char* currentLine;
 
 	//Create a new root
 	Root = new PwdTree(NULL);
-	Root->setName(new SecureString(ROOT_TREE_NAME, 0, false));
+	Root->setName(new SecureString((char*)ROOT_TREE_NAME, 0, false));
 
 	PwdTree* currentTree = Root;
 	Pwd* currentPwd = NULL;
@@ -199,28 +199,28 @@ void PwdFile::parse(SecureString* filecontent){
 			case GET_TREENAME:
 				{
 					//Create a SecureString containing the name, but do not delete the line (yet), hence the 'false' argument
-					SecureString* name = new SecureString(currentLine, 0, false);
+					SecureString* name = new SecureString(currentLine);
 					currentTree->setName(name);
 					state = GET_NEXTENTRY;
 				}
 				break;
 			case GET_DESCRIPTION:
 				{
-					SecureString* desc = new SecureString(currentLine, 0, false);
+					SecureString* desc = new SecureString(currentLine);
 					currentPwd->setDescription(desc);
 					state = GET_PASSWORD;
 				}
 				break;
 			case GET_PASSWORD:
 				{
-					SecureString* pass = new SecureString(currentLine, 0, false);
+					SecureString* pass = new SecureString(currentLine);
 					currentPwd->setPassword(pass);
 					state = GET_USERNAME;
 				}
 				break;
 			case GET_USERNAME:
 				if(strcmp(currentLine, PASSWORDEND) != 0){
-					SecureString* user = new SecureString(currentLine, 0, false);
+					SecureString* user = new SecureString(currentLine);
 					currentPwd->setUsername(user);
 				}
 				state = GET_NEXTENTRY;
@@ -292,9 +292,9 @@ using namespace CryptoPP; // Cryptlib source uses a namespace
 
 char* PwdFile::Encrypt(SecureString* data, int& encryptedLength){
 #ifdef _DEBUG_NOENCRYPTION
-	char* oldBuff = data->getUnsecureString();
+	const char* oldBuff = data->getUnsecureString();
 	char* newBuff = new char[data->length()+1];
-	strcpy(newBuff, oldBuff);
+	strcpy_s(newBuff, data->length(), oldBuff);
 	data->UnsecuredStringFinished();
 	encryptedLength = data->length();
 	return newBuff;
@@ -322,6 +322,7 @@ char* PwdFile::Encrypt(SecureString* data, int& encryptedLength){
 SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft){
 #ifdef _DEBUG_NOENCRYPTION
 	//data must be deallocated by SecureString
+	nrOfTriesLeft--;
 	return new SecureString(data, length, true);
 #else
 	DefaultDecryptorWithMAC *p;
@@ -349,7 +350,7 @@ SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft){
 		mySleep(1000);
 		ui->Error(UiElement( ERROR_MASTER_KEY ));
 		if(nrOfTriesLeft){
-			masterkey->assign("",  0, false);
+			masterkey->assign("");
 			return Decrypt(data, length, nrOfTriesLeft);
 		} else {
 			throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);

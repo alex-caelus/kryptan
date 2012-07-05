@@ -1,74 +1,92 @@
 #include "UIElement.h"
 #include <string.h>
 
-
-UiElement::UiElement(char* data, chtype attrib, int attribOffset, bool deleteWhenDone){
-	secure = false;
-	dataUnsecure = data;
-	dataSecure = NULL;
-	attributes = attrib;
-	deleteData = deleteWhenDone;
-	attributeOffset = attribOffset;
+UiElement::UiElement(char* data, bool deleteWhenDone, chtype attrib, int attribOffset) {
+    dataSecure = NULL;
+    dataUnsecure = data;
+    dataConstant = NULL;
+    attributes = attrib;
+    deleteData = deleteWhenDone;
+    attributeOffset = attribOffset;
 }
 
-UiElement::UiElement(SecureString* data, chtype attrib, int attribOffset, bool deleteWhenDone){
-	secure = true;
-	dataUnsecure = NULL;
-	dataSecure = data;
-	attributes = attrib;
-	deleteData = deleteWhenDone;
-	attributeOffset = attribOffset;
+UiElement::UiElement(const char* data, chtype attrib, int attribOffset) {
+    dataSecure = NULL;
+    dataUnsecure = NULL;
+    dataConstant = data;
+    attributes = attrib;
+    deleteData = false;
+    attributeOffset = attribOffset;
 }
 
-UiElement::UiElement(const UiElement& obj){
-	this->attributes = obj.attributes;
-	this->attributeOffset = obj.attributeOffset;
-	if(obj.secure){
-		this->dataSecure = new SecureString(*obj.dataSecure);
-		this->dataUnsecure = NULL;
-		this->secure = true;
-	} else {
-		this->dataSecure = NULL;
-		this->dataUnsecure = new char[obj.getStringLength()+1];
-		strcpy(this->dataUnsecure, obj.dataUnsecure);
-		this->secure = false;
-	}
-	this->deleteData = true; //make sure to delete the copy of the data
+UiElement::UiElement(SecureString* data, bool deleteWhenDone, chtype attrib, int attribOffset) {
+    dataSecure = data;
+    dataUnsecure = NULL;
+    dataConstant = NULL;
+    attributes = attrib;
+    deleteData = deleteWhenDone;
+    attributeOffset = attribOffset;
 }
 
-UiElement::~UiElement(){
-	//do not delete data, since they come from exterior sources
-	if(deleteData){
-		delete dataSecure;
-		delete dataUnsecure;
-		dataSecure = NULL;
-		dataUnsecure = NULL;
-	}
+UiElement::UiElement(const UiElement& obj) {
+    this->attributes = obj.attributes;
+    this->attributeOffset = obj.attributeOffset;
+    if (obj.dataSecure) {
+        this->dataSecure = new SecureString(*obj.dataSecure);
+        this->dataUnsecure = NULL;
+    } else {
+		int length = obj.getStringLength() + 1;
+        this->dataSecure = NULL;
+        this->dataUnsecure = new char[length];
+        this->dataConstant = NULL;
+        if (obj.dataUnsecure) {
+			memcpy(this->dataUnsecure, obj.dataUnsecure, length);
+        } else if (obj.dataConstant) {
+            memcpy(this->dataUnsecure, obj.dataConstant, length);
+        }
+    }
+    this->deleteData = true; //make sure to delete the copy of the data
 }
 
-char* UiElement::getString(){
-	if(secure)
-		return dataSecure->getUnsecureString();
-	else
-		return dataUnsecure;
+UiElement::~UiElement() {
+    //do not delete data, since they come from exterior sources
+    if (deleteData) {
+        delete dataSecure;
+        delete dataUnsecure;
+        //delete dataConstant; //do NOT delete dataConstant
+        dataSecure = NULL;
+        dataUnsecure = NULL;
+        dataConstant = NULL;
+    }
 }
 
-void UiElement::stringDone(){
-	if(secure)
-		dataSecure->UnsecuredStringFinished();
+const char* UiElement::getString() {
+    if (dataSecure)
+        return dataSecure->getUnsecureString();
+    else if (dataUnsecure)
+        return dataUnsecure;
+    else 
+        return dataConstant;
 }
 
-int UiElement::getStringLength() const{
-	if(secure)
-		return dataSecure->length();
-	else
-		return strlen(dataUnsecure);
+void UiElement::stringDone() {
+    if (dataSecure)
+        dataSecure->UnsecuredStringFinished();
 }
 
-chtype UiElement::getAttributes(){
-	return attributes;
+unsigned int UiElement::getStringLength() const {
+    if (dataSecure)
+        return dataSecure->length();
+    else if(dataUnsecure)
+        return strlen(dataUnsecure);
+    else 
+        return strlen(dataConstant);
 }
 
-int UiElement::getAttributesOffset(){
-	return attributeOffset;
+chtype UiElement::getAttributes() {
+    return attributes;
+}
+
+int UiElement::getAttributesOffset() {
+    return attributeOffset;
 }

@@ -4,22 +4,22 @@
 #include <cstdlib>
 #include "UI.h"
 
-class BaseException : std::exception{
+class BaseException : public std::exception{
 	protected:
-		char* msg;
-		char* capt;
+		const char* msg;
+		const char* capt;
 	
 	public:
-		BaseException(char* caption, char* message){
+		BaseException(const char* caption, const char* message){
 			msg = message;
 			capt = caption;
 		}
 
-		char* getMessage(){
+		const char* getMessage(){
 			return msg;
 		}
 
-		char* getCaption(){
+		const char* getCaption(){
 			return capt;
 		}
 
@@ -30,37 +30,37 @@ class BaseException : std::exception{
 
 class UnresolvableException: public BaseException{
 	public:
-		UnresolvableException(char* msg) : BaseException(ERROR_CAPTION, msg){};
+		UnresolvableException(const char* msg) : BaseException(ERROR_CAPTION, msg){};
 };
 
 class FileException : public BaseException{
 	public:
-		FileException(char* caption, char* message):BaseException(caption, message) {}
+		FileException(const char* caption, const char* message):BaseException(caption, message) {}
 };
 
 class FileReadException : public FileException{
 	public:
-		FileReadException(char* caption, char* message):FileException(caption, message) {}
+		FileReadException(const char* caption, const char* message):FileException(caption, message) {}
 };
 
 class FileWriteException : public FileException{
 	public:
-		FileWriteException(char* caption, char* message):FileException(caption, message) {}
+		FileWriteException(const char* caption, const char* message):FileException(caption, message) {}
 };
 
 class FileParseException : public FileException{
 	public:
-		FileParseException(char* caption, char* message):FileException(caption, message) {}
+		FileParseException(const char* caption, const char* message):FileException(caption, message) {}
 };
 
 class FileEncryptException : public FileException{
 	public:
-		FileEncryptException(char* caption, char* message):FileException(caption, message) {}
+		FileEncryptException(const char* caption, const char* message):FileException(caption, message) {}
 };
 
 class FileDecryptException : public FileException{
 	public:
-		FileDecryptException(char* caption, char* message):FileException(caption, message) {}
+		FileDecryptException(const char* caption, const char* message):FileException(caption, message) {}
 };
 
 #endif

@@ -22,7 +22,8 @@ class SecureString
 public: 
 	typedef unsigned int	ssnr;
 	typedef char			ssbyte;
-	typedef ssbyte*			ssarr;
+	typedef char*			ssarr;
+        typedef const char* c_ssarr;
 
 public:
 
@@ -38,7 +39,7 @@ public:
 	* memory for storage (bytes).
 	* @param size - bytes of memory to be allocated
 	*/
-	SecureString(ssnr size);
+	//SecureString(ssnr size);
 
 	/**
 	* Constructor:
@@ -50,6 +51,17 @@ public:
 	* @param deleteStr - performs delete on str if true
 	*/
 	SecureString(ssarr str, ssnr maxlen = 0, bool deleteStr = true);
+        
+
+	/**
+	* Constructor:
+	* Creates a SecureString initialized with str as its contents.
+	* OBS! This constructor does not perform delete on its str argument
+        * due to it being 'const'
+	* @param str - The string
+	* @param maxlen - The strings max length, 0 means auto
+	*/
+	SecureString(c_ssarr str, ssnr maxlen = 0);
 
 	/** Copy-constructor **/
 	SecureString(const SecureString&);
@@ -59,13 +71,22 @@ public:
 
 	/**
 	* This assigns a string to this string (replaces the content).
-	* OBS! This constructor performs delete on the str argument if
+	* OBS! This method performs delete on the str argument if
 	* deleteStr is true.
 	* @param str - The string
 	* @param maxlen - The strings max length, 0 means auto
 	* @param deleteStr - performs delete on str if true
 	*/
 	void assign(ssarr str, ssnr maxlen = 0, bool deleteStr = true);
+
+	/**
+	* This assigns a string to this string (replaces the content).
+	* OBS! This method does not perform delete on its str argument
+        * due to it being 'const'
+	* @param str - The string
+	* @param maxlen - The strings max length, 0 means auto
+	*/
+	void assign(c_ssarr str, ssnr maxlen = 0);
 
 	/**
 	* This assigns a string to this string (replaces the content)
@@ -75,13 +96,22 @@ public:
 
 	/**
 	* This appends a string to this string.
-	* OBS! This constructor performs delete on the str argument if
+	* OBS! This method performs delete on the str argument if
 	* deleteStr is true.
 	* @param str - The string
 	* @param maxlen - The strings max length, 0 means auto
 	* @param deleteStr - performs delete on str if true
 	*/
 	void append(ssarr str, ssnr maxlen = 0, bool deleteStr = true);
+
+	/**
+	* This appends a string to this string.
+	* OBS! This method does not perform delete on its str argument
+        * due to it being 'const'
+	* @param str - The string
+	* @param maxlen - The strings max length, 0 means auto
+	*/
+	void append(c_ssarr str, ssnr maxlen = 0);
 
 	/**
 	* This appends a string to this string
@@ -99,7 +129,7 @@ public:
 	* This copy is UnMutable and should thus not be modified!
 	* @return pointer to an unsecured plaintext string, NULL on failure
 	*/
-	const ssarr getUnsecureString();
+	c_ssarr getUnsecureString();
 
 	/**
 	* This returns a pointer to a plaintext copy of the string.
@@ -126,7 +156,7 @@ public:
 	* This copy is UnMutable and should thus not be modified!
 	* @return pointer to an unsecured plaintext string, NULL on failure
 	*/
-	ssarr getUnsecureNextline();
+	c_ssarr getUnsecureNextline();
 
 	/**
 	* This performs a safe delete on the unsecured copy of this string. If
@@ -141,7 +171,7 @@ public:
 	* @return character at position pos, 0 on failure
 	*/
 	inline ssbyte at(ssnr pos) const{
-		if(pos >= 0 && pos < length())
+		if(pos < length())
 			return _key[pos] ^_data[pos];
 		else
 			return 0;

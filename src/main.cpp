@@ -14,7 +14,7 @@
 /**
  * Here is windows (without console window) :)
  **/
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	/* Parse command line parameters */
 	int c;
 	bool useAntiKeylogger = false;
@@ -31,7 +31,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     return 0;
 }
 
-#else
+#elif defined __linux__
 
 #include <string.h>
 
@@ -46,5 +46,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-
+#else
+#error Compilation on this platform is unsupported, please feel free to add your \
+own support!
 #endif

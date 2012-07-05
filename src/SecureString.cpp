@@ -9,14 +9,19 @@ SecureString::SecureString(void){
 	init();
 }
 
-SecureString::SecureString(ssnr size){
-	init();
-	allocate(size);
-}
+//SecureString::SecureString(ssnr size){
+//	init();
+//	allocate(size);
+//}
 
 SecureString::SecureString(ssarr str, ssnr maxlen, bool deleteStr){
 	init();
 	assign(str, maxlen, deleteStr);
+}
+
+SecureString::SecureString(c_ssarr str, ssnr maxlen){
+	init();
+	assign(str, maxlen);
 }
 
 SecureString::SecureString(const SecureString& src){
@@ -121,6 +126,10 @@ void SecureString::append(ssarr str, ssnr maxlen, bool deleteStr){
 	resetLinefeedPosition();
 }
 
+void SecureString::append(c_ssarr str, ssnr maxlen){
+    append((ssarr)str, maxlen, false);
+}
+
 void SecureString::append(const SecureString& str){
 	ssnr len = str.length();
 	ssnr oldlen = this->length();
@@ -160,6 +169,10 @@ void SecureString::assign(ssarr str, ssnr maxlen, bool deleteStr){
 	}
 }
 
+void SecureString::assign(c_ssarr str, ssnr maxlen){
+    assign((ssarr)str, maxlen, false);
+}
+
 void SecureString::assign(const SecureString& str){
 	//remove old data
 	if(length() > 0){
@@ -177,7 +190,7 @@ void SecureString::assign(const SecureString& str){
 	_length =  ((ssnr)*_key) ^ len;
 }
 
-const SecureString::ssarr SecureString::getUnsecureString(){
+SecureString::c_ssarr SecureString::getUnsecureString(){
 	//there can only be one unsecure plaintext copy at a time
 	if(_plaintextcopy != NULL)
 		return NULL;
@@ -185,8 +198,6 @@ const SecureString::ssarr SecureString::getUnsecureString(){
 	_plaintextcopy = new ssbyte[size+1];
 	_plaintextcopy[size] = '\0';
 	for(ssnr i=0; i < size; i++){
-		char c = at(i);
-		char cc = _key[i] ^ _data[i];
 		_plaintextcopy[i] = _key[i] ^ _data[i];
 	}
 	_mutableplaintextcopy = false;
@@ -194,12 +205,12 @@ const SecureString::ssarr SecureString::getUnsecureString(){
 }
 
 SecureString::ssarr SecureString::getUnsecureStringM(){
-	ssarr ret = getUnsecureString();
+	ssarr ret = (ssarr)getUnsecureString();
 	_mutableplaintextcopy = true;
 	return ret;
 }
 
-SecureString::ssarr SecureString::getUnsecureNextline(){
+SecureString::c_ssarr SecureString::getUnsecureNextline(){
 	//there can only be one unsecure plaintext copy at a time
 	if(_plaintextcopy != NULL)
 		return NULL;
@@ -246,10 +257,7 @@ void SecureString::UnsecuredStringFinished(){
 	if(_mutableplaintextcopy){
 		assign(_plaintextcopy);
 	} else {
-		int length = strlen(_plaintextcopy);
-		int l = this->length();
-		char* buff = getUnsecureString();
-		memset(_plaintextcopy, 0, length);
+		memset(_plaintextcopy, 0, this->length());
 		delete[] _plaintextcopy;
 	}
 	_plaintextcopy = NULL;

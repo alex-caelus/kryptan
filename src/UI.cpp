@@ -19,7 +19,7 @@ Ui::Ui() {
     atexit(Ui::removeInstance);
 }
 
-Ui::Ui(const Ui& orig) {
+Ui::Ui(const Ui&) {
 }
 
 Ui::~Ui() {
@@ -122,7 +122,7 @@ void Ui::showDialog(UiElementList message, UiElement caption, bool centered, boo
             col = colMin + (WPADDING + 1);
 
 		//do the actual printing with correct text attributes set
-		char* string = message[i].getString();
+		const char* string = message[i].getString();
 		int offset = message[i].getAttributesOffset();
 		mvprintw(row, col, "%.*s", offset, string);
 		attrset(message[i].getAttributes());
@@ -221,7 +221,7 @@ int Ui::PromtList(UiElementList message, UiElement caption) {
         /* Start dialog */
         showDialog(message, caption, false, false, false, 4);
         /* Get choice */
-        scanw("%d", &choice);
+        scanw((char*)"%d", &choice);
     }
     return choice;
 }
@@ -285,7 +285,7 @@ SecureString* Ui::PromtPwdAntiKeylogger(UiElementList message, UiElement caption
         //mvprintw(10, 10, "%s", pwd.c_str()); //used for debugging only!
         showDialog(message, caption, false, false, false, 30, false);
         refresh();
-        c = getch();
+        c = (char)getch();
         if (c == KEY_BACKSPACE || c == 127) {
 			if (pwd->length() != 0){
 				pwd->getUnsecureStringM()[pwd->length()-1] = '\0';
@@ -316,7 +316,7 @@ int Ui::PromtInt(UiElementList message, UiElement caption, int min, int max) {
     message.push_back("");
     showDialog(message, caption, true, false, false);
     int ans;
-    int length = scanw("%d", &ans);
+    int length = scanw((char*)"%d", &ans);
     if (length <= 0 || ans < min || ans > max)
         return PromtInt(message, caption, min, max);
     return ans;
@@ -333,7 +333,7 @@ bool Ui::PromtBool(UiElementList message, UiElement caption, char True, char Fal
     showDialog(message, caption, true, false, true);
     /* get answer */
     char ans;
-    scanw("%c", &ans);
+    scanw((char*)"%c", &ans);
     /* validate */
     if (ans == True)
         return true;
