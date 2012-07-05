@@ -7,7 +7,7 @@
 #include <string.h>
 
 #ifdef _DEBUG
-#define _DEBUG_NOENCRYPTION
+//#define _DEBUG_NOENCRYPTION
 #endif
 
 
@@ -282,7 +282,7 @@ void PwdFile::changeMasterKey(){
     }
 #endif
 
-#include <cryptopp/default.h>
+#include "cryptography.h"
 #include <cryptopp/hex.h>
 #include <stdlib.h>
 
@@ -290,76 +290,122 @@ using namespace CryptoPP; // Cryptlib source uses a namespace
 
 #endif
 
-char* PwdFile::Encrypt(SecureString* data, int& encryptedLength){
+char* PwdFile::Encrypt(SecureString* data, int& encryptedLength) {
 #ifdef _DEBUG_NOENCRYPTION
-	const char* oldBuff = data->getUnsecureString();
-	char* newBuff = new char[data->length()+1];
-	strcpy_s(newBuff, data->length(), oldBuff);
-	data->UnsecuredStringFinished();
-	encryptedLength = data->length();
-	return newBuff;
+    char* oldBuff = data->getUnsecureString();
+    char* newBuff = new char[data->length() + 1];
+    strcpy(newBuff, oldBuff);
+    data->UnsecuredStringFinished();
+    encryptedLength = data->length();
+    return newBuff;
 #else
-	try{
-		DefaultEncryptorWithMAC encryptor(masterkey->getUnsecureString(), new HexEncoder());
-		encryptor.Put((byte*) data->getUnsecureString(), data->length());
-		encryptor.MessageEnd();
+    try {
+        ModifiedEncryptorWithMAC encryptor(masterkey->getUnsecureString(), new HexEncoder());
+        encryptor.Put((byte*) data->getUnsecureString(), data->length());
+        encryptor.MessageEnd();
 
-		encryptedLength = (int) encryptor.MaxRetrievable();
-		char* newBuff = new char[encryptedLength+1];
-		encryptor.Get((byte*) newBuff, encryptedLength);
-		newBuff[encryptedLength] = 0;
-		masterkey->UnsecuredStringFinished();
-		data->UnsecuredStringFinished();
-		return newBuff;
-	} catch (Exception const& e) {
-		throw FileEncryptException( ERROR_ENCRYPTION_CAPTION, (char*)e.GetWhat().c_str());
+        encryptedLength = (int) encryptor.MaxRetrievable();
+        char* newBuff = new char[encryptedLength + 1];
+        encryptor.Get((byte*) newBuff, encryptedLength);
+        newBuff[encryptedLength] = 0;
+        masterkey->UnsecuredStringFinished();
+        data->UnsecuredStringFinished();
+        return newBuff;
+    } catch (Exception const& e) {
+        throw FileEncryptException(ERROR_ENCRYPTION_CAPTION, (char*) e.GetWhat().c_str());
         return NULL;
     }
 #endif
 }
 
-
-SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft){
+SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft) {
 #ifdef _DEBUG_NOENCRYPTION
-	//data must be deallocated by SecureString
-	nrOfTriesLeft--;
-	return new SecureString(data, length, true);
+    //data must be deallocated by SecureString
+    return new SecureString(data, length, true);
 #else
-	DefaultDecryptorWithMAC *p;
-	Ui* ui = Ui::getInstance();
-	nrOfTriesLeft--;
+    ModifiedDecryptorWithMAC *p;
+    Ui* ui = Ui::getInstance();
 
-	if(masterkey->length() == 0){
-		masterkey = ui->PromtPwd(UiElement(PROMT_PWD), UiElement(CAPTION_DECRYPT));
-	}
-	
-	try{
-		HexDecoder decryptor(p = new DefaultDecryptorWithMAC(masterkey->getUnsecureString()));
-		decryptor.Put((byte*) data, length);
-		decryptor.MessageEnd();
+    if (masterkey->length() == 0) {
+        masterkey = ui->PromtPwd(UiElement(PROMT_PWD), UiElement(CAPTION_DECRYPT));
+    }
 
-		int outputLength = decryptor.MaxRetrievable();
-		char* unsafeDecrypt = new char[outputLength + 1];
-		decryptor.Get((byte*) unsafeDecrypt, outputLength);
-		unsafeDecrypt[outputLength] = 0;
+    try {
+        HexDecoder decryptor(p = new ModifiedDecryptorWithMAC(masterkey->getUnsecureString()));
+        decryptor.Put((byte*) data, length);
+        decryptor.MessageEnd();
 
-		masterkey->UnsecuredStringFinished();
+        int outputLength = decryptor.MaxRetrievable();
+        char* unsafeDecrypt = new char[outputLength + 1];
+        decryptor.Get((byte*) unsafeDecrypt, outputLength);
+        unsafeDecrypt[outputLength] = 0;
 
-		return new SecureString(unsafeDecrypt);
-	} catch (DefaultDecryptor::KeyBadErr const& e) {
-		mySleep(1000);
-		ui->Error(UiElement( ERROR_MASTER_KEY ));
-		if(nrOfTriesLeft){
-			masterkey->assign("");
-			return Decrypt(data, length, nrOfTriesLeft);
-		} else {
-			throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);
-		}
+        masterkey->UnsecuredStringFinished();
+
+        return new SecureString(unsafeDecrypt); //This deletes 'unsafeDecrypt' safely
+    } 
+    catch (ModifiedDecryptor::KeyBadErr const& e) 
+    {
+		masterkey->UnsecuredStringFinished(); //We need to use this again
+        return OldDecrypt(data, length, nrOfTriesLeft); //We will also try the old decryption
+    } 
+    catch (ModifiedDecryptorWithMAC::MACBadErr const& e) 
+    {
+		masterkey->UnsecuredStringFinished(); //Secure the master key
+        throw FileDecryptException(ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION);
+        return false;
+    } 
+    catch (Exception const& e) 
+    {
+		masterkey->UnsecuredStringFinished(); //Secure the master key
+        throw FileDecryptException(ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str());
+        return false;
+    }
+#endif
+}
+
+#include <cryptopp/default.h>
+
+SecureString* PwdFile::OldDecrypt(char* data, int length, int nrOfTriesLeft) {
+#ifdef _DEBUG_NOENCRYPTION
+    //data must be deallocated by SecureString
+    return new SecureString(data, length, true);
+#else
+    DefaultDecryptorWithMAC *p;
+    Ui* ui = Ui::getInstance();
+    nrOfTriesLeft--;
+
+    if (masterkey->length() == 0) {
+        masterkey = ui->PromtPwd(UiElement(PROMT_PWD), UiElement(CAPTION_DECRYPT));
+    }
+
+    try {
+        HexDecoder decryptor(p = new DefaultDecryptorWithMAC(masterkey->getUnsecureString()));
+        decryptor.Put((byte*) data, length);
+        decryptor.MessageEnd();
+
+        int outputLength = decryptor.MaxRetrievable();
+        char* unsafeDecrypt = new char[outputLength + 1];
+        decryptor.Get((byte*) unsafeDecrypt, outputLength);
+        unsafeDecrypt[outputLength] = 0;
+
+        masterkey->UnsecuredStringFinished();
+
+        return new SecureString(unsafeDecrypt);
+    } catch (DefaultDecryptor::KeyBadErr const& e) {
+        mySleep(1000);
+        ui->Error(UiElement(ERROR_MASTER_KEY));
+        if (nrOfTriesLeft) {
+            masterkey->assign("", 0, false);
+            return Decrypt(data, length, nrOfTriesLeft);
+        } else {
+            throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);
+        }
     } catch (DefaultDecryptorWithMAC::MACBadErr const& e) {
-		throw FileDecryptException( ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION );
+        throw FileDecryptException(ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION);
         return false;
     } catch (Exception const& e) {
-		throw FileDecryptException( ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str() );
+        throw FileDecryptException(ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str());
         return false;
     }
 #endif

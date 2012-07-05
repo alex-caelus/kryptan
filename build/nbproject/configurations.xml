@@ -13,6 +13,7 @@
       <itemPath>../src/SecureString.h</itemPath>
       <itemPath>../src/UI.h</itemPath>
       <itemPath>../src/UIElement.h</itemPath>
+      <itemPath>../src/cryptography.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -28,6 +29,7 @@
       <itemPath>../src/SecureString.cpp</itemPath>
       <itemPath>../src/UI.cpp</itemPath>
       <itemPath>../src/UiElement.cpp</itemPath>
+      <itemPath>../src/cryptography.cpp</itemPath>
       <itemPath>../src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -78,6 +80,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan</output>
           <linkerLibItems>
             <linkerOptionItem>-lcryptopp</linkerOptionItem>
             <linkerOptionItem>-lncurses</linkerOptionItem>
@@ -85,6 +88,18 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <packaging>
+        <packType>Tar</packType>
+        <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/kryptan.tar</output>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
     </conf>
   </confs>
 </configurationDescriptor>
