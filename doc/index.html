@@ -23,7 +23,7 @@
                 <p>A secure password storage application, for both Windows and Linux. It uses a text-based interface and works great on linux over SSH, as well as a standalone Windows application.</p>
                 <p>List of features:</p>
                 <ul>
-                    <li>All passwords are stored using industrial grade encryption. (3DES)</li>
+                    <li>All passwords are stored using industrial grade encryption. (256-bit AES)</li>
                     <li>Retrieval of passwords needs a decryption key. (MASTER-KEY)</li>
                     <li>Local standalone application. (No internet access is neccesary)</li>
                     <li>Multi platform. Works on both Windows and Linux.</li>
@@ -87,13 +87,20 @@
                 
             <h1 id="changelog"> Change Log </h1>
                 <dl>
+                    <dt>2012-07-05 - VERSION 2.1</dt>
+                    <dd> 
+                        <ul>
+                            <li>Updated: Stronger encryption! The new version replaces the old 3DES (DES-EDE2) with the much more secure AES 256-bit encryptionmethod!</li>
+							<li>Fixed: "Generate password" now outputs a key with correct keylength!</li>
+							<li>Fixed: Compiler warning messages are now handled properly!</li>
+                        </ul>
+                    </dd>
                     <dt>2012-06-04 - VERSION 2.0</dt>
                     <dd> 
                         <ul>
                             <li>Major update! Completely rewritten code base!</li>
                             <li>Added capability to organize passwords into categories (or folders).</li>
 							<li>Updated passwordfile structure, that is incompatible with the old. Please move your passwords manualy to the new version.</li>
-							<li></li>
                         </ul>
                     </dd>
                     <dt>2012-05-09 - VERSION 1.1.1</dt>
