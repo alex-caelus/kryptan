@@ -257,7 +257,7 @@ void SecureString::UnsecuredStringFinished(){
 	if(_mutableplaintextcopy){
 		assign(_plaintextcopy);
 	} else {
-		memset(_plaintextcopy, 0, this->length());
+		memset(_plaintextcopy, 0, strlen(_plaintextcopy));
 		delete[] _plaintextcopy;
 	}
 	_plaintextcopy = NULL;
