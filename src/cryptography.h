@@ -73,7 +73,7 @@ public:
 	ModifiedEncryptorWithMAC(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL);
 
 protected:
-	void FirstPut(const byte *inString) {}
+	void FirstPut(const byte *) {}
 	void LastPut(const byte *inString, size_t length);
 
 private:
@@ -93,7 +93,7 @@ public:
 	bool CheckLastMAC() const;
 
 protected:
-	void FirstPut(const byte *inString) {}
+	void FirstPut(const byte *) {}
 	void LastPut(const byte *inString, size_t length);
 
 private:

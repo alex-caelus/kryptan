@@ -72,47 +72,47 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/1360937237/cryptography.o: ../src/cryptography.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/cryptography.o ../src/cryptography.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/cryptography.o ../src/cryptography.cpp
 
 ${OBJECTDIR}/_ext/1360937237/Kryptan.o: ../src/Kryptan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Kryptan.o ../src/Kryptan.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Kryptan.o ../src/Kryptan.cpp
 
 ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.cpp
 
 ${OBJECTDIR}/_ext/1360937237/PwdFile.o: ../src/PwdFile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdFile.o ../src/PwdFile.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdFile.o ../src/PwdFile.cpp
 
 ${OBJECTDIR}/_ext/1360937237/Pwd.o: ../src/Pwd.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Pwd.o ../src/Pwd.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Pwd.o ../src/Pwd.cpp
 
 ${OBJECTDIR}/_ext/1360937237/UI.o: ../src/UI.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UI.o ../src/UI.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UI.o ../src/UI.cpp
 
 ${OBJECTDIR}/_ext/1360937237/UiElement.o: ../src/UiElement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UiElement.o ../src/UiElement.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UiElement.o ../src/UiElement.cpp
 
 ${OBJECTDIR}/_ext/1360937237/PwdTree.o: ../src/PwdTree.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdTree.o ../src/PwdTree.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdTree.o ../src/PwdTree.cpp
 
 ${OBJECTDIR}/_ext/1360937237/SecureString.o: ../src/SecureString.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/SecureString.o ../src/SecureString.cpp
+	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/SecureString.o ../src/SecureString.cpp
 
 # Subprojects
 .build-subprojects:

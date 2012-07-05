@@ -63,56 +63,56 @@ LDLIBSOPTIONS=-lcryptopp -lncurses -lpthread
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/_ext/1360937237/cryptography.o: ../src/cryptography.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/cryptography.o ../src/cryptography.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/cryptography.o ../src/cryptography.cpp
 
 ${OBJECTDIR}/_ext/1360937237/Kryptan.o: ../src/Kryptan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Kryptan.o ../src/Kryptan.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Kryptan.o ../src/Kryptan.cpp
 
 ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.cpp
 
 ${OBJECTDIR}/_ext/1360937237/PwdFile.o: ../src/PwdFile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdFile.o ../src/PwdFile.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdFile.o ../src/PwdFile.cpp
 
 ${OBJECTDIR}/_ext/1360937237/Pwd.o: ../src/Pwd.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Pwd.o ../src/Pwd.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/Pwd.o ../src/Pwd.cpp
 
 ${OBJECTDIR}/_ext/1360937237/UI.o: ../src/UI.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UI.o ../src/UI.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UI.o ../src/UI.cpp
 
 ${OBJECTDIR}/_ext/1360937237/UiElement.o: ../src/UiElement.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UiElement.o ../src/UiElement.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/UiElement.o ../src/UiElement.cpp
 
 ${OBJECTDIR}/_ext/1360937237/PwdTree.o: ../src/PwdTree.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdTree.o ../src/PwdTree.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/PwdTree.o ../src/PwdTree.cpp
 
 ${OBJECTDIR}/_ext/1360937237/SecureString.o: ../src/SecureString.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/SecureString.o ../src/SecureString.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/SecureString.o ../src/SecureString.cpp
 
 # Subprojects
 .build-subprojects:
@@ -120,7 +120,7 @@ ${OBJECTDIR}/_ext/1360937237/SecureString.o: ../src/SecureString.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/build
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan
 
 # Subprojects
 .clean-subprojects:

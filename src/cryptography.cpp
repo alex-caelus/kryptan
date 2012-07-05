@@ -85,8 +85,8 @@ ModifiedEncryptor::ModifiedEncryptor(const byte *passphrase, size_t passphraseLe
 void ModifiedEncryptor::FirstPut(const byte *)
 {
 	// VC60 workaround: __LINE__ expansion bug
-	CRYPTOPP_COMPILE_ASSERT_INSTANCE(SALTLENGTH <= ModifiedHashModule::DIGESTSIZE, 1);
-	CRYPTOPP_COMPILE_ASSERT_INSTANCE(BLOCKSIZE <= ModifiedHashModule::DIGESTSIZE, 2);
+	CRYPTOPP_COMPILE_ASSERT_INSTANCE(SALTLENGTH <= (unsigned int)ModifiedHashModule::DIGESTSIZE, 1);
+	CRYPTOPP_COMPILE_ASSERT_INSTANCE(BLOCKSIZE <= (unsigned int)ModifiedHashModule::DIGESTSIZE, 2);
 
 	SecByteBlock salt(ModifiedHashModule::DIGESTSIZE), keyCheck(ModifiedHashModule::DIGESTSIZE);
 	ModifiedHashModule hash;
@@ -117,7 +117,7 @@ void ModifiedEncryptor::FirstPut(const byte *)
 	m_filter->Put(keyCheck, BLOCKSIZE);
 }
 
-void ModifiedEncryptor::LastPut(const byte *inString, size_t length)
+void ModifiedEncryptor::LastPut(const byte *, size_t)
 {
 	m_filter->MessageEnd();
 }
@@ -145,7 +145,7 @@ void ModifiedDecryptor::FirstPut(const byte *inString)
 	CheckKey(inString, inString+SALTLENGTH);
 }
 
-void ModifiedDecryptor::LastPut(const byte *inString, size_t length)
+void ModifiedDecryptor::LastPut(const byte *, size_t )
 {
 	if (m_filter.get() == NULL)
 	{
@@ -217,7 +217,7 @@ ModifiedEncryptorWithMAC::ModifiedEncryptorWithMAC(const byte *passphrase, size_
 	SetFilter(new HashFilter(*m_mac, new ModifiedEncryptor(passphrase, passphraseLength), true));
 }
 
-void ModifiedEncryptorWithMAC::LastPut(const byte *inString, size_t length)
+void ModifiedEncryptorWithMAC::LastPut(const byte *, size_t)
 {
 	m_filter->MessageEnd();
 }
@@ -250,7 +250,7 @@ bool ModifiedDecryptorWithMAC::CheckLastMAC() const
 	return m_hashVerifier->GetLastResult();
 }
 
-void ModifiedDecryptorWithMAC::LastPut(const byte *inString, size_t length)
+void ModifiedDecryptorWithMAC::LastPut(const byte *, size_t)
 {
 	m_filter->MessageEnd();
 	if (m_throwException && !CheckLastMAC())
