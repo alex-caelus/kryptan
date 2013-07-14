@@ -3,6 +3,14 @@
 
 #include <cstdlib>
 #include "UI.h"
+#include <string>
+
+using std::string;
+
+class CanThrowUnresolvableExceptions{
+public:
+	virtual string getClassName() = 0;
+};
 
 class BaseException : public std::exception{
 	protected:
@@ -29,8 +37,11 @@ class BaseException : public std::exception{
 };
 
 class UnresolvableException: public BaseException{
+	CanThrowUnresolvableExceptions* src;
 	public:
-		UnresolvableException(const char* msg) : BaseException(ERROR_CAPTION, msg){};
+		UnresolvableException(const char* msg, CanThrowUnresolvableExceptions* src) : BaseException(ERROR_CAPTION, msg){this->src = src;};
+		void setSrc(CanThrowUnresolvableExceptions* src){this->src = src;};
+		CanThrowUnresolvableExceptions* getSrc(){return src;}
 };
 
 class FileException : public BaseException{

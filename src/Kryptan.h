@@ -6,7 +6,7 @@
 #include "UI.h"
 
 
-class Kryptan{
+class Kryptan : public CanThrowUnresolvableExceptions{
 	private:
 	/* VARIBLES */
 		static Kryptan* instance;
@@ -36,6 +36,8 @@ class Kryptan{
 	/* METHODS */
 		static void run(bool useAntiKeylogging);
 		static void exit();
+
+		string getClassName(){return "Kryptan";};
 };
 
 

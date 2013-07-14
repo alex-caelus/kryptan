@@ -5,20 +5,28 @@
 Kryptan* Kryptan::instance = NULL;
 
 void Kryptan::run(bool useAntiKeylogging){
-	//first make sure we exit correctly
-	atexit(Kryptan::exit);
 	//then we run the show
+	if(instance){
+		throw UnresolvableException(ERROR_SINGELTON, instance);
+	}
 	try{
-		if(instance){
-			throw UnresolvableException(ERROR_SINGELTON);
-		}
+		//first make sure we exit correctly
+		atexit(Kryptan::exit);
 		//Set up and read password file
 		instance = new Kryptan(useAntiKeylogging);
-		//run program
+	}
+	catch(UnresolvableException &e){
+		e.displayOnScreen();
+		return;
+	}
+
+	try{
 		instance->mainloop();
 	}
 	catch(UnresolvableException &e){
 		e.displayOnScreen();
+		delete instance;
+		return;
 	}
 }
 

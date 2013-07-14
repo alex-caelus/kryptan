@@ -2,8 +2,9 @@
 #define PWDFILE_H
 
 #include "PwdTree.h"
+#include "Exceptions.h"
 
-class PwdFile{
+class PwdFile: public CanThrowUnresolvableExceptions{
 	/* VARIBLES */
 	private:
 	/* VARABLES */
@@ -31,6 +32,8 @@ class PwdFile{
 
 		//Needs to call save after use
 		void changeMasterKey();
+
+		std::string getClassName();
 };
 
 

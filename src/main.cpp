@@ -11,10 +11,21 @@
 
 #include <windows.h>
 
+#ifdef _DEBUG
+/** Memory leak detection, visual studio **/
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define new DEBUG_NEW
+#endif
 /**
  * Here is windows (without console window) :)
  **/
 int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	#ifdef _DEBUG
+	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif
 	/* Parse command line parameters */
 	int c;
 	bool useAntiKeylogger = false;

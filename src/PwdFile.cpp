@@ -35,21 +35,25 @@ PwdFile::PwdFile(const char* fname){
 					save();
 				} else {
 					//if not we give up
-					throw UnresolvableException(ERROR_NO_PWD_FILE);
+					throw UnresolvableException(ERROR_NO_PWD_FILE, this);
 				}
 			}
 			catch(FileWriteException& e){
 				//We could not create a file
 				e.displayOnScreen();
 				//Soo we give up!
-				throw UnresolvableException(ERROR_NO_PWD_FILE);
+				throw UnresolvableException(ERROR_NO_PWD_FILE, this);
 			}
 			//...and try again
+		}
+		catch(UnresolvableException &e){
+			//just rethrow exception
+			throw e;
 		}
 		catch(BaseException &e ){
 			//This catches all other exceptions
 			e.displayOnScreen();
-			throw UnresolvableException(ERROR_NO_PWD_FILE);
+			throw UnresolvableException(ERROR_NO_PWD_FILE, this);
 		}
 	}
 	//inform the user of our success :)
@@ -64,6 +68,10 @@ PwdFile::~PwdFile(){
 
 PwdTree* PwdFile::getRootPwdTree(){
 	return Root;
+}
+
+std::string PwdFile::getClassName() {
+	return "PwdFile";
 }
 
 void PwdFile::save(){
@@ -352,12 +360,14 @@ SecureString* PwdFile::Decrypt(char* data, int length, int nrOfTriesLeft) {
     catch (ModifiedDecryptorWithMAC::MACBadErr) 
     {
 		masterkey->UnsecuredStringFinished(); //Secure the master key
+        masterkey->assign((char*)"", 0, false);
         throw FileDecryptException(ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION);
         return NULL;
     } 
     catch (Exception const& e) 
     {
 		masterkey->UnsecuredStringFinished(); //Secure the master key
+        masterkey->assign((char*)"", 0, false);
         throw FileDecryptException(ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str());
         return NULL;
     }
@@ -393,18 +403,23 @@ SecureString* PwdFile::OldDecrypt(char* data, int length, int nrOfTriesLeft) {
 
         return new SecureString(unsafeDecrypt);
     } catch (DefaultDecryptor::KeyBadErr) {
+        masterkey->UnsecuredStringFinished();
         mySleep(1000);
         ui->Error(UiElement(ERROR_MASTER_KEY));
+        masterkey->assign((char*)"", 0, false);
         if (nrOfTriesLeft) {
-            masterkey->assign((char*)"", 0, false);
             return Decrypt(data, length, nrOfTriesLeft);
         } else {
-            throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);
+            throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS, this);
         }
     } catch (DefaultDecryptorWithMAC::MACBadErr) {
+        masterkey->UnsecuredStringFinished();
+        masterkey->assign((char*)"", 0, false);
         throw FileDecryptException(ERROR_DECRYPTION_CAPTION, ERROR_MAC_VALIDATION);
         return NULL;
     } catch (Exception const& e) {
+        masterkey->UnsecuredStringFinished();
+        masterkey->assign((char*)"", 0, false);
         throw FileDecryptException(ERROR_DECRYPTION_CAPTION, (char*) e.GetWhat().c_str());
         return NULL;
     }
