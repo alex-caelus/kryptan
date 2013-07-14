@@ -4,7 +4,7 @@
 #include "PwdTree.h"
 #include "Exceptions.h"
 
-class PwdFile: public CanThrowUnresolvableExceptions{
+class PwdFile{
 	/* VARIBLES */
 	private:
 	/* VARABLES */

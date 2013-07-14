@@ -6,7 +6,7 @@
 #include "UI.h"
 
 
-class Kryptan : public CanThrowUnresolvableExceptions{
+class Kryptan{
 	private:
 	/* VARIBLES */
 		static Kryptan* instance;

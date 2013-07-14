@@ -7,11 +7,6 @@
 
 using std::string;
 
-class CanThrowUnresolvableExceptions{
-public:
-	virtual string getClassName() = 0;
-};
-
 class BaseException : public std::exception{
 	protected:
 		const char* msg;
@@ -37,11 +32,8 @@ class BaseException : public std::exception{
 };
 
 class UnresolvableException: public BaseException{
-	CanThrowUnresolvableExceptions* src;
 	public:
-		UnresolvableException(const char* msg, CanThrowUnresolvableExceptions* src) : BaseException(ERROR_CAPTION, msg){this->src = src;};
-		void setSrc(CanThrowUnresolvableExceptions* src){this->src = src;};
-		CanThrowUnresolvableExceptions* getSrc(){return src;}
+		UnresolvableException(const char* msg) : BaseException(ERROR_CAPTION, msg){};
 };
 
 class FileException : public BaseException{

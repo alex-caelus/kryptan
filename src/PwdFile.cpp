@@ -35,14 +35,14 @@ PwdFile::PwdFile(const char* fname){
 					save();
 				} else {
 					//if not we give up
-					throw UnresolvableException(ERROR_NO_PWD_FILE, this);
+					throw UnresolvableException(ERROR_NO_PWD_FILE);
 				}
 			}
 			catch(FileWriteException& e){
 				//We could not create a file
 				e.displayOnScreen();
 				//Soo we give up!
-				throw UnresolvableException(ERROR_NO_PWD_FILE, this);
+				throw UnresolvableException(ERROR_NO_PWD_FILE);
 			}
 			//...and try again
 		}
@@ -53,7 +53,7 @@ PwdFile::PwdFile(const char* fname){
 		catch(BaseException &e ){
 			//This catches all other exceptions
 			e.displayOnScreen();
-			throw UnresolvableException(ERROR_NO_PWD_FILE, this);
+			throw UnresolvableException(ERROR_NO_PWD_FILE);
 		}
 	}
 	//inform the user of our success :)
@@ -410,7 +410,7 @@ SecureString* PwdFile::OldDecrypt(char* data, int length, int nrOfTriesLeft) {
         if (nrOfTriesLeft) {
             return Decrypt(data, length, nrOfTriesLeft);
         } else {
-            throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS, this);
+            throw UnresolvableException(ERROR_MAX_FAILED_DECRYPTS);
         }
     } catch (DefaultDecryptorWithMAC::MACBadErr) {
         masterkey->UnsecuredStringFinished();
