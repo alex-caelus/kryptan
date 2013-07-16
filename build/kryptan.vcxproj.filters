@@ -1,78 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="kryptancore">
+      <UniqueIdentifier>{f3fec974-10ff-492f-a27f-129dc28941e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="kryptancore\headers">
+      <UniqueIdentifier>{0b188236-e00f-4203-96a8-6f28dd5667d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="kryptancore\source">
+      <UniqueIdentifier>{6b7e1a09-09be-44cd-b343-e2527044b165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="program">
+      <UniqueIdentifier>{c6648eb0-db31-4138-b5d2-4e41ac85835d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="program\headers">
+      <UniqueIdentifier>{e3c70b1f-c8c8-4f16-b8f0-d67ed6c682a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="program\source">
+      <UniqueIdentifier>{67958433-81e8-4508-aa24-79a0cb2cf10d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\CONSTANTS.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_program\Kryptan.h">
+      <Filter>program\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Kryptan.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_program\UI.h">
+      <Filter>program\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Pwd.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_program\UIElement.h">
+      <Filter>program\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PwdFile.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_core\SecureString.h">
+      <Filter>kryptancore\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SecureString.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_core\Utilities.h">
+      <Filter>kryptancore\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\UI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PwdTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\UIElement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Exceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\cryptography.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h">
+      <Filter>kryptancore\headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Kryptan.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_program\Kryptan.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_program\main.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Pwd.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_program\UI.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PwdFile.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_program\UiElement.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SecureString.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_core\cryptography.cpp">
+      <Filter>kryptancore\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\UI.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
+      <Filter>kryptancore\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PwdTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\UiElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\cryptography.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\kryptan_core\Utilites.cpp">
+      <Filter>kryptancore\source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

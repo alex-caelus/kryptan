@@ -16,7 +16,7 @@ typedef AES Modified_BlockCipher;
 typedef SHA ModifiedHashModule;
 typedef HMAC<ModifiedHashModule> ModifiedMAC;
 
-//! Password-Based Encryptor using DES-EDE2
+//! Password-Based Encryptor using AES
 class ModifiedEncryptor : public ProxyFilter
 {
 public:
@@ -32,7 +32,7 @@ private:
 	CBC_Mode<Modified_BlockCipher>::Encryption m_cipher;
 };
 
-//! Password-Based Decryptor using DES-EDE2
+//! Password-Based Decryptor using AES
 class ModifiedDecryptor : public ProxyFilter
 {
 public:
@@ -65,7 +65,7 @@ private:
 	bool m_throwException;
 };
 
-//! Password-Based Encryptor using DES-EDE2 and HMAC/SHA-1
+//! Password-Based Encryptor using AES and HMAC/SHA-1
 class ModifiedEncryptorWithMAC : public ProxyFilter
 {
 public:
@@ -80,7 +80,7 @@ private:
 	member_ptr<ModifiedMAC> m_mac;
 };
 
-//! Password-Based Decryptor using DES-EDE2 and HMAC/SHA-1
+//! Password-Based Decryptor using AES and HMAC/SHA-1
 class ModifiedDecryptorWithMAC : public ProxyFilter
 {
 public:

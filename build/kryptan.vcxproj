@@ -11,27 +11,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\CONSTANTS.h" />
-    <ClInclude Include="..\src\cryptography.h" />
-    <ClInclude Include="..\src\Exceptions.h" />
-    <ClInclude Include="..\src\Kryptan.h" />
-    <ClInclude Include="..\src\Pwd.h" />
-    <ClInclude Include="..\src\PwdFile.h" />
-    <ClInclude Include="..\src\PwdTree.h" />
-    <ClInclude Include="..\src\SecureString.h" />
-    <ClInclude Include="..\src\UI.h" />
-    <ClInclude Include="..\src\UIElement.h" />
+    <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h" />
+    <ClInclude Include="..\src\kryptan_core\SecureString.h" />
+    <ClInclude Include="..\src\kryptan_core\Utilities.h" />
+    <ClInclude Include="..\src\kryptan_program\Kryptan.h" />
+    <ClInclude Include="..\src\kryptan_program\UI.h" />
+    <ClInclude Include="..\src\kryptan_program\UIElement.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\cryptography.cpp" />
-    <ClCompile Include="..\src\Kryptan.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\Pwd.cpp" />
-    <ClCompile Include="..\src\PwdFile.cpp" />
-    <ClCompile Include="..\src\PwdTree.cpp" />
-    <ClCompile Include="..\src\SecureString.cpp" />
-    <ClCompile Include="..\src\UI.cpp" />
-    <ClCompile Include="..\src\UiElement.cpp" />
+    <ClCompile Include="..\src\kryptan_core\cryptography.cpp" />
+    <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
+    <ClCompile Include="..\src\kryptan_core\Utilites.cpp" />
+    <ClCompile Include="..\src\kryptan_program\Kryptan.cpp" />
+    <ClCompile Include="..\src\kryptan_program\main.cpp" />
+    <ClCompile Include="..\src\kryptan_program\UI.cpp" />
+    <ClCompile Include="..\src\kryptan_program\UiElement.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A064B998-8052-45B2-9200-AC0A7C694FAE}</ProjectGuid>
@@ -43,12 +37,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
