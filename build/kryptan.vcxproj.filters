@@ -39,6 +39,15 @@
     <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\PwdFile.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\PwdList.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\PwdLabel.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\kryptan_program\Kryptan.cpp">
@@ -53,13 +62,22 @@
     <ClCompile Include="..\src\kryptan_program\UiElement.cpp">
       <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\kryptan_core\cryptography.cpp">
-      <Filter>kryptancore\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\kryptan_core\Utilites.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\PwdFile.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\ModifiedEncryptor.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\PwdList.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\PwdLabel.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
   </ItemGroup>

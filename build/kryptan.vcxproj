@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h" />
+    <ClInclude Include="..\src\kryptan_core\PwdFile.h" />
+    <ClInclude Include="..\src\kryptan_core\PwdLabel.h" />
+    <ClInclude Include="..\src\kryptan_core\PwdList.h" />
     <ClInclude Include="..\src\kryptan_core\SecureString.h" />
     <ClInclude Include="..\src\kryptan_core\Utilities.h" />
     <ClInclude Include="..\src\kryptan_program\Kryptan.h" />
@@ -19,7 +22,10 @@
     <ClInclude Include="..\src\kryptan_program\UIElement.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\kryptan_core\cryptography.cpp" />
+    <ClCompile Include="..\src\kryptan_core\ModifiedEncryptor.cpp" />
+    <ClCompile Include="..\src\kryptan_core\PwdFile.cpp" />
+    <ClCompile Include="..\src\kryptan_core\PwdLabel.cpp" />
+    <ClCompile Include="..\src\kryptan_core\PwdList.cpp" />
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
     <ClCompile Include="..\src\kryptan_core\Utilites.cpp" />
     <ClCompile Include="..\src\kryptan_program\Kryptan.cpp" />

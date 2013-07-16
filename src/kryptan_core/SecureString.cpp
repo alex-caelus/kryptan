@@ -5,6 +5,8 @@
 
 #define DEFAULT_ALLOCATED 80
 
+using namespace Kryptan::Core;
+
 SecureString::SecureString(void){
 	init();
 }

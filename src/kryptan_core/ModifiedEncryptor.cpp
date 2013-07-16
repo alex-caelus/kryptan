@@ -2,7 +2,7 @@
 // the kryptan project by Alexander Nilsson.
 // default.cpp - written and placed in the public domain by Wei Dai
 
-#include "cryptography.h"
+#include "ModifiedEncryptor.h"
 #include <cryptopp/pch.h>
 #include <cryptopp/queue.h>
 #include <time.h>
