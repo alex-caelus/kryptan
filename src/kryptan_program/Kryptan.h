@@ -1,7 +1,7 @@
 #ifndef KRYPTAN_H
 #define KRYPTAN_H
 
-#include "CONSTANTS.h"
+#include <string>
 #include "..\kryptan_core\PwdFile.h"
 #include "UI.h"
 
@@ -12,7 +12,7 @@ namespace Kryptan{
 			private:
 			/* VARIBLES */
 				static Kryptan* instance;
-				::Kryptan::Core::PwdFile* file;
+				PwdFile* file;
 				Ui* ui;
 
 			public:
@@ -39,7 +39,7 @@ namespace Kryptan{
 				static void run(bool useAntiKeylogging);
 				static void exit();
 
-				string getClassName(){return "Kryptan";};
+				std::string getClassName(){return "Kryptan";};
 		};
 
 	}

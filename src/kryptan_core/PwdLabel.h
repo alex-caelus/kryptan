@@ -6,14 +6,26 @@
 namespace Kryptan{
 	namespace Core{
 
+		class PwdLabelKey{
+			friend PwdLabel;
+		private:
+			PwdLabelKey();
+		};
+
 		class PwdLabel
 		{
+			friend class Pwd;
 		public:
-
+			SecureString GetName();
 		private:
-			PwdLabel(void);
-			~PwdLabel(void);
-			PwdLabel(const PwdLabel& obj);
+			PwdLabel(PwdLabelKey const);
+			~PwdLabel();
+			PwdLabel(const PwdLabel&);
+
+			std::string mName;
+
+            static PwdLabel* CreateLabel(std::string labelname);
+            static void DestroyLabel(PwdLabel* label);
 		};
 
 	}

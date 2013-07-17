@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="80">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <logicalFolder name="HeaderFiles"
-                   displayName="Header Files"
+    <logicalFolder name="kryptan_core"
+                   displayName="kryptan_core"
                    projectFiles="true">
-      <itemPath>../src/CONSTANTS.h</itemPath>
-      <itemPath>../src/Exceptions.h</itemPath>
-      <itemPath>../src/Kryptan.h</itemPath>
-      <itemPath>../src/Pwd.h</itemPath>
-      <itemPath>../src/PwdFile.h</itemPath>
-      <itemPath>../src/PwdTree.h</itemPath>
-      <itemPath>../src/SecureString.h</itemPath>
-      <itemPath>../src/UI.h</itemPath>
-      <itemPath>../src/UIElement.h</itemPath>
-      <itemPath>../src/cryptography.h</itemPath>
+      <logicalFolder name="rapidxml" displayName="rapidxml" projectFiles="true">
+        <itemPath>../src/kryptan_core/rapidxml/license.txt</itemPath>
+        <itemPath>../src/kryptan_core/rapidxml/manual.html</itemPath>
+        <itemPath>../src/kryptan_core/rapidxml/rapidxml.hpp</itemPath>
+        <itemPath>../src/kryptan_core/rapidxml/rapidxml_iterators.hpp</itemPath>
+        <itemPath>../src/kryptan_core/rapidxml/rapidxml_print.hpp</itemPath>
+        <itemPath>../src/kryptan_core/rapidxml/rapidxml_utils.hpp</itemPath>
+      </logicalFolder>
+      <itemPath>../src/kryptan_core/ModifiedEncryptor.cpp</itemPath>
+      <itemPath>../src/kryptan_core/ModifiedEncryptor.h</itemPath>
+      <itemPath>../src/kryptan_core/Pwd.cpp</itemPath>
+      <itemPath>../src/kryptan_core/Pwd.h</itemPath>
+      <itemPath>../src/kryptan_core/PwdFile.cpp</itemPath>
+      <itemPath>../src/kryptan_core/PwdFile.h</itemPath>
+      <itemPath>../src/kryptan_core/PwdLabel.cpp</itemPath>
+      <itemPath>../src/kryptan_core/PwdLabel.h</itemPath>
+      <itemPath>../src/kryptan_core/PwdList.cpp</itemPath>
+      <itemPath>../src/kryptan_core/PwdList.h</itemPath>
+      <itemPath>../src/kryptan_core/SecureString.cpp</itemPath>
+      <itemPath>../src/kryptan_core/SecureString.h</itemPath>
+      <itemPath>../src/kryptan_core/Utilites.cpp</itemPath>
+      <itemPath>../src/kryptan_core/Utilities.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="kryptan_program"
+                   displayName="kryptan_program"
+                   projectFiles="true">
+      <itemPath>../src/kryptan_program/Kryptan.cpp</itemPath>
+      <itemPath>../src/kryptan_program/Kryptan.h</itemPath>
+      <itemPath>../src/kryptan_program/UI.cpp</itemPath>
+      <itemPath>../src/kryptan_program/UI.h</itemPath>
+      <itemPath>../src/kryptan_program/UIElement.h</itemPath>
+      <itemPath>../src/kryptan_program/UiElement.cpp</itemPath>
+      <itemPath>../src/kryptan_program/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-    </logicalFolder>
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
-      <itemPath>../src/Kryptan.cpp</itemPath>
-      <itemPath>../src/Pwd.cpp</itemPath>
-      <itemPath>../src/PwdFile.cpp</itemPath>
-      <itemPath>../src/PwdTree.cpp</itemPath>
-      <itemPath>../src/SecureString.cpp</itemPath>
-      <itemPath>../src/UI.cpp</itemPath>
-      <itemPath>../src/UiElement.cpp</itemPath>
-      <itemPath>../src/cryptography.cpp</itemPath>
-      <itemPath>../src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -44,6 +54,10 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>../src/kryptan_core</Elem>
+    <Elem>../src/kryptan_program</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">

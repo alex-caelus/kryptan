@@ -48,6 +48,9 @@
     <ClInclude Include="..\src\kryptan_core\PwdLabel.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\Pwd.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\kryptan_program\Kryptan.cpp">
@@ -78,6 +81,9 @@
       <Filter>kryptancore\source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\kryptan_core\PwdLabel.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\Pwd.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
   </ItemGroup>

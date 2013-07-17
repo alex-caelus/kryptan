@@ -4,6 +4,7 @@
 
 using namespace ::Kryptan::Program;
 using namespace ::Kryptan::Core;
+using std::exception;
 
 typedef ::Kryptan::Program::Kryptan K;
 
@@ -15,14 +16,14 @@ void K::run(bool useAntiKeylogging){
 	//then we run the show
 	try{
 		if(instance){
-			throw UnresolvableException(ERROR_SINGELTON);
+			throw exception("Only one instance of Kryptan is allowed at a time.");
 		}
 		//Set up and read password file
 		instance = new Kryptan(useAntiKeylogging);
 		//run program
 		instance->mainloop();
 	}
-	catch(UnresolvableException &e){
+	catch(exception &e){
 		//e.displayOnScreen();
 	}
 }
@@ -36,7 +37,7 @@ void K::exit(){
 K::Kryptan(bool useAntiKeylogging){
 	ui = Ui::getInstance();
 	ui->setUseAntiKeylogging(useAntiKeylogging);
-	file = new PwdFile(PASSWORD_FILE);
+	file = new PwdFile("secret.pwd");
 }
 
 K::~Kryptan(){
