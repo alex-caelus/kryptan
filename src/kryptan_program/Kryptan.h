@@ -1,48 +1,49 @@
 #ifndef KRYPTAN_H
 #define KRYPTAN_H
 
-#include <string>
-#include "..\kryptan_core\PwdFile.h"
+#include "../kryptan_core/PwdFile.h"
 #include "UI.h"
 
-namespace Kryptan{
-	namespace Program{
+namespace Kryptan {
+    namespace Program {
 
-		class Kryptan{
-			private:
-			/* VARIBLES */
-				static Kryptan* instance;
-				PwdFile* file;
-				Ui* ui;
+        class Kryptan {
+        private:
+            /* VARIBLES */
+            static Kryptan* instance;
+            ::Kryptan::Core::PwdFile* file;
+            Ui* ui;
 
-			public:
-			/* VARABLES */
+        public:
+            /* VARABLES */
 
-			private:
-			/* METHODS */
-				Kryptan(bool useAntiKeylogging);
-				~Kryptan();
+        private:
+            /* METHODS */
+            Kryptan(bool useAntiKeylogging);
+            ~Kryptan();
 
-				void mainloop();
+            void mainloop();
 
-				void showPwd();
-				void addPwd();
-				void editPwd();
-				void removePwd();
-				void removeTree();
-				void generatePwd();
-				void changeMaster();
-				void showHelp();
+            void showPwd();
+            void addPwd();
+            void editPwd();
+            void removePwd();
+            void removeTree();
+            void generatePwd();
+            void changeMaster();
+            void showHelp();
 
-			public:
-			/* METHODS */
-				static void run(bool useAntiKeylogging);
-				static void exit();
+        public:
+            /* METHODS */
+            static void run(bool useAntiKeylogging);
+            static void exit();
 
-				std::string getClassName(){return "Kryptan";};
-		};
+            std::string getClassName() {
+                return "Kryptan";
+            };
+        };
 
-	}
+    }
 }
 
 #endif

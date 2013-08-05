@@ -1,1 +1,9 @@
 src-v1/
+*.tlog
+UnitTests/Debug/*
+UnitTests/Release/*
+build/unsafe.pwd
+doc/ConceptArt.xlsx
+*!sync
+*.mdf
+*.ldf

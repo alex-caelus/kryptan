@@ -1,6 +1,9 @@
 #include "UIElement.h"
 #include <string.h>
 
+using namespace Kryptan::Core;
+using namespace Kryptan::Program;
+
 UiElement::UiElement(char* data, bool deleteWhenDone, chtype attrib, int attribOffset) {
     dataSecure = NULL;
     dataUnsecure = data;

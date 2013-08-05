@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\kryptan_core\core.h" />
+    <ClInclude Include="..\src\kryptan_core\Exceptions.h" />
     <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h" />
     <ClInclude Include="..\src\kryptan_core\Pwd.h" />
     <ClInclude Include="..\src\kryptan_core\PwdFile.h" />
-    <ClInclude Include="..\src\kryptan_core\PwdLabel.h" />
+    <ClInclude Include="..\src\kryptan_core\PwdFileWorker.h" />
     <ClInclude Include="..\src\kryptan_core\PwdList.h" />
     <ClInclude Include="..\src\kryptan_core\SecureString.h" />
     <ClInclude Include="..\src\kryptan_core\Utilities.h" />
@@ -26,7 +28,7 @@
     <ClCompile Include="..\src\kryptan_core\ModifiedEncryptor.cpp" />
     <ClCompile Include="..\src\kryptan_core\Pwd.cpp" />
     <ClCompile Include="..\src\kryptan_core\PwdFile.cpp" />
-    <ClCompile Include="..\src\kryptan_core\PwdLabel.cpp" />
+    <ClCompile Include="..\src\kryptan_core\PwdFileWorker.cpp" />
     <ClCompile Include="..\src\kryptan_core\PwdList.cpp" />
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
     <ClCompile Include="..\src\kryptan_core\Utilites.cpp" />

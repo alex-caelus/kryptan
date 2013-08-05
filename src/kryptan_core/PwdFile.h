@@ -5,25 +5,34 @@
 #include "SecureString.h"
 #include "PwdList.h"
 
-namespace Kryptan{
-	namespace Core{
+namespace Kryptan {
+    namespace Core {
 
-		class PwdFile
-		{
-		public:
-			PwdFile(std::string filename);
-			~PwdFile(void);
+        class PwdFile {
+        public:
+            PwdFile(std::string filename);
+            ~PwdFile(void);
 
-			void Open(SecureString masterkey);
-			void Save(SecureString masterkey);
+			void CreateNew();
+            void OpenAndParse(SecureString masterkey);
+            void Save(SecureString masterkey);
 
-			PwdList* GetPasswordList();
+            PwdList* GetPasswordList();
+            std::string GetFilename();
 
-		private:
-			PwdFile(const PwdFile& obj);
-		};
+            bool IsOpen();
+			bool Exists();
 
-	}
+        private:
+            PwdFile(const PwdFile& obj);
+
+            std::string filename;
+            PwdList* list;
+
+            bool isOpen;
+        };
+
+    }
 }
 
 #endif

@@ -4,22 +4,12 @@
     <logicalFolder name="kryptan_core"
                    displayName="kryptan_core"
                    projectFiles="true">
-      <logicalFolder name="rapidxml" displayName="rapidxml" projectFiles="true">
-        <itemPath>../src/kryptan_core/rapidxml/license.txt</itemPath>
-        <itemPath>../src/kryptan_core/rapidxml/manual.html</itemPath>
-        <itemPath>../src/kryptan_core/rapidxml/rapidxml.hpp</itemPath>
-        <itemPath>../src/kryptan_core/rapidxml/rapidxml_iterators.hpp</itemPath>
-        <itemPath>../src/kryptan_core/rapidxml/rapidxml_print.hpp</itemPath>
-        <itemPath>../src/kryptan_core/rapidxml/rapidxml_utils.hpp</itemPath>
-      </logicalFolder>
       <itemPath>../src/kryptan_core/ModifiedEncryptor.cpp</itemPath>
       <itemPath>../src/kryptan_core/ModifiedEncryptor.h</itemPath>
       <itemPath>../src/kryptan_core/Pwd.cpp</itemPath>
       <itemPath>../src/kryptan_core/Pwd.h</itemPath>
       <itemPath>../src/kryptan_core/PwdFile.cpp</itemPath>
       <itemPath>../src/kryptan_core/PwdFile.h</itemPath>
-      <itemPath>../src/kryptan_core/PwdLabel.cpp</itemPath>
-      <itemPath>../src/kryptan_core/PwdLabel.h</itemPath>
       <itemPath>../src/kryptan_core/PwdList.cpp</itemPath>
       <itemPath>../src/kryptan_core/PwdList.h</itemPath>
       <itemPath>../src/kryptan_core/SecureString.cpp</itemPath>

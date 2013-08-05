@@ -39,7 +39,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/229759634/UiElement.o \
 	${OBJECTDIR}/_ext/1228218613/PwdList.o \
 	${OBJECTDIR}/_ext/1228218613/Pwd.o \
-	${OBJECTDIR}/_ext/1228218613/PwdLabel.o \
 	${OBJECTDIR}/_ext/1228218613/SecureString.o \
 	${OBJECTDIR}/_ext/229759634/main.o \
 	${OBJECTDIR}/_ext/229759634/Kryptan.o \
@@ -95,11 +94,6 @@ ${OBJECTDIR}/_ext/1228218613/Pwd.o: ../src/kryptan_core/Pwd.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1228218613
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1228218613/Pwd.o ../src/kryptan_core/Pwd.cpp
-
-${OBJECTDIR}/_ext/1228218613/PwdLabel.o: ../src/kryptan_core/PwdLabel.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1228218613
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1228218613/PwdLabel.o ../src/kryptan_core/PwdLabel.cpp
 
 ${OBJECTDIR}/_ext/1228218613/SecureString.o: ../src/kryptan_core/SecureString.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1228218613

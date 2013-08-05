@@ -1,6 +1,6 @@
 #include "Kryptan.h"
-#include "..\kryptan_core\Exceptions.h"
 #include <string.h>
+#include <exception>
 
 using namespace ::Kryptan::Program;
 using namespace ::Kryptan::Core;
@@ -10,20 +10,35 @@ typedef ::Kryptan::Program::Kryptan K;
 
 K* K::instance = NULL;
 
+
+enum MENU_CHOICES {
+    MENU_NULL,
+    MENU_SHOW_PWD,
+    MENU_ADD_PWD,
+    MENU_GENERATE_PWD,
+    MENU_EDIT_PWD,
+    MENU_REMOVE_PWD,
+    MENU_REMOVE_TREE,
+    MENU_CHANGE_MASTER,
+    MENU_SHOW_HELP,
+    MENU_QUIT,
+    MENU_GO_TO_MAIN
+};
+
 void K::run(bool useAntiKeylogging){
 	//first make sure we exit correctly
 	atexit(K::exit);
 	//then we run the show
 	try{
 		if(instance){
-			throw exception("Only one instance of Kryptan is allowed at a time.");
+			throw std::runtime_error("Only one instance of Kryptan is allowed at a time.");
 		}
 		//Set up and read password file
 		instance = new Kryptan(useAntiKeylogging);
 		//run program
 		instance->mainloop();
 	}
-	catch(exception &e){
+	catch(exception){
 		//e.displayOnScreen();
 	}
 }
@@ -36,8 +51,24 @@ void K::exit(){
 
 K::Kryptan(bool useAntiKeylogging){
 	ui = Ui::getInstance();
-	ui->setUseAntiKeylogging(useAntiKeylogging);
 	file = new PwdFile("secret.pwd");
+	
+	
+	if(file->Exists())
+	{
+		//open existing file
+		try{
+			SecureString masterkey = ui->PromtPwd(UiElement("Password"), UiElement("Decrypting File"));
+			file->OpenAndParse(masterkey);
+		}
+		catch(exception &e)
+		{
+		}
+	}
+	else
+	{
+		//create a new file
+	}
 }
 
 K::~Kryptan(){
@@ -45,45 +76,6 @@ K::~Kryptan(){
 }
 
 void K::mainloop(){
-	enum MENU_CHOICES choice = MENU_SHOW_PWD;
-	do{
-		switch(choice){
-            case MENU_SHOW_PWD:{
-                showPwd();
-                break;
-            }
-            case MENU_ADD_PWD:{
-                addPwd();
-                break;
-            }
-            case MENU_GENERATE_PWD:{
-                generatePwd();
-                break;
-            }
-            case MENU_EDIT_PWD:{
-                editPwd();
-                break;
-            }
-            case MENU_REMOVE_PWD:{
-                removePwd();
-                break;
-            }
-			case MENU_REMOVE_TREE:{
-                removeTree();
-                break;
-            }
-            case MENU_CHANGE_MASTER:{
-                changeMaster();
-                break;
-            }
-            case MENU_SHOW_HELP:{
-                showHelp();
-                break;
-            }
-                    default:
-                        break;
-		}
-	}while( (choice = ui->mainMenu()) != MENU_QUIT );
 }
 
 
@@ -195,19 +187,19 @@ void K::generatePwd(){
 }
 
 void K::changeMaster(){
-	file->changeMasterKey();
-	file->save();
+	//file->changeMasterKey();
+	//file->save();
 }
 
 void K::showHelp(){
-    const char* helptext[] = HELPTEXT;
-	UiElementList text;
+ //   const char* helptext[] = HELPTEXT;
+	//UiElementList text;
 
-	int i=0;
-	while(helptext[i] != 0){
-		text.push_back(UiElement(helptext[i]));
-		i++;
-	}
-	
-    ui->showDialog(text, CAPTION_HELP);
+	//int i=0;
+	//while(helptext[i] != 0){
+	//	text.push_back(UiElement(helptext[i]));
+	//	i++;
+	//}
+	//
+ //   ui->showDialog(text, CAPTION_HELP);
 }

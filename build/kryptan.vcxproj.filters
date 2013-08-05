@@ -45,10 +45,16 @@
     <ClInclude Include="..\src\kryptan_core\PwdList.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\kryptan_core\PwdLabel.h">
+    <ClInclude Include="..\src\kryptan_core\Pwd.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\kryptan_core\Pwd.h">
+    <ClInclude Include="..\src\kryptan_core\core.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\PwdFileWorker.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\Exceptions.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,10 +86,10 @@
     <ClCompile Include="..\src\kryptan_core\PwdList.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\kryptan_core\PwdLabel.cpp">
+    <ClCompile Include="..\src\kryptan_core\Pwd.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\kryptan_core\Pwd.cpp">
+    <ClCompile Include="..\src\kryptan_core\PwdFileWorker.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
   </ItemGroup>

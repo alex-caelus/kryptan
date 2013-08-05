@@ -19,6 +19,8 @@
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
 #endif
+
+
 /**
  * Here is windows (without console window) :)
  **/
@@ -33,7 +35,7 @@ int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	size_t not_used;
 	wchar_t wtext[50];
-	mbstowcs_s(&not_used, wtext, ANTI_KEYLOGGING_ARGUMENT, strlen(ANTI_KEYLOGGING_ARGUMENT));
+	mbstowcs_s(&not_used, wtext, "--use-antikeylogging", strlen("--use-antikeylogging"));
 
 	if(c > 1 && wcscmp(arguments[1], wtext) == 0)
 		useAntiKeylogger = true;
@@ -51,7 +53,7 @@ int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
  */
 int main(int argc, char** argv) {
 	bool useAntiKeylogger = false;
-	if(argc > 1 && strcmp(ANTI_KEYLOGGING_ARGUMENT, argv[1]) == 0)
+	if(argc > 1 && strcmp("--use-antikeylogging", argv[1]) == 0)
 		useAntiKeylogger = true;
     Kryptan::run(useAntiKeylogger);
     return 0;

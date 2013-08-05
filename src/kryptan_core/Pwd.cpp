@@ -10,12 +10,44 @@
 using namespace Kryptan::Core;
 
 Pwd::Pwd() {
-	PwdLabel* label = new PwdLabel(PwdLabelKey());
 }
 
 Pwd::Pwd(const Pwd& orig) {
+	mDescription.assign(orig.mDescription);
+	mUsername.assign(orig.mUsername);
+	mPassword.assign(orig.mPassword);
 }
 
 Pwd::~Pwd() {
 }
 
+SecureString Pwd::GetDescription()
+{
+	return mDescription;
+}
+
+SecureString Pwd::GetUsername()
+{
+	return mUsername;
+}
+
+SecureString Pwd::GetPassword()
+{
+	return mPassword;
+}
+
+
+void Pwd::SetDescription(const SecureString& desc)
+{
+	mDescription.assign(desc);
+}
+
+void Pwd::SetUsername(const SecureString& usrname)
+{
+	mUsername.assign(usrname);
+}
+
+void Pwd::SetPassword(const SecureString& passwd)
+{
+	mPassword.assign(passwd);
+}

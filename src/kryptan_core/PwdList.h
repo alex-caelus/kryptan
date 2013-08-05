@@ -2,34 +2,46 @@
 #define PWDLIST_H
 
 #include <string>
-#include <vector>
+#include <list>
 #include "Pwd.h"
+#include "SecureString.h"
 
 namespace Kryptan {
     namespace Core {
 
         class PwdList {
             //this clas can only be created by PwdFile
-            friend class PwdFile;
+			friend class PwdFileWorker;
         public:
 
-			typedef std::vector<Pwd> Pwdvector;
+            typedef std::vector<Pwd*> PwdVector;
 
-            Pwdvector All();
-            Pwdvector Filter(std::string pattern, std::vector<std::string> labels = std::vector<std::string>());
-			
-			int CreatePassword(SecureString desciption, SecureString password);
-			int CreatePassword(SecureString desciption, SecureString username, SecureString password);
-			int CreatePassword(int id, SecureString desciption, SecureString username, SecureString password);
-			Pwd* GetPwd(int);
-			void DeletePwd(Pwd* pwd);
+            PwdVector All() const;
+            PwdVector Filter(const SecureString& pattern) const;
+            PwdVector Filter(const PwdLabelVector& labels) const;
+            PwdVector Filter(const SecureString& pattern, const PwdLabelVector& labels) const;
+
+            Pwd* CreatePwd(const SecureString& desciption, const SecureString& password);
+            Pwd* CreatePwd(const SecureString& desciption, const SecureString& username, const SecureString& password);
+            void DeletePwd(Pwd* pwd);
+            
+			PwdLabelVector AllLabels();
+            PwdLabelVector FilterLabels(SecureString pattern);
+            int CountPwds();
+            int CountPwds(const SecureString& label);
+            
+            bool AddPwdToLabel(Pwd* pwd, SecureString label);
+            bool RemovePwdFromLabel(Pwd* pwd, SecureString label);
 
         private:
             PwdList(void);
             ~PwdList(void);
             PwdList(const PwdList& obj);
-        };
 
+			std::list<Pwd*> pwds;
+			std::list<SecureString> existingLabels;
+
+		};
     }
 }
 
