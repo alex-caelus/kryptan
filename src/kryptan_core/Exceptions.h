@@ -1,27 +1,63 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 namespace Kryptan
 {
 	namespace Core
 	{
-		class KryptanBaseException : std::runtime_error
+		class KryptanBaseException : public std::runtime_error
 		{
 		public:
 			KryptanBaseException(const std::string& msg)
-				: runtime_error(msg)
+				: std::runtime_error(msg)
 			{
 			}
 		};
 
-		class KryptanFileNotExistException : KryptanBaseException
+		class KryptanFileNotReadableException : public KryptanBaseException
 		{
 		public:
-			KryptanFileNotExistException(const std::string& msg)
+			KryptanFileNotReadableException(const std::string& msg)
 				: KryptanBaseException(msg)
+			{
+			}
+		};
+
+		class KryptanFileNotWritableException : public KryptanBaseException
+		{
+		public:
+			KryptanFileNotWritableException(const std::string& msg)
+				: KryptanBaseException(msg)
+			{
+			}
+		};
+
+		class KryptanFileContentException : public KryptanBaseException
+		{
+		public:
+			KryptanFileContentException(const std::string& msg)
+				: KryptanBaseException(msg)
+			{
+			}
+		};
+
+		class KryptanDecryptException : public KryptanBaseException
+		{
+		public:
+			KryptanDecryptException(const std::string& msg)
+				: KryptanBaseException(msg)
+			{
+			}
+		};
+
+		class KryptanDecryptWrongKeyException : public KryptanDecryptException
+		{
+		public:
+			KryptanDecryptWrongKeyException(const std::string& msg)
+				: KryptanDecryptException(msg)
 			{
 			}
 		};

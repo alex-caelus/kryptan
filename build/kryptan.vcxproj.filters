@@ -21,19 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\kryptan_program\Kryptan.h">
-      <Filter>program\headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\kryptan_program\UI.h">
-      <Filter>program\headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\kryptan_program\UIElement.h">
-      <Filter>program\headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\kryptan_core\SecureString.h">
-      <Filter>kryptancore\headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\kryptan_core\Utilities.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h">
@@ -57,24 +45,27 @@
     <ClInclude Include="..\src\kryptan_core\Exceptions.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\Program.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\Utilities.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\common.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\DialogBase.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\MessageBoxes.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\Prompts.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\kryptan_program\Kryptan.cpp">
-      <Filter>program\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\kryptan_program\main.cpp">
-      <Filter>program\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\kryptan_program\UI.cpp">
-      <Filter>program\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\kryptan_program\UiElement.cpp">
-      <Filter>program\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
-      <Filter>kryptancore\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\kryptan_core\Utilites.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\kryptan_core\PwdFile.cpp">
@@ -91,6 +82,24 @@
     </ClCompile>
     <ClCompile Include="..\src\kryptan_core\PwdFileWorker.cpp">
       <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\main.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\Program.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\Utilites.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\DialogBase.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\MessageBoxes.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\Prompts.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

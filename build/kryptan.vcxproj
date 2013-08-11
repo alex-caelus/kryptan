@@ -19,10 +19,12 @@
     <ClInclude Include="..\src\kryptan_core\PwdFileWorker.h" />
     <ClInclude Include="..\src\kryptan_core\PwdList.h" />
     <ClInclude Include="..\src\kryptan_core\SecureString.h" />
-    <ClInclude Include="..\src\kryptan_core\Utilities.h" />
-    <ClInclude Include="..\src\kryptan_program\Kryptan.h" />
-    <ClInclude Include="..\src\kryptan_program\UI.h" />
-    <ClInclude Include="..\src\kryptan_program\UIElement.h" />
+    <ClInclude Include="..\src\kryptan_program\common.h" />
+    <ClInclude Include="..\src\kryptan_program\DialogBase.h" />
+    <ClInclude Include="..\src\kryptan_program\MessageBoxes.h" />
+    <ClInclude Include="..\src\kryptan_program\Program.h" />
+    <ClInclude Include="..\src\kryptan_program\Prompts.h" />
+    <ClInclude Include="..\src\kryptan_program\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\kryptan_core\ModifiedEncryptor.cpp" />
@@ -31,11 +33,12 @@
     <ClCompile Include="..\src\kryptan_core\PwdFileWorker.cpp" />
     <ClCompile Include="..\src\kryptan_core\PwdList.cpp" />
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
-    <ClCompile Include="..\src\kryptan_core\Utilites.cpp" />
-    <ClCompile Include="..\src\kryptan_program\Kryptan.cpp" />
+    <ClCompile Include="..\src\kryptan_program\DialogBase.cpp" />
     <ClCompile Include="..\src\kryptan_program\main.cpp" />
-    <ClCompile Include="..\src\kryptan_program\UI.cpp" />
-    <ClCompile Include="..\src\kryptan_program\UiElement.cpp" />
+    <ClCompile Include="..\src\kryptan_program\MessageBoxes.cpp" />
+    <ClCompile Include="..\src\kryptan_program\Program.cpp" />
+    <ClCompile Include="..\src\kryptan_program\Prompts.cpp" />
+    <ClCompile Include="..\src\kryptan_program\Utilites.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A064B998-8052-45B2-9200-AC0A7C694FAE}</ProjectGuid>
@@ -47,7 +50,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -87,7 +90,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../../Libs/pdcurses/win32a;../../../Libs/cryptopp/Win32/Output/Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>panel.lib;pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -110,7 +113,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../../../Libs/pdcurses/win32a;../../../Libs/cryptopp/Win32/Output/Release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>panel.lib;pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

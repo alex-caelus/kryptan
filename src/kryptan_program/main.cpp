@@ -5,7 +5,7 @@
  * Created on den 8 februari 2012, 09:49
  */
 
-#include "Kryptan.h"
+#include "Program.h"
 
 #ifdef _WIN32
 
@@ -40,8 +40,15 @@ int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	if(c > 1 && wcscmp(arguments[1], wtext) == 0)
 		useAntiKeylogger = true;
 
-	Kryptan::Program::Kryptan::run(useAntiKeylogger);
-    return 0;
+	Kryptan::Program* p = new Kryptan::Program(useAntiKeylogger);
+
+	//enter main loop
+	int exitcode = p->run();
+
+	//delete
+	delete p;
+
+    return exitcode;
 }
 
 #elif defined __linux__
@@ -55,8 +62,8 @@ int main(int argc, char** argv) {
 	bool useAntiKeylogger = false;
 	if(argc > 1 && strcmp("--use-antikeylogging", argv[1]) == 0)
 		useAntiKeylogger = true;
-    Kryptan::run(useAntiKeylogger);
-    return 0;
+
+	return Kryptan::Program(useAntiKeylogger).run();
 }
 
 #else

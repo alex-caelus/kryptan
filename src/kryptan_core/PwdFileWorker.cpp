@@ -21,7 +21,7 @@ void PwdFileWorker::ReadFile(string filename, int& length, char*& buffer)
 
 		if(!is){
 			//file is not found or readable
-			throw KryptanFileNotExistException("File not found or not readable");
+			throw KryptanFileNotReadableException("File not found or not readable");
 		}
 
 		// get length of file:
@@ -40,11 +40,16 @@ void PwdFileWorker::ReadFile(string filename, int& length, char*& buffer)
 		buffer[length] = '\0';
 
 	}
-	catch(...)
+	catch(KryptanFileNotReadableException)
 	{
 		delete[] buffer;
 		//we re-throw to let the caller handle the error
 		throw;
+	}
+	catch(std::exception &e)
+	{
+		delete[] buffer;
+		throw KryptanFileNotReadableException(e.what());
 	}
 }
 
@@ -58,28 +63,23 @@ void PwdFileWorker::WriteFile(string filename, char* content, int length)
 
 		if(!os){
 			//file is not found or readable
-			throw KryptanFileNotExistException("File could not be opened or created for writing");
+			throw KryptanFileNotWritableException("File could not be opened or created for writing");
 		}
 		
 		// read data as a block:
 		os.write(content, length);
 		os.close();
 	}
-	catch(KryptanFileNotExistException)
-	{
-		//just let the caller handle the error
-		throw;
-	}
 	catch(std::exception& e)
 	{
 		//we re-throw to let the caller handle the error
-		throw KryptanBaseException(string("An exception occured while writing to file: ") + e.what());
+		throw KryptanFileNotWritableException(e.what());
 	}
 }
 
 bool PwdFileWorker::FileExists(string filename)
 {
-	ifstream ifile(filename);
+	ifstream ifile(filename, ifstream::in);
 	return ifile;
 }
 
@@ -88,9 +88,8 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 	PwdList* target = new PwdList();
 
     char* currTag = GetNextTagStart(content.getUnsecureString());
-    char* lastTag = NULL;
     int currTagLength = GetTagLength(currTag);
-    enum STATES {NOTSET, ROOT, PASSWORD, LABELS};
+    enum STATES {NOTSET, ROOT, PASSWORD};
     
     STATES currState = NOTSET;
     SecureString currDescription;
@@ -107,7 +106,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 					currState = ROOT;
 				}
 				else{
-					throw runtime_error("Password file is corrupt");
+					throw KryptanFileContentException("Password file is corrupt");
 				}
 				break;
 			case ROOT:
@@ -123,7 +122,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 					//we are done :)
 				}
 				else{
-					throw runtime_error("Password file is corrupt");
+					throw KryptanFileContentException("Password file is corrupt");
 				}
 				break;
 			case PASSWORD:
@@ -137,7 +136,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 						currDescription.assign(UnescapeTags(contentBegin, contentLength));
 					}
 					else{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					currTag = contentEnd;
 				}
@@ -151,7 +150,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 						currUsername.assign(UnescapeTags(contentBegin, contentLength));
 					}
 					else{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					currTag = contentEnd;
 				}
@@ -165,7 +164,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 						currPassword.assign(UnescapeTags(contentBegin, contentLength));
 					}
 					else{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					currTag = contentEnd;
 				}
@@ -179,7 +178,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 						currLabels.push_back(UnescapeTags(contentBegin, contentLength));
 					}
 					else{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					currTag = contentEnd;
 				}
@@ -187,11 +186,11 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 					//validate what information we have
 					if(currDescription.length() <= 0)
 					{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					if(currPassword.length() <= 0)
 					{
-						throw runtime_error("Password file is corrupt");
+						throw KryptanFileContentException("Password file is corrupt");
 					}
 					//and save it
 					Pwd* p = target->CreatePwd(currDescription, currUsername, currPassword);
@@ -205,18 +204,18 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 					currState = ROOT;
 				}
 				else{
-					throw runtime_error("Password file is corrupt");
+					throw KryptanFileContentException("Password file is corrupt");
 				}
 				break;
 			}
         }while((currTag = GetNextTagStart(currTag+1)) != NULL && (currTagLength = GetTagLength(currTag)) != 0);
     }
-    catch(...)
+    catch(std::exception &e)
     {
 		content.UnsecuredStringFinished();
 		delete target;
 		target = NULL;
-        throw;
+        throw KryptanFileContentException(e.what());
     }
 	content.UnsecuredStringFinished();
     return target;
@@ -259,8 +258,8 @@ SecureString PwdFileWorker::EscapeTags(const SecureString& str)
 		}
 		else if(c == '&')
 		{
-			const char* and = "&amp;";
-			copy.append(and);
+			const char* amp = "&amp;";
+			copy.append(amp);
 		}
 		else
 		{
@@ -275,7 +274,7 @@ SecureString PwdFileWorker::UnescapeTags(const char* str, int l)
 {
 	const char* lt = "<";
 	const char* gt = ">";
-	const char* and = "&";
+	const char* amp = "&";
 	
 	SecureString copy(l);
 
@@ -306,7 +305,7 @@ SecureString PwdFileWorker::UnescapeTags(const char* str, int l)
 				//&amp;
 				if(str[i+1] == 'a' && str[i+2] == 'm' && str[i+3] == 'p' && str[i+4] == ';')
 				{
-					copy.append(and);
+					copy.append(amp);
 					i += 4;
 					continue;
 				}
@@ -368,22 +367,22 @@ SecureString PwdFileWorker::Decrypt(char* encryptedBuffer, int encryptedBufferLe
 		masterkey.UnsecuredStringFinished(); //We need to use this again
 		delete[] unsafeDecrypt;
 
-		throw runtime_error("Wrong master key!");
+		throw KryptanDecryptWrongKeyException("Wrong master key!");
     } 
     catch (ModifiedDecryptorWithMAC::MACBadErr) 
     {
 		masterkey.UnsecuredStringFinished(); //Secure the master key
 		delete[] unsafeDecrypt;
 
-        throw runtime_error("Filecontent is corrupt");
+        throw KryptanDecryptException("Filecontent is corrupt");
     } 
-    catch (...) 
+    catch (std::exception &e) 
     {
 		masterkey.UnsecuredStringFinished(); //Secure the master key
 		delete[] unsafeDecrypt;
 
 		//rethrow
-		throw;
+		throw KryptanDecryptException(e.what());
     }
 }
 

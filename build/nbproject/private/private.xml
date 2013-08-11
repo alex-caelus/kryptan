@@ -2,7 +2,24 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_core/PwdFileWorker.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/Prompts.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/Utilites.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/main.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_core/Exceptions.h</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/MessageBoxes.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/Prompts.h</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/Program.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_core/PwdFile.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_core/SecureString.cpp</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/MessageBoxes.h</file>
+            <file>file:/home/alexander/Sync/Programmerings%20projekt/C++/Egna%20projekt/kryptan/src/kryptan_program/DialogBase.cpp</file>
+        </group>
+    </open-files>
 </project-private>

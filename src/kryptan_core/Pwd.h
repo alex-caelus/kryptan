@@ -9,6 +9,7 @@
 #define	PWD_H
 
 #include <vector>
+#include <algorithm>
 #include <list>
 #include "SecureString.h"
 

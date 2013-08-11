@@ -1,5 +1,6 @@
 #include "PwdList.h"
-#include <exception>
+#include <stdexcept>
+#include <string.h>
 
 using namespace Kryptan::Core;
 using namespace std;

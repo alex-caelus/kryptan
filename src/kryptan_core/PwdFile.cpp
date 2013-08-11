@@ -106,8 +106,9 @@ void PwdFile::Save(SecureString masterkey)
 	content.append(RootTagEnd);
 
 	int eLength;
+    char* encrypted = PwdFileWorker::Encrypt(content, eLength, masterkey);
 
-	PwdFileWorker::WriteFile(filename, PwdFileWorker::Encrypt(content, eLength, masterkey), eLength);
+	PwdFileWorker::WriteFile(filename, encrypted, eLength);
 }
 
 PwdList* PwdFile::GetPasswordList()

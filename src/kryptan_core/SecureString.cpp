@@ -303,7 +303,7 @@ bool SecureString::equals(const SecureString& s2) const{
 }
 
 bool SecureString::equals(const char* s2) const{
-	int len = this->length();
+	unsigned int len = this->length();
 	if(strlen(s2) != len){
 		return false;
 	}
