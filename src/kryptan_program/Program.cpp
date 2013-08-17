@@ -5,6 +5,7 @@
 #include "Prompts.h"
 #include "MessageBoxes.h"
 #include "Utilities.h"
+#include "MainMenu.h"
 
 using namespace Kryptan;
 using namespace Core;
@@ -14,6 +15,7 @@ Program::Program(bool useAntiKeylogging)
 {
     //initialize screen
     initscr();
+    start_color();
     cbreak();
     //noecho();
     keypad(stdscr, TRUE);
@@ -30,12 +32,13 @@ int Program::run()
     try
     {
         file = GetFileObject();
-        bool exit;
+        MainMenu main(file);
+        MenuActions action;
         do
         {
-            exit = getch() == 'q';
+            action = main.Display();
         }
-        while(!exit);
+        while(action != QUIT);
         return 0;
     }
     catch(KryptanQuit &q)
@@ -97,7 +100,7 @@ void Program::OpenFile(Core::PwdFile* file)
                 InfoBox("Error", "Error occurred while decrypting " + (file->GetFilename() + ", reason:\n") + e.what()).Show();
                 throw KryptanQuit(1002);
             }
-            catch(KryptanFileContentException &e)
+            catch(KryptanFileContentException)
             {
                 InfoBox("Error", "The contents of the file is corrupt.");
                 throw KryptanQuit(1003);
@@ -145,6 +148,12 @@ void Program::CreateFile(Core::PwdFile* file)
                     InfoBox("Error", "Please make sure you have sufficient permission\nto write to the program directory.\nKryptan will now exit").Show();
                     throw KryptanQuit(2001);
                 }
+				catch(std::exception &e)
+				{
+					const char* P = e.what();
+					InfoBox("Error", "Unexpected error occurred while\ncreating the new password file.\nThe error was:\n" + std::string(e.what())).Show();
+					throw KryptanQuit(-1);
+				}
             }
         }
         while(!done);

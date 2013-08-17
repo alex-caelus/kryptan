@@ -11,7 +11,7 @@ DialogBase::DialogBase(std::string title, int height, int width, int starty, int
 	this->title = title;
 	this->height = height;
 	this->width = std::min(std::max(width, (int)title.length()), getmaxx(stdscr) - (border != None ? 1 : 0)*2 - padding*2);
-	this->starty = std::max(starty, (border != None ? 1 : 0) + padding + 4);
+	this->starty = std::max(starty, (border != None ? 1 : 0) + padding);
 	this->startx = std::max(startx, (border != None ? 1 : 0) + padding);
 	this->modal = modal;
 	this->border = border;
@@ -23,6 +23,7 @@ DialogBase::DialogBase(std::string title, int height, int width, int starty, int
 	this->panelModal = NULL;
 	this->windowBorder = NULL;
 	this->panelBorder = NULL;
+    this->isShowing = false;
 }
 
 DialogBase::~DialogBase()
@@ -46,6 +47,10 @@ void DialogBase::Show()
 {
 	if(!isInitialized)
 		doInit();
+    
+    if(isShowing)
+        return;
+    isShowing = true;
 	
 	if(modal)
 	{
@@ -72,6 +77,9 @@ void DialogBase::Show()
 
 void DialogBase::Hide()
 {
+    if(!isShowing)
+        return;
+    isShowing = false;
 	if(modal)
 	{
 		hide_panel(panelModal);
@@ -127,6 +135,11 @@ void DialogBase::doInit()
 	//Add title
 	onTitleDraw(window);
 	doTitle();
+    
+    isInitialized = true;
+    
+    //initialization done
+    onInitialized(window);
 }
 
 void DialogBase::doBorder()
@@ -150,7 +163,7 @@ void DialogBase::doTitle()
 	{
 		mvwprintw(windowBorder, 0, (width+ (padding+1)*2)/2 - title.length()/2, title.c_str());
 	}
-	else
+	else if(title.length() > 0)
 	{
 		throw std::logic_error("BorderStyle.None cannot have a title!");
 	}

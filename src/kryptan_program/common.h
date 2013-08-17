@@ -1,14 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#ifdef _WIN32
-#define PDC_WIDE
-#include <pdcurses/panel.h>
-//Removes compiler warning
-#undef MOUSE_MOVED
-#else
 #include <panel.h>
-#endif
+#undef MOUSE_MOVED
 
 namespace Kryptan
 {

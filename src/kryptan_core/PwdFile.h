@@ -13,7 +13,7 @@ namespace Kryptan {
             PwdFile(std::string filename);
             ~PwdFile(void);
 
-			void CreateNew();
+            void CreateNew();
             void OpenAndParse(SecureString masterkey);
             void Save(SecureString masterkey);
 
@@ -21,7 +21,7 @@ namespace Kryptan {
             std::string GetFilename();
 
             bool IsOpen();
-			bool Exists();
+            bool Exists();
 
         private:
             PwdFile(const PwdFile& obj);

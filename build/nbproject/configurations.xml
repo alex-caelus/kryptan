@@ -25,6 +25,8 @@
                    projectFiles="true">
       <itemPath>../src/kryptan_program/DialogBase.cpp</itemPath>
       <itemPath>../src/kryptan_program/DialogBase.h</itemPath>
+      <itemPath>../src/kryptan_program/MainMenu.cpp</itemPath>
+      <itemPath>../src/kryptan_program/MainMenu.h</itemPath>
       <itemPath>../src/kryptan_program/MessageBoxes.cpp</itemPath>
       <itemPath>../src/kryptan_program/MessageBoxes.h</itemPath>
       <itemPath>../src/kryptan_program/Program.cpp</itemPath>
@@ -145,6 +147,13 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../src/kryptan_program/MainMenu.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/kryptan_program/MainMenu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/kryptan_program/MessageBoxes.cpp"
             ex="false"
@@ -274,6 +283,13 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../src/kryptan_program/MainMenu.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/kryptan_program/MainMenu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/kryptan_program/MessageBoxes.cpp"
             ex="false"

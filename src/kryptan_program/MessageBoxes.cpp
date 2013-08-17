@@ -8,7 +8,7 @@ InfoBox::InfoBox(std::string title, std::string message, bool modal)
 				 Utilities::CountLines(message), 
 				 Utilities::CountStrWidth(message), 
 				 getmaxy(stdscr)/2 - Utilities::CountLines(message)/2, 
-				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message)/2, modal, BorderStyle::Plain, 1)
+				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message)/2, modal, Plain, 1)
 {
     this->message = message;
 }
@@ -20,7 +20,7 @@ ConfirmBox::ConfirmBox(std::string title, std::string message, bool modal)
 				 Utilities::CountLines(message+cnf), 
 				 Utilities::CountStrWidth(message+cnf), 
 				 getmaxy(stdscr)/2 - (Utilities::CountLines(message+cnf))/2, 
-				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message+cnf)/2, modal, BorderStyle::Plain, 1)
+				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message+cnf)/2, modal, Plain, 1)
 {
     this->message = message+cnf;
 }

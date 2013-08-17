@@ -9,7 +9,7 @@ PromptPass::PromptPass(std::string title, std::string message, bool modal)
 				 Utilities::CountLines(message)+2, 
 				 Utilities::CountStrWidth(message), 
 				 getmaxy(stdscr)/2 - (Utilities::CountLines(message)+2)/2, 
-				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message)/2, modal, BorderStyle::Plain, 1)
+				 getmaxx(stdscr)/2 - Utilities::CountStrWidth(message)/2, modal, Plain, 1)
 {
     this->message = message;
 }

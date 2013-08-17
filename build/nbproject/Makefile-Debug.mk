@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1228218613/PwdList.o \
 	${OBJECTDIR}/_ext/1228218613/SecureString.o \
 	${OBJECTDIR}/_ext/229759634/DialogBase.o \
+	${OBJECTDIR}/_ext/229759634/MainMenu.o \
 	${OBJECTDIR}/_ext/229759634/MessageBoxes.o \
 	${OBJECTDIR}/_ext/229759634/Program.o \
 	${OBJECTDIR}/_ext/229759634/Prompts.o \
@@ -107,6 +108,11 @@ ${OBJECTDIR}/_ext/229759634/DialogBase.o: ../src/kryptan_program/DialogBase.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/229759634
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/229759634/DialogBase.o ../src/kryptan_program/DialogBase.cpp
+
+${OBJECTDIR}/_ext/229759634/MainMenu.o: ../src/kryptan_program/MainMenu.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/229759634
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/229759634/MainMenu.o ../src/kryptan_program/MainMenu.cpp
 
 ${OBJECTDIR}/_ext/229759634/MessageBoxes.o: ../src/kryptan_program/MessageBoxes.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/229759634

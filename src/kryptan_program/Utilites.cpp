@@ -1,6 +1,7 @@
 #include "Utilities.h"
 
 #include <string.h> 
+#include "common.h"
 
 using namespace std;
 
@@ -148,4 +149,31 @@ int Utilities::CountStrWidth(Core::SecureString str)
 	int i = CountStrWidth(str.getUnsecureString(), str.length());
 	str.UnsecuredStringFinished();
 	return i;
+}
+
+vector<pair<int, int>> Utilities::colors;
+
+int Utilities::GetColorPair(int fg, int bg)
+{
+    if(!has_colors())
+        return -1;
+    int index = 0;
+    //if not initialized
+    if(colors.size() == 0)
+    {
+        //add default color pair
+        colors.push_back(pair<int, int>(COLOR_WHITE, COLOR_BLACK));
+    }
+    auto res = std::find(colors.begin(), colors.end(), pair<int, int>(fg, bg));
+    if(res == colors.end())
+    {
+        index = colors.size();
+        init_pair(index, fg, bg);
+        colors.push_back(pair<int, int>(fg, bg));
+        return index;
+    }
+    else
+    {
+        return res - colors.begin();
+    }
 }

@@ -21,6 +21,7 @@
     <ClInclude Include="..\src\kryptan_core\SecureString.h" />
     <ClInclude Include="..\src\kryptan_program\common.h" />
     <ClInclude Include="..\src\kryptan_program\DialogBase.h" />
+    <ClInclude Include="..\src\kryptan_program\MainMenu.h" />
     <ClInclude Include="..\src\kryptan_program\MessageBoxes.h" />
     <ClInclude Include="..\src\kryptan_program\Program.h" />
     <ClInclude Include="..\src\kryptan_program\Prompts.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
     <ClCompile Include="..\src\kryptan_program\DialogBase.cpp" />
     <ClCompile Include="..\src\kryptan_program\main.cpp" />
+    <ClCompile Include="..\src\kryptan_program\MainMenu.cpp" />
     <ClCompile Include="..\src\kryptan_program\MessageBoxes.cpp" />
     <ClCompile Include="..\src\kryptan_program\Program.cpp" />
     <ClCompile Include="..\src\kryptan_program\Prompts.cpp" />
@@ -82,14 +84,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../Libs/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Libs/boost;../../../Libs/pdcurses;../../../Libs/cryptopp</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../../Libs/pdcurses/win32a;../../../Libs/cryptopp/Win32/Output/Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../Libs/pdcurses/win32a;../../../Libs/cryptopp/cryptopp/Win32/Output/Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>panel.lib;pdcurses.lib;cryptlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -103,7 +105,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../Libs/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Libs/boost;../../../Libs/pdcurses;../../../Libs/cryptopp</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>

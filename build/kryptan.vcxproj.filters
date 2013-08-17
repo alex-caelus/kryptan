@@ -63,6 +63,9 @@
     <ClInclude Include="..\src\kryptan_program\Prompts.h">
       <Filter>program\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\MainMenu.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
@@ -99,6 +102,9 @@
       <Filter>program\source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\kryptan_program\Prompts.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\MainMenu.cpp">
       <Filter>program\source</Filter>
     </ClCompile>
   </ItemGroup>

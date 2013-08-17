@@ -80,7 +80,7 @@ void PwdFileWorker::WriteFile(string filename, char* content, int length)
 bool PwdFileWorker::FileExists(string filename)
 {
 	ifstream ifile(filename, ifstream::in);
-	return ifile;
+    return ifile.good();
 }
 
 PwdList* PwdFileWorker::ParseFileContents(SecureString content)
