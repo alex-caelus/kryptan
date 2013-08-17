@@ -25,28 +25,28 @@
  * Here is windows (without console window) :)
  **/
 int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	#ifdef _DEBUG
-	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	#endif
-	/* Parse command line parameters */
-	int c;
-	bool useAntiKeylogger = false;
-	LPWSTR* arguments = CommandLineToArgvW(GetCommandLineW(), &c);
+    #ifdef _DEBUG
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    #endif
+    /* Parse command line parameters */
+    int c;
+    bool useAntiKeylogger = false;
+    LPWSTR* arguments = CommandLineToArgvW(GetCommandLineW(), &c);
 
-	size_t not_used;
-	wchar_t wtext[50];
-	mbstowcs_s(&not_used, wtext, "--use-antikeylogging", strlen("--use-antikeylogging"));
+    size_t not_used;
+    wchar_t wtext[50];
+    mbstowcs_s(&not_used, wtext, "--use-antikeylogging", strlen("--use-antikeylogging"));
 
-	if(c > 1 && wcscmp(arguments[1], wtext) == 0)
-		useAntiKeylogger = true;
+    if(c > 1 && wcscmp(arguments[1], wtext) == 0)
+        useAntiKeylogger = true;
 
-	Kryptan::Program* p = new Kryptan::Program(useAntiKeylogger);
+    Kryptan::Program* p = new Kryptan::Program(useAntiKeylogger);
 
-	//enter main loop
-	int exitcode = p->run();
+    //enter main loop
+    int exitcode = p->run();
 
-	//delete
-	delete p;
+    //delete
+    delete p;
 
     return exitcode;
 }
@@ -59,11 +59,11 @@ int __stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
  * Here comes linux :)
  */
 int main(int argc, char** argv) {
-	bool useAntiKeylogger = false;
-	if(argc > 1 && strcmp("--use-antikeylogging", argv[1]) == 0)
-		useAntiKeylogger = true;
+    bool useAntiKeylogger = false;
+    if(argc > 1 && strcmp("--use-antikeylogging", argv[1]) == 0)
+        useAntiKeylogger = true;
 
-	return Kryptan::Program(useAntiKeylogger).run();
+    return Kryptan::Program(useAntiKeylogger).run();
 }
 
 #else

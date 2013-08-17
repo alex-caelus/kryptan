@@ -148,12 +148,12 @@ void Program::CreateFile(Core::PwdFile* file)
                     InfoBox("Error", "Please make sure you have sufficient permission\nto write to the program directory.\nKryptan will now exit").Show();
                     throw KryptanQuit(2001);
                 }
-				catch(std::exception &e)
-				{
-					const char* P = e.what();
-					InfoBox("Error", "Unexpected error occurred while\ncreating the new password file.\nThe error was:\n" + std::string(e.what())).Show();
-					throw KryptanQuit(-1);
-				}
+                catch(std::exception &e)
+                {
+                    const char* P = e.what();
+                    InfoBox("Error", "Unexpected error occurred while\ncreating the new password file.\nThe error was:\n" + std::string(e.what())).Show();
+                    throw KryptanQuit(-1);
+                }
             }
         }
         while(!done);

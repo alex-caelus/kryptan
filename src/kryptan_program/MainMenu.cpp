@@ -2,6 +2,7 @@
 #include "Utilities.h"
 
 #include <string.h>
+#include <cmath>
 
 using namespace Kryptan;
 using namespace Core;
@@ -12,9 +13,10 @@ MainMenu::MainMenu(Core::PwdFile* file)
     list = file->GetPasswordList();
     allLabels = file->GetPasswordList()->AllLabels();
     allPwds = file->GetPasswordList()->All();
-    currSelectedLabel = -1;
-    currSelectedPwd = -1;
+    currHighlightedLabel = -1;
+    currHighlightedPwd = -1;
     firstVisibleLabel = 0;
+    firstVisiblePwd = 0;
 }
 
 MainMenu::~MainMenu() 
@@ -27,26 +29,27 @@ MenuActions MainMenu::Display()
     this->Show();
     
     WINDOW* w = GetWindowPtr();
+    MenuActions action = NO_ACTION;
     //wait for input
-    while(true){
+    while(action == NO_ACTION){
         wmove(w, posFilter.y, posFilter.x+currFilter.length());
         int c = wgetch(w);
         if(c == 27)
-            return QUIT;
+            action = QUIT;
         if(c == KEY_F(1))
-            return NEW_PWD;
+            action = NEW_PWD;
         if(c == KEY_F(2))
-            return CHANGE_MASTER;
+            action = CHANGE_MASTER;
         if(c == KEY_F(3))
-            return ABOUT;
+            action = ABOUT;
 
         switch (state)
         {
         case FilterPwds:
-            HandleKeypressFilterPwds(c);
+            action = HandleKeypressFilterPwds(c);
             break;
         case Labels:
-            HandleKeypressLabels(c);
+            action = HandleKeypressLabels(c);
             break;
 
         default:
@@ -54,10 +57,10 @@ MenuActions MainMenu::Display()
             KryptanQuit(2999);
         }
     }
-    return QUIT;
+    return action;
 }
 
-void MainMenu::HandleKeypressFilterPwds(int c)
+MenuActions MainMenu::HandleKeypressFilterPwds(int c)
 {
     WINDOW* w = GetWindowPtr();
     int blue = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE);
@@ -68,27 +71,27 @@ void MainMenu::HandleKeypressFilterPwds(int c)
     case KEY_LEFT:
         //move to labels
         state = Labels;
-        currSelectedPwd = -1;
-        currSelectedLabel = 0;
+        currHighlightedPwd = -1;
+        currHighlightedLabel = 0;
         curs_set(0);
         RenderLabelList();
         break;
     case KEY_DOWN:
         //change pwd
-        if(currSelectedPwd < (int)allPwds.size()-1)
+        if(currHighlightedPwd < (int)allPwds.size()-1)
         {
-            currSelectedPwd++;
+            currHighlightedPwd++;
         }
         break;
     case KEY_UP:
         //change pwd
-        if(currSelectedPwd > 0)
+        if(currHighlightedPwd > 0)
         {
-            currSelectedPwd--;
+            currHighlightedPwd--;
         }
         break;
     case '\n':
-        //do nothing
+        return OPEN_PWD;
         break;
     case KEY_BACKSPACE:
     case '\b':
@@ -109,14 +112,16 @@ void MainMenu::HandleKeypressFilterPwds(int c)
         str[1] = 0;
         currFilter.append(str, 0, false);
         mvwaddch(w, posFilter.y, posFilter.x+currFilter.length()-1, c | COLOR_PAIR(blue));
-        currSelectedPwd = 0;
+        currHighlightedPwd = 0;
         doFilter();
         break;
     }
     RenderPasswordList();
+
+    return NO_ACTION;
 }
 
-void MainMenu::HandleKeypressLabels(int c)
+MenuActions MainMenu::HandleKeypressLabels(int c)
 {
     WINDOW* w = GetWindowPtr();
     switch (c)
@@ -124,32 +129,32 @@ void MainMenu::HandleKeypressLabels(int c)
     case KEY_RIGHT:
         //move to labels
         state = FilterPwds;
-        currSelectedLabel = -1;
-        currSelectedPwd = 0;
+        currHighlightedLabel = -1;
+        currHighlightedPwd = 0;
         curs_set(1);
         RenderPasswordList();
         break;
     case KEY_DOWN:
         //change pwd
-        if(currSelectedLabel < (int)visibleLabels.size()-1)
+        if(currHighlightedLabel < (int)allLabels.size()-1)
         {
-            currSelectedLabel++;
+            currHighlightedLabel++;
         }
         break;
     case KEY_UP:
         //change pwd
-        if(currSelectedLabel > 0)
+        if(currHighlightedLabel > 0)
         {
-            currSelectedLabel--;
+            currHighlightedLabel--;
         }
         break;
     case ' ':
     case '\n':
     {
-        auto it = std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[currSelectedLabel]);
+        auto it = std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[currHighlightedLabel]);
         if(selectedLabels.end() == it)
         {
-            selectedLabels.push_back(allLabels[currSelectedLabel]);
+            selectedLabels.push_back(allLabels[currHighlightedLabel]);
         }
         else
         {
@@ -163,6 +168,7 @@ void MainMenu::HandleKeypressLabels(int c)
         break;
     }
     RenderLabelList();
+    return NO_ACTION;
 }
 
 Pwd* MainMenu::GetSelectedPwd()
@@ -223,6 +229,7 @@ void MainMenu::RenderLabelList()
     const int startx = 1;
     const int width = 30;
     int height = getmaxy(w) - 3;
+    int nrOfRows = height - 2;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
     int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
@@ -238,20 +245,53 @@ void MainMenu::RenderLabelList()
     //store pwd pos
     posLabels = point(starty+1, startx+1);
     
-    //create printf format string
-    char format[20];
-    sprintf_s<20>(format, "[%%c] %%-%ds", width-7);
-
-    
-    for(int i=0; i < (int)allLabels.size(); i++)
+    if (allLabels.size() > 0)
     {
-        bool isSelected = selectedLabels.size() == 0 || std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
-        if(i == currSelectedLabel && state == Labels)
-            wattron(w, COLOR_PAIR(fg));
-        mvwprintw(w, posLabels.y+i, posLabels.x, format, isSelected ? '#' : ' ' , allLabels[i].getUnsecureString());
-        if(i == currSelectedLabel && state == Labels)
-            wattron(w, COLOR_PAIR(bg));
-        allLabels[i].UnsecuredStringFinished();
+        //create printf format string
+        char format[20];
+        sprintf_s<20>(format, "[%%c] %%-%ds", width-7);
+
+        int visibleLabelEnd = std::min( firstVisibleLabel + nrOfRows, (int)allLabels.size());
+
+        if(currHighlightedLabel >= visibleLabelEnd)
+        {
+            visibleLabelEnd = currHighlightedLabel+1;
+            firstVisibleLabel = visibleLabelEnd - nrOfRows;
+        }
+
+        if(currHighlightedLabel >= 0 && currHighlightedLabel < firstVisibleLabel)
+        {
+            firstVisibleLabel = currHighlightedLabel;
+            visibleLabelEnd = std::min( firstVisibleLabel + nrOfRows, (int)allLabels.size());
+        }
+
+        for(int i=firstVisibleLabel, j=0; i < visibleLabelEnd; i++, j++)
+        {
+            bool isSelected = selectedLabels.size() == 0 || std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
+            if(i == currHighlightedLabel && state == Labels)
+                wattron(w, COLOR_PAIR(fg));
+            mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , allLabels[i].getUnsecureString());
+            if(i == currHighlightedLabel && state == Labels)
+                wattron(w, COLOR_PAIR(bg));
+            allLabels[i].UnsecuredStringFinished();
+        }
+        
+        //print scrollbar
+        if (nrOfRows < allLabels.size())
+        {
+            double scale = height/(double)allLabels.size();
+            int x = posLabels.x+width-2;
+            int ymax = posLabels.y+height-1;
+            int scrollHeight = std::max(1, (int)std::floor(scale * nrOfRows + 0.5));
+            int scrollStart = std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y-1;
+            for(int y=posLabels.y-1; y<ymax; y++)
+            {
+                if(y < scrollStart || y >= scrollStart + scrollHeight)
+                    mvwaddch(w, y, x, '|');
+                else
+                    mvwaddch(w, y, x, '#');
+            } 
+        }
     }
 
     wattroff(w, COLOR_PAIR(bg) | A_BOLD);
@@ -287,6 +327,7 @@ void MainMenu::RenderPasswordList()
     const int startx = 32;
     int width = getmaxx(w) - 33;
     int height = getmaxy(w) - 5;
+    int nrOfRows = height - 2;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
     int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
@@ -305,24 +346,62 @@ void MainMenu::RenderPasswordList()
     //create printf format string
     char format[20];
     sprintf_s<20>(format, "%%-%ds", width-2);
+    
+    if(currHighlightedPwd == -1 && allPwds.size() > 0)
+        currHighlightedPwd = 0;
 
-    //print all labels
-    if(currSelectedPwd == -1 && allPwds.size() > 0)
-        currSelectedPwd = 0;
 
-    for(int i=0; i < (int)allPwds.size(); i++)
+    if (allPwds.size() > 0)
     {
-        if(i == currSelectedPwd && state == FilterPwds)
+        int visiblePwdEnd = std::min( firstVisiblePwd + nrOfRows, (int)allPwds.size());
+
+        if(currHighlightedPwd >= visiblePwdEnd)
         {
-            wattron(w, COLOR_PAIR(fg));
+            visiblePwdEnd = currHighlightedPwd+1;
+            firstVisiblePwd = visiblePwdEnd - nrOfRows;
+            firstVisiblePwd = firstVisiblePwd < 0 ? 0 : firstVisiblePwd;
         }
-        SecureString name = allPwds[i]->GetDescription();
-        mvwprintw(w, posPwds.y+i, posPwds.x, format, name.getUnsecureString());
-        if(i == currSelectedPwd && state == FilterPwds)
+
+        if(currHighlightedPwd >= 0 && currHighlightedPwd < firstVisiblePwd)
         {
-            wattron(w, COLOR_PAIR(bg));
+            firstVisiblePwd = currHighlightedPwd;
+            visiblePwdEnd = std::min( firstVisiblePwd + nrOfRows, (int)allPwds.size());
         }
-        name.UnsecuredStringFinished();
+
+
+        //print all pwds
+
+        for(int i=firstVisiblePwd, j=0; i < visiblePwdEnd; i++, j++)
+        {
+            if(i == currHighlightedPwd && state == FilterPwds)
+            {
+                wattron(w, COLOR_PAIR(fg));
+            }
+            SecureString name = allPwds[i]->GetDescription();
+            mvwprintw(w, posPwds.y+j, posPwds.x, format, name.getUnsecureString());
+            if(i == currHighlightedPwd && state == FilterPwds)
+            {
+                wattron(w, COLOR_PAIR(bg));
+            }
+            name.UnsecuredStringFinished();
+        }
+        
+        //print scrollbar
+        if (nrOfRows < allPwds.size())
+        {
+            double scale = (height)/(double)allPwds.size();
+            int x = posPwds.x+width-2;
+            int ymax = posPwds.y+height-1;
+            int scrollHeight = std::max(1, (int)std::floor(scale * nrOfRows + 0.5));
+            int scrollStart = std::floor(firstVisiblePwd*scale + 0.5) + posPwds.y-1;
+            for(int y=posPwds.y-1; y<ymax; y++)
+            {
+                if(y < scrollStart || y >= scrollStart + scrollHeight)
+                    mvwaddch(w, y, x, '|');
+                else
+                    mvwaddch(w, y, x, '#');
+            } 
+        }
     }
     
     wattroff(w, COLOR_PAIR(bg) | A_BOLD);

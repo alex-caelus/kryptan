@@ -10,8 +10,10 @@ namespace Kryptan
     {
         QUIT,
         NEW_PWD,
+        OPEN_PWD,
         CHANGE_MASTER,
-        ABOUT
+        ABOUT,
+        NO_ACTION
     };
     
     class MainMenu : DialogBase
@@ -41,18 +43,18 @@ namespace Kryptan
         point posFilter;
         point posLabels;
         point posPwds;
-        int currSelectedLabel;
-        int currSelectedPwd;
+        int currHighlightedLabel;
+        int currHighlightedPwd;
         int firstVisibleLabel;
+        int firstVisiblePwd;
         Core::SecureString currFilter;
-        Core::PwdLabelVector visibleLabels;
         Core::PwdLabelVector selectedLabels;
         Core::PwdLabelVector allLabels;
         Core::PwdList::PwdVector allPwds;
 
         MainMenu(const MainMenu& orig);
-        void HandleKeypressFilterPwds(int c);
-        void HandleKeypressLabels(int c);
+        MenuActions HandleKeypressFilterPwds(int c);
+        MenuActions HandleKeypressLabels(int c);
 
         virtual void onInitialized(WINDOW* content) override;
 
