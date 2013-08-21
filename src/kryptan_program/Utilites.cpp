@@ -23,36 +23,41 @@ using namespace std;
 using namespace Kryptan;
 
 void Utilities::Sleep(int milliseconds){
-	mySleep(milliseconds);
+    mySleep(milliseconds);
 }
 
-char* Utilities::ReadLine(WINDOW* w)
+char* Utilities::ReadLine(WINDOW* w, bool canabort)
 {
-	echo();
-    curs_set(1);
-	return _readLine(w, false);
+    return _readLine(w, false, canabort);
 }
 
-char* Utilities::ReadLinePwd(WINDOW* w)
+char* Utilities::ReadLinePwd(WINDOW* w, bool canabort)
 {
-	noecho();
-    curs_set(1);
-	return _readLine(w, true);
+    return _readLine(w, true, canabort);
 }
 
-char* Utilities::_readLine(WINDOW* w, bool echoStar){
+char* Utilities::_readLine(WINDOW* w, bool echoStar, bool canabort){
     char * line = (char*)malloc(100);
-	char * linep = line;
+    char * linep = line;
 
     size_t lenmax = 100, len = lenmax;
     int c;
 
     if(line == NULL)
         return NULL;
+    
+    noecho();
+    curs_set(1);
 
     for(;;) {
         c = wgetch(w);
-		
+        
+        if(canabort && c == 27)
+        {
+            //escape key pressed
+            free(linep);
+            return 0;
+        }
 
         if(c == EOF)
             break;
@@ -72,83 +77,123 @@ char* Utilities::_readLine(WINDOW* w, bool echoStar){
         if(c == '\n')
             break;
 
-		*line++ = c;
-		
-		if(c == '\b' || c == 127){ //delete or backspace
-			if(line > linep){
-				line -= 2;
-				mvwdelch(w, getcury(w), getcurx(w)-1);
-				wrefresh(w);
-			}
-		}
-		else if(echoStar){
-			waddch(w, '*');
-			wrefresh(w);
-		}
+        *line++ = (char)c;
+        
+        if(c == '\b' || c == 127){ //delete or backspace
+            if(line-2 >= linep){
+                line -= 2;
+                mvwdelch(w, getcury(w), getcurx(w)-1);
+            }
+        }
+        else if(echoStar){
+            waddch(w, '*');
+        }
+        else
+        {
+            waddch(w, c);
+        }
     }
     *line = '\0';
     return linep;
 }
 
-int Utilities::CountLines(const char* str, int length)
+int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeight, const char* string, int length)
 {
-	int lines = 1;
-	for(char* p = (char *)str; p - str < length && p != '\0'; p++)
-	{
-		if(*p == '\n') lines++;
-	}
-	return lines;
+    int lines = 1;
+    if(length < maxWidth)
+    {
+        //print spaces first
+        for(int i = x; i < x+maxWidth; i++)
+        {
+            mvwaddch(w, y, i, ' ');
+        }
+        mvwprintw(w, y, x+maxWidth/2-length/2, string);
+    }
+    else
+    {
+        int maxX =x + maxWidth;
+        for(int i=0; length > 0 || i % maxWidth != 0; i++, length--)
+        {
+            mvwaddch(w, y, x++, (length > 0) ? string[i] : ' ');
+            if(x>=maxX && length > 0)
+            {
+                x -= maxWidth;
+                y++;
+                if(lines >= maxHeight)
+                {
+                    return lines;
+                }
+                lines++;
+            }
+        }
+    }
+    return lines;
 }
 
-int Utilities::CountLines(const char* str)
+int Utilities::CountLines(const char* str, int length, int maxwidth)
 {
-	return CountLines(str, strlen(str));
+    int lines = 0;
+    char* lastLinebreak = (char*)str;
+    for(char* p = (char *)str; p - str < length && p != '\0'; p++)
+    {
+        if(*p == '\n' || (p-lastLinebreak) % maxwidth == 0) 
+        {
+            lastLinebreak = p;
+            lines++;
+        }
+    }
+    return lines;
 }
 
-int Utilities::CountLines(string str)
+int Utilities::CountLines(const char* str, int maxwidth)
 {
-	return CountLines(str.c_str(), str.length());
+    return CountLines(str, strlen(str), maxwidth);
 }
 
-int Utilities::CountLines(Core::SecureString str)
+int Utilities::CountLines(string str, int maxwidth)
 {
-	int i = CountLines(str.getUnsecureString(), str.length());
-	str.UnsecuredStringFinished();
-	return i;
+    return CountLines(str.c_str(), str.length(), maxwidth);
+}
+
+int Utilities::CountLines(Core::SecureString str, int maxwidth)
+{
+    int i = CountLines(str.getUnsecureString(), str.length(), maxwidth);
+    str.UnsecuredStringFinished();
+    return i;
 }
 
 int Utilities::CountStrWidth(const char* str, int length)
 {
-	int curWith = 0;
-	int maxWith = 0;
-	for(char* p = (char *)str; p - str < length && p != '\0'; p++)
-	{
-		if(*p == '\n')
-		{
-			curWith = 0;
-		}
-		curWith++;
-		if(curWith > maxWith) 
-			maxWith = curWith;
-	}
-	return maxWith;
+    int curWith = 0;
+    int maxWith = 0;
+    for(char* p = (char *)str; p - str < length && p != '\0'; p++)
+    {
+        curWith++;
+        if(curWith > maxWith) 
+            maxWith = curWith;
+        if(*p == '\n')
+        {
+            curWith = 0;
+        }
+    }
+    return maxWith;
 }
 
 int Utilities::CountStrWidth(const char* str)
 {
-	return CountStrWidth(str, strlen(str));
+    return CountStrWidth(str, strlen(str));
 }
 
 int Utilities::CountStrWidth(string str)
 {
-	return CountStrWidth(str.c_str(), str.length());
+    return CountStrWidth(str.c_str(), str.length());
 }
 
 int Utilities::CountStrWidth(Core::SecureString str)
 {
-	int i = CountStrWidth(str.getUnsecureString(), str.length());
-	str.UnsecuredStringFinished();
-	return i;
+    int i = CountStrWidth(str.getUnsecureString(), str.length());
+    str.UnsecuredStringFinished();
+    return i;
 }
 
 vector<pair<int, int>> Utilities::colors;
@@ -168,7 +213,7 @@ int Utilities::GetColorPair(int fg, int bg)
     if(res == colors.end())
     {
         index = colors.size();
-        init_pair(index, fg, bg);
+        init_pair((short)index, (short)fg, (short)bg);
         colors.push_back(pair<int, int>(fg, bg));
         return index;
     }

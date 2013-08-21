@@ -6,15 +6,37 @@
 
 namespace Kryptan
 {
-	class PromptPass : DialogBase
-	{
-	public:
-		PromptPass(std::string title, std::string message, bool modal = true);
+    
+    class PromtAbortException { };
 
-		Core::SecureString Prompt();
-	private:
-		std::string message;
-	};
+    class PromptPass : DialogBase
+    {
+    public:
+        PromptPass(std::string title, std::string message, bool modal = true);
+
+        Core::SecureString Prompt();
+    private:
+        std::string message;
+    };
+    
+    class PromptString : DialogBase
+    {
+    public:
+        PromptString(std::string title, std::string message, bool modal = true);
+
+        Core::SecureString Prompt();
+
+    private:
+        std::string message;
+    };
+
+    class PromtOrGeneratePass : DialogBase
+    {
+    public:
+        PromtOrGeneratePass();
+
+        Core::SecureString Prompt();
+    };
 };
 
 

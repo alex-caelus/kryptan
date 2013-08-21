@@ -18,6 +18,28 @@ const char* strcasestr( char* haystack, char* needle )
 }
 #endif
 
+bool myPwdCompare(Pwd* a, Pwd* b)
+{
+    SecureString aSstr = a->GetDescription();
+    const char* aStr = aSstr.getUnsecureString();
+    SecureString bSstr = b->GetDescription();
+    const char* bStr = bSstr.getUnsecureString();
+    bool res = _strcmpi(aStr, bStr) < 0;
+    aSstr.UnsecuredStringFinished();
+    bSstr.UnsecuredStringFinished();
+    return res;
+}
+
+bool myLabelcompare(SecureString a, SecureString b)
+{
+    const char* aStr = a.getUnsecureString();
+    const char* bStr = b.getUnsecureString();
+    bool res = _strcmpi(aStr, bStr) < 0;
+    a.UnsecuredStringFinished();
+    b.UnsecuredStringFinished();
+    return res;
+}
+
 PwdList::PwdList(void)
 {
 }
@@ -36,22 +58,23 @@ PwdList::PwdList(const PwdList& obj)
     throw std::logic_error("Not implemented");
 }
 
-PwdList::PwdVector PwdList::All() const
+PwdList::PwdVector PwdList::All()
 {
+    pwds.sort(myPwdCompare);
     return PwdVector(pwds.begin(), pwds.end());
 }
 
-PwdList::PwdVector PwdList::Filter(const SecureString& pattern) const
+PwdList::PwdVector PwdList::Filter(const SecureString& pattern)
 {
     return Filter(pattern, PwdLabelVector());
 }
 
-PwdList::PwdVector PwdList::Filter(const PwdLabelVector& labels) const
+PwdList::PwdVector PwdList::Filter(const PwdLabelVector& labels)
 {
     return Filter(SecureString(), labels);
 }
 
-PwdList::PwdVector PwdList::Filter(const SecureString& pattern, const PwdLabelVector& labels) const
+PwdList::PwdVector PwdList::Filter(const SecureString& pattern, const PwdLabelVector& labels)
 {
     PwdVector filtered;
     if(pattern.length() > 0)
@@ -89,6 +112,8 @@ PwdList::PwdVector PwdList::Filter(const SecureString& pattern, const PwdLabelVe
             filtered = passed;
         }
     }
+
+    pwds.sort(myPwdCompare);
     return filtered;
 }
 
@@ -119,11 +144,18 @@ Pwd* PwdList::CreatePwd(const SecureString& desciption, const SecureString& user
 
 void PwdList::DeletePwd(Pwd* pwd)
 {
+    auto labels = pwd->GetLabels();
+    for(auto label = labels.begin(); label != labels.end(); label++)
+    {
+        RemovePwdFromLabel(pwd, *label);
+    }
     pwds.remove(pwd);
+    delete pwd;
 }
 
 PwdLabelVector PwdList::AllLabels()
 {
+    existingLabels.sort(myLabelcompare);
     return PwdLabelVector(existingLabels.begin(), existingLabels.end());
 }
             
@@ -140,7 +172,8 @@ PwdLabelVector PwdList::FilterLabels(SecureString pattern)
         (*it).UnsecuredStringFinished();
     }
     pattern.UnsecuredStringFinished();
-
+    
+    std::sort(vector.begin(), vector.end(), myLabelcompare);
     return vector;
 }
 

@@ -24,17 +24,17 @@ namespace Kryptan {
 
         class PwdFileWorker {
         public:
-			static void ReadFile(std::string filename, int& length, char*& buffer);
-			static void WriteFile(std::string filename, char* content, int length);
-			static bool FileExists(std::string filename);
-			static PwdList* ParseFileContents(SecureString content);
-			static char* GetNextTagStart(const char* pos);
-			static int GetTagLength(const char* tagStart);
-			static SecureString EscapeTags(const SecureString& str);
-			static SecureString UnescapeTags(const char* str, int length);
-			static char* Encrypt(SecureString content, int& encryptedLength, SecureString masterkey);
-			static SecureString Decrypt(char* encryptedBuffer, int encryptedBufferLength, SecureString masterkey);
-			static void DeletePwdList(PwdList* list);
+            static void ReadFile(std::string filename, int& length, char*& buffer);
+            static void WriteFile(std::string filename, char* content, int length);
+            static bool FileExists(std::string filename);
+            static PwdList* ParseFileContents(SecureString content);
+            static char* GetNextTagStart(const char* pos);
+            static int GetTagLength(const char* tagStart);
+            static SecureString EscapeTags(const SecureString& str);
+            static SecureString UnescapeTags(const char* str, int length);
+            static char* Encrypt(SecureString content, int& encryptedLength, SecureString masterkey);
+            static SecureString Decrypt(char* encryptedBuffer, int encryptedBufferLength, SecureString masterkey);
+            static void DeletePwdList(PwdList* list);
         private:
         };
 

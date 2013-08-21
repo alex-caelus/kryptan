@@ -5,11 +5,11 @@
 
 namespace Kryptan
 {
-	class InfoBox : DialogBase
-	{
-	public:
-		InfoBox(std::string title, std::string message, bool modal = true);
-		void Show()
+    class InfoBox : DialogBase
+    {
+    public:
+        InfoBox(std::string title, std::string message, bool modal = true);
+        void Show()
         {
             DialogBase::Show();
             //print message
@@ -20,9 +20,9 @@ namespace Kryptan
             curs_set(0);
             getch();
         }
-	private:
-		std::string message;
-	};
+    private:
+        std::string message;
+    };
     
     class ConfirmBox : DialogBase
     {
@@ -37,11 +37,11 @@ namespace Kryptan
             wrefresh(w);
             //wait for confirmation
             curs_set(0);
-            char c = getch();
+            int c = getch();
             return c == '\n';
         }
-	private:
-		std::string message;
+    private:
+        std::string message;
     };
 };
 

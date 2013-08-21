@@ -21,17 +21,17 @@ Pwd::Pwd(const Pwd& orig) {
 Pwd::~Pwd() {
 }
 
-SecureString Pwd::GetDescription()
+SecureString Pwd::GetDescription() const
 {
 	return mDescription;
 }
 
-SecureString Pwd::GetUsername()
+SecureString Pwd::GetUsername() const
 {
 	return mUsername;
 }
 
-SecureString Pwd::GetPassword()
+SecureString Pwd::GetPassword() const
 {
 	return mPassword;
 }

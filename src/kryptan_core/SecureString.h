@@ -97,14 +97,14 @@ namespace Kryptan {
              */
             void assign(const SecureString& str);
 
-			/**
-			 * Assignment operator
-			 */
-			inline SecureString&  operator= (const SecureString& other)
-			{
-				assign(other);
-				return *this;
-			}
+            /**
+             * Assignment operator
+             */
+            inline SecureString&  operator= (const SecureString& other)
+            {
+                assign(other);
+                return *this;
+            }
 
             /**
              * This appends a string to this string.
@@ -235,19 +235,19 @@ namespace Kryptan {
              */
             bool equals(const char* s2) const;
 
-			bool operator==(const SecureString& other) const
-			{
-				return equals(other);
-			}
+            bool operator==(const SecureString& other) const
+            {
+                return equals(other);
+            }
 
             /**
              * This returns true if the argument contains an equal string
              * @param s2 - the string to compare with
              * @return the corresponding checksum of the string
              */
-			ssnr checksum() const{
-				return _checksum;
-			}
+            ssnr checksum() const{
+                return _checksum;
+            }
 
         private:
             void init();
@@ -259,7 +259,7 @@ namespace Kryptan {
             ssnr _length;
             ssnr _allocated;
             ssnr _nexlinefeedposition;
-			ssnr _checksum;
+            ssnr _checksum;
             bool _mutableplaintextcopy;
         };
     }
