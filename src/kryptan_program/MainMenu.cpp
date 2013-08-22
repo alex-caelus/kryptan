@@ -7,6 +7,11 @@
 using namespace Kryptan;
 using namespace Core;
 
+
+#ifndef _WIN32
+#define A_ITALIC A_BOLD
+#endif
+
 MainMenu::MainMenu(Core::PwdFile* file) 
     : DialogBase("", getmaxy(stdscr), getmaxx(stdscr), 0, 0, true, None, 0)
 {
@@ -256,7 +261,11 @@ void MainMenu::RenderLabelList()
     {
         //create printf format string
         char format[20];
+#ifdef _WIN32
         sprintf_s<20>(format, "[%%c] %%-%d.%ds", width-7, width-7);
+#else
+        snprintf(format, 20, "[%%c] %%-%d.%ds", width-7, width-7);
+#endif
 
         int visibleLabelEnd = std::min( firstVisibleLabel + nrOfRows, (int)allLabels.size());
 
@@ -360,7 +369,11 @@ void MainMenu::RenderPasswordList()
     
     //create printf format string
     char format[20];
+#ifdef _WIN32
     sprintf_s<20>(format, "%%-%d.%ds", width-2, width-2);
+#else
+        snprintf(format, 20, "%%-%d.%ds", width-2, width-2);
+#endif
     
     if(currHighlightedPwd == -1 && allPwds.size() > 0)
         currHighlightedPwd = 0;

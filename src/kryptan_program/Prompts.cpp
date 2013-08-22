@@ -1,6 +1,7 @@
 #include "Prompts.h"
 #include "Utilities.h"
 #include "MessageBoxes.h"
+#include "string.h"
 
 using namespace Kryptan;
 using namespace Core;

@@ -5,7 +5,11 @@
 
 #include <string.h>
 #include <cmath>
-#include <exception>
+#include <stdexcept>
+
+#ifndef _WIN32
+#define A_ITALIC A_BOLD
+#endif
 
 using namespace Kryptan;
 using namespace Core;
@@ -29,9 +33,9 @@ PwdMenu::~PwdMenu()
 {
 }
 
-void PwdMenu::Display()
+void PwdMenu::Display(bool editmode)
 {
-    state = NoEdit;
+    state = editmode ? Edit : NoEdit;
     this->Show();
     
     WINDOW* w = GetWindowPtr();
@@ -71,11 +75,14 @@ void PwdMenu::Display()
                 try{
                     PromptString p("New Label", "Please enter the new label name, abort with [Esc]",  false);
                     SecureString newLabel = p.Prompt();
-                    list->AddPwdToLabel(pwd, newLabel);
-                    allLabels = list->AllLabels();
-                    selectedLabels = pwd->GetLabels();
-                    currHighlightedLabel = -1;
-                    firstVisibleLabel = 0;
+                    if (newLabel.length() > 0)
+                    {
+                        list->AddPwdToLabel(pwd, newLabel);
+                        allLabels = list->AllLabels();
+                        selectedLabels = pwd->GetLabels();
+                        currHighlightedLabel = -1;
+                        firstVisibleLabel = 0; 
+                    }
                 }
                 catch(PromtAbortException){};
             }
@@ -313,9 +320,21 @@ void PwdMenu::RenderLabelList()
         //create printf format string
         char format[20];
         if(state == NoEdit)
+        {
+#ifdef _WIN32
             sprintf_s<20>(format, "%%-%d.%ds", width-3, width-3);
+#else
+            snprintf(format, 20, "%%-%d.%ds", width-3, width-3);
+#endif
+        }
         else
+        {
+#ifdef _WIN32
             sprintf_s<20>(format, "[%%c] %%-%d.%ds", width-7, width-7);
+#else
+            snprintf(format, 20, "[%%c] %%-%d.%ds", width-7, width-7);
+#endif
+        }
 
         int visibleLabelEnd = std::min( firstVisibleLabel + nrOfRows, (int)printLabels.size());
 

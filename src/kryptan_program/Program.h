@@ -23,7 +23,7 @@ namespace Kryptan
         void OpenFile(Core::PwdFile* file);
         void CreateFile(Core::PwdFile* file);
         void NewPwd();
-        void OpenPwd(Core::Pwd* pwd);
+        void OpenPwd(Core::Pwd* pwd, bool editmode=false);
         void ChangeMasterkey();
         void About();
 

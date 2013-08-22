@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/229759634/MessageBoxes.o \
 	${OBJECTDIR}/_ext/229759634/Program.o \
 	${OBJECTDIR}/_ext/229759634/Prompts.o \
+	${OBJECTDIR}/_ext/229759634/PwdMenu.o \
 	${OBJECTDIR}/_ext/229759634/Utilites.o \
 	${OBJECTDIR}/_ext/229759634/main.o
 
@@ -128,6 +129,11 @@ ${OBJECTDIR}/_ext/229759634/Prompts.o: ../src/kryptan_program/Prompts.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/229759634
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -s -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/229759634/Prompts.o ../src/kryptan_program/Prompts.cpp
+
+${OBJECTDIR}/_ext/229759634/PwdMenu.o: ../src/kryptan_program/PwdMenu.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/229759634
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -s -std=c++11 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/229759634/PwdMenu.o ../src/kryptan_program/PwdMenu.cpp
 
 ${OBJECTDIR}/_ext/229759634/Utilites.o: ../src/kryptan_program/Utilites.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/229759634

@@ -227,15 +227,15 @@ void Program::NewPwd()
             username = p2.Prompt();
         }catch(PromtAbortException){};
 
-        OpenPwd( file->GetPasswordList()->CreatePwd(description, username, newpass) );
+        OpenPwd( file->GetPasswordList()->CreatePwd(description, username, newpass), true );
     }
     catch(PromtAbortException){};
 }
 
-void Program::OpenPwd(Core::Pwd* pwd)
+void Program::OpenPwd(Core::Pwd* pwd, bool editmode)
 {
     PwdMenu p(file->GetPasswordList(), pwd);
-    p.Display();
+    p.Display(editmode);
     file->Save(masterkey);
 }
 

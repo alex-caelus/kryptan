@@ -16,6 +16,10 @@ const char* strcasestr( char* haystack, char* needle )
 
    return NULL;
 }
+
+#else
+//unix
+#define _strcmpi strcasecmp
 #endif
 
 bool myPwdCompare(Pwd* a, Pwd* b)

@@ -12,7 +12,7 @@ namespace Kryptan
         PwdMenu(Core::PwdList* list, Core::Pwd* pwd);
         virtual ~PwdMenu();
 
-        void Display();
+        void Display(bool editmode = false);
 
     private:
         struct point
