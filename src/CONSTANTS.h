@@ -78,7 +78,7 @@
     "\"Password-Based Encryptor with AES256 and HMAC/SHA-1\"",        \
     "Contact Alexander Nilsson for further questions at:",              \
     "alex.caelus@gmail.com OR www.caelus.org/proj/kryptan",              \
-	0																	\
+    0																	\
 }                                                                       \
 
 
