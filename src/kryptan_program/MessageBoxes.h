@@ -38,7 +38,7 @@ namespace Kryptan
             //wait for confirmation
             curs_set(0);
             int c = getch();
-            return c == '\n';
+            return c == '\n' || c == KEY_ENTER || c == 0x1CB;//numpad enter 
         }
     private:
         std::string message;
