@@ -400,12 +400,6 @@ void CreatePassword(PwdList* list, SecureString& desc, SecureString& user, Secur
 {
     bool success = false;
     Pwd* pwd;
-    desc.getUnsecureString();
-    user.getUnsecureString();
-    pass.getUnsecureString();
-    desc.UnsecuredStringFinished();
-    user.UnsecuredStringFinished();
-    pass.UnsecuredStringFinished();
     do{
         try{
             pwd = list->CreatePwd(desc, user, pass);
