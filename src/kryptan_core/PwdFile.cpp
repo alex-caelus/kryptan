@@ -37,7 +37,7 @@ void PwdFile::CreateNew()
     isOpen = true;
 }
 
-void PwdFile::OpenAndParse(SecureString masterkey)
+void PwdFile::OpenAndParse(SecureString masterkey, bool useOldFormat)
 {
     char* encryptedBuffer = 0;
     int encryptedBufferLength;
@@ -55,8 +55,13 @@ void PwdFile::OpenAndParse(SecureString masterkey)
         delete[] encryptedBuffer;
         encryptedBuffer = 0;
 
-        //parse the contents
-        list = PwdFileWorker::ParseFileContents(decryptedString);
+        if(!useOldFormat){
+            //parse the contents
+            list = PwdFileWorker::ParseFileContents(decryptedString);
+        }
+        else{
+            list = PwdFileWorker::ParseFileContentsOldFormat(decryptedString);
+        }
 
         isOpen = true;
     }

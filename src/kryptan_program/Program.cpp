@@ -138,6 +138,25 @@ void Program::OpenFile(Core::PwdFile* file)
                     InfoBox("Error", "The contents of the file is corrupt.").Show();
                     throw KryptanQuit(1003);
                 }
+                catch(KryptanFileVersionException)
+                {
+                    if(ConfirmBox("Error", "This file uses an old format!\nDo you want to convert the file to a newer format?").Confirm())
+                    {
+                        try{
+                            file->OpenAndParse(masterkey, true);
+                            done = true;
+                        }
+                        catch(std::exception &e)
+                        {
+                            InfoBox("Error", string("An error occured while converting the password file. The error was:\n") + e.what()).Show();
+                            throw KryptanQuit(-1);
+                        }
+                    }
+                    else
+                    {
+                        throw KryptanQuit(1004);
+                    }
+                }
                 catch(std::exception &e)
                 {
                     InfoBox("Error", "Unexpected error occurred while\nreading/parsing the password file.\nThe error was:\n" + std::string(e.what())).Show();
@@ -243,6 +262,11 @@ void Program::ChangeMasterkey()
 {
     try{
         bool done = false;
+        if(!PromptPass("New Masterkey", "Please input your OLD masterkey as confirmation.", false).Prompt().equals(masterkey))
+        {
+            InfoBox("Error", "The key was incorrect, please try again!", false).Show();
+            return;
+        }
         do
         {
             SecureString newmasterkey = PromptPass("New Masterkey", "Please input new master key.\nAbort with [Esc]", false).Prompt();

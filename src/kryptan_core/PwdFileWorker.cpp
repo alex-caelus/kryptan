@@ -3,6 +3,8 @@
 #include <cryptopp/hex.h>
 #include <fstream>
 #include <stdexcept>
+#include <stack>          // std::stack
+#include <deque>          // std::deque
 
 using namespace Kryptan::Core;
 using namespace std;
@@ -87,7 +89,7 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
 {
     PwdList* target = new PwdList();
 
-    char* currTag = GetNextTagStart(content.getUnsecureString());
+    char* currTag = (char*)content.getUnsecureString();
     int currTagLength = GetTagLength(currTag);
     enum STATES {NOTSET, ROOT, PASSWORD};
     
@@ -105,7 +107,10 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
                 if(strncmp(currTag, RootTagStart, currTagLength) == 0){
                     currState = ROOT;
                 }
-                else{
+                else if(strncmp(currTag, "2.0\n__SUB-TREE__", 3) == 0) {
+                    throw KryptanFileVersionException("Password file is using an old format");
+                }
+                else {
                     throw KryptanFileContentException("Password file is corrupt");
                 }
                 break;
@@ -201,6 +206,14 @@ PwdList* PwdFileWorker::ParseFileContents(SecureString content)
                 break;
             }
         }while((currTag = GetNextTagStart(currTag+1)) != NULL && (currTagLength = GetTagLength(currTag)) != 0);
+    }
+    catch(KryptanFileVersionException)
+    {
+        content.UnsecuredStringFinished();
+        delete target;
+        target = NULL;
+        //rethrow;
+        throw;
     }
     catch(std::exception &e)
     {
@@ -381,4 +394,131 @@ SecureString PwdFileWorker::Decrypt(char* encryptedBuffer, int encryptedBufferLe
 void PwdFileWorker::DeletePwdList(PwdList* list)
 {
     delete list;
+}
+
+void CreatePassword(PwdList* list, SecureString& desc, SecureString& user, SecureString& pass, deque<SecureString>& labels)
+{
+    bool success = false;
+    Pwd* pwd;
+    desc.getUnsecureString();
+    user.getUnsecureString();
+    pass.getUnsecureString();
+    desc.UnsecuredStringFinished();
+    user.UnsecuredStringFinished();
+    pass.UnsecuredStringFinished();
+    do{
+        try{
+            pwd = list->CreatePwd(desc, user, pass);
+            success = pwd != NULL;
+        }catch(KryptanDuplicatePwdException)
+        {
+            desc.append("(duplicate)");
+            success = false;
+        }
+    }while(!success);
+    //add labels
+    for(auto it=labels.begin(); it != labels.end(); it++)
+    {
+        list->AddPwdToLabel(pwd, *it);
+    }
+}
+
+PwdList*  PwdFileWorker::ParseFileContentsOldFormat(SecureString filecontent){
+    #define PASSWORD_FILE_VERSION_NUMBER "2.0"
+    #define TREESTART "__SUB-TREE__"
+    #define TREEEND "__END-SUB-TREE__"
+    #define PASSWORDSTART "__PASSWORD-ENTRY__"
+    #define PASSWORDEND "__END-PASSWORD-ENTRY__"
+    #define EMPTYLINE "__EMPTY__"
+
+    //Define the parsestates
+    enum {
+        GET_VERSION,
+        GET_NEXTENTRY,
+        GET_TREENAME,
+        GET_DESCRIPTION,
+        GET_PASSWORD,
+        GET_USERNAME
+    } state = GET_VERSION;
+
+    const char* currentLine;
+
+    deque<SecureString> currentLabels;
+    SecureString currentDescription;
+    SecureString currentUsername;
+    SecureString currentPassword;
+
+    //Create a new root
+    PwdList* list = new PwdList();
+
+    bool keepParsing = true;
+    //Parse the file
+    while(keepParsing){
+        //get next line
+        currentLine = filecontent.getUnsecureNextline();
+
+        switch(state){
+            case GET_VERSION:
+                if( strcmp(currentLine, PASSWORD_FILE_VERSION_NUMBER) != 0){
+                    throw KryptanFileContentException("Password version mismatch!");
+                }
+                state = GET_NEXTENTRY;
+                break;
+            case GET_NEXTENTRY:
+                //Are we done?
+                if(strlen(currentLine) == 0){
+                    keepParsing = false;
+                }
+                if( strcmp(currentLine, TREESTART) == 0){
+                    state = GET_TREENAME;
+                }
+                if( strcmp(currentLine, TREEEND) == 0){
+                    currentLabels.pop_back();
+                }
+                if( strcmp(currentLine, PASSWORDSTART) == 0){
+                    state = GET_DESCRIPTION;
+                    currentDescription.assign("");
+                    currentUsername.assign("");
+                    currentPassword.assign("");
+                }
+                if( strcmp(currentLine, PASSWORDEND) == 0){
+                    //we have what we need to create a new password, let's do it.
+                    CreatePassword(list, currentDescription, currentUsername, currentPassword, currentLabels);
+                }
+                break;
+            case GET_TREENAME:
+                {
+                    currentLabels.push_back(SecureString(currentLine));
+                    state = GET_NEXTENTRY;
+                }
+                break;
+            case GET_DESCRIPTION:
+                {
+                    currentDescription.assign(currentLine);
+                    state = GET_PASSWORD;
+                }
+                break;
+            case GET_PASSWORD:
+                {
+                    currentPassword.assign(currentLine);
+                    state = GET_USERNAME;
+                }
+                break;
+            case GET_USERNAME:
+                if(strcmp(currentLine, PASSWORDEND) != 0){
+                    currentUsername.assign(currentLine);
+                }
+                else
+                {
+                    CreatePassword(list, currentDescription, currentUsername, currentPassword, currentLabels);
+                }
+                state = GET_NEXTENTRY;
+                break;
+        }
+
+        //Delete the line, and get ready to read the next line
+        filecontent.UnsecuredStringFinished();
+    }
+
+    return list;
 }

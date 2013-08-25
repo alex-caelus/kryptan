@@ -28,6 +28,7 @@ namespace Kryptan {
             static void WriteFile(std::string filename, char* content, int length);
             static bool FileExists(std::string filename);
             static PwdList* ParseFileContents(SecureString content);
+            static PwdList* ParseFileContentsOldFormat(SecureString content);
             static char* GetNextTagStart(const char* pos);
             static int GetTagLength(const char* tagStart);
             static SecureString EscapeTags(const SecureString& str);

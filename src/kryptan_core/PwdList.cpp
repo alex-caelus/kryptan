@@ -1,6 +1,7 @@
 #include "PwdList.h"
 #include <stdexcept>
 #include <string.h>
+#include "Exceptions.h"
 
 using namespace Kryptan::Core;
 using namespace std;
@@ -133,7 +134,7 @@ Pwd* PwdList::CreatePwd(const SecureString& desciption, const SecureString& user
     for(auto it = pwds.begin(); it != pwds.end(); it++)
     {
         if((*it)->GetDescription().equals(desciption))
-            throw runtime_error("A password already exist with that name!");
+            throw KryptanDuplicatePwdException("A password already exist with that name!");
     }
 
     Pwd* pwd = new Pwd();

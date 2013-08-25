@@ -241,9 +241,9 @@ void MainMenu::RenderLabelList()
     const int startx = 1;
     const int width = 30;
     int height = getmaxy(w) - 3;
-    int nrOfRows = height - 2;
+    int nrOfRows = height - 3;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
+    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
@@ -255,7 +255,7 @@ void MainMenu::RenderLabelList()
     }
 
     //store pwd pos
-    posLabels = point(starty+1, startx+1);
+    posLabels = point(starty+2, startx+1);
     
     if (allLabels.size() > 0)
     {
@@ -283,7 +283,7 @@ void MainMenu::RenderLabelList()
 
         for(int i=firstVisibleLabel, j=0; i < visibleLabelEnd; i++, j++)
         {
-            bool isSelected = selectedLabels.size() == 0 || std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
+            bool isSelected = std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
             if(i == currHighlightedLabel && state == Labels)
                 wattron(w, COLOR_PAIR(fg));
             mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , allLabels[i].getUnsecureString());
@@ -295,12 +295,12 @@ void MainMenu::RenderLabelList()
         //print scrollbar
         if (nrOfRows < (int)allLabels.size())
         {
-            double scale = height/(double)allLabels.size();
+            double scale = nrOfRows/(double)allLabels.size();
             int x = posLabels.x+width-2;
-            int ymax = posLabels.y+height-1;
+            int ymax = posLabels.y+nrOfRows;
             int scrollHeight = std::max(1, (int)std::floor(scale * nrOfRows + 0.5));
-            int scrollStart = (int)std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y-1;
-            for(int y=posLabels.y-1; y<ymax; y++)
+            int scrollStart = (int)std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y;
+            for(int y=posLabels.y; y<ymax; y++)
             {
                 if(y < scrollStart || y >= scrollStart + scrollHeight)
                     mvwaddch(w, y, x, '|');
@@ -312,8 +312,8 @@ void MainMenu::RenderLabelList()
 
     //draw header
     wattron(w, A_UNDERLINE | A_ITALIC);
-    std::string header = "Labels";
-    mvwprintw(w, posLabels.y-1, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
+    std::string header = "Filter by labels";
+    mvwprintw(w, posLabels.y-2, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
 
     wattroff(w, COLOR_PAIR(bg) | A_BOLD);
@@ -351,9 +351,9 @@ void MainMenu::RenderPasswordList()
     const int startx = 32;
     int width = getmaxx(w) - 33;
     int height = getmaxy(w) - 5;
-    int nrOfRows = height - 2;
+    int nrOfRows = height - 3;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
+    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
@@ -365,7 +365,7 @@ void MainMenu::RenderPasswordList()
     }
 
     //store pwd pos
-    posPwds = point(starty+1, startx+1);
+    posPwds = point(starty+2, startx+1);
     
     //create printf format string
     char format[20];
@@ -419,12 +419,12 @@ void MainMenu::RenderPasswordList()
         //print scrollbar
         if (nrOfRows < (int)allPwds.size())
         {
-            double scale = (height)/(double)allPwds.size();
+            double scale = (nrOfRows)/(double)allPwds.size();
             int x = posPwds.x+width-2;
-            int ymax = posPwds.y+height-1;
+            int ymax = posPwds.y+nrOfRows;
             int scrollHeight = std::max(1, (int)std::floor(scale * nrOfRows + 0.5));
-            int scrollStart = (int)std::floor(firstVisiblePwd*scale + 0.5) + posPwds.y-1;
-            for(int y=posPwds.y-1; y<ymax; y++)
+            int scrollStart = (int)std::floor(firstVisiblePwd*scale + 0.5) + posPwds.y;
+            for(int y=posPwds.y; y<ymax; y++)
             {
                 if(y < scrollStart || y >= scrollStart + scrollHeight)
                     mvwaddch(w, y, x, '|');
@@ -436,8 +436,8 @@ void MainMenu::RenderPasswordList()
 
     //draw header
     wattron(w, A_UNDERLINE | A_ITALIC);
-    std::string header = "Passwords";
-    mvwprintw(w, posPwds.y-1, posPwds.x-1+ width/2 - (header.length()/2), header.c_str());
+    std::string header = "Filter results";
+    mvwprintw(w, posPwds.y-2, posPwds.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
     
     wattroff(w, COLOR_PAIR(bg) | A_BOLD);
@@ -445,6 +445,16 @@ void MainMenu::RenderPasswordList()
 
 void MainMenu::doFilter()
 {
+    //remove labels that are not in allLabels
+    PwdLabelVector copy(selectedLabels.begin(), selectedLabels.end());
+    selectedLabels.clear();
+    
+    for(auto it=copy.begin(); it != copy.end(); it++)
+    {
+        if(find(allLabels.begin(), allLabels.end(), *it) != allLabels.end())
+            selectedLabels.push_back(*it);
+    }
+
     allPwds = list->Filter(currFilter, selectedLabels);
     allLabels = list->AllLabels();
 }

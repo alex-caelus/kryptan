@@ -289,9 +289,9 @@ void PwdMenu::RenderLabelList()
     const int startx = 1;
     const int width = 30;
     int height = getmaxy(w) - 3;
-    int nrOfRows = height - 2;
+    int nrOfRows = height - 4;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
+    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
@@ -303,7 +303,7 @@ void PwdMenu::RenderLabelList()
     }
 
     //store pwd pos
-    posLabels = point(starty+1, startx+1);
+    posLabels = point(starty+3, startx+1);
 
     PwdLabelVector printLabels;
     if(state == NoEdit)
@@ -371,12 +371,12 @@ void PwdMenu::RenderLabelList()
         //print scrollbar
         if (nrOfRows < (int)printLabels.size())
         {
-            double scale = height/(double)printLabels.size();
+            double scale = nrOfRows/(double)printLabels.size();
             int x = posLabels.x+width-2;
-            int ymax = posLabels.y+height-1;
+            int ymax = posLabels.y+nrOfRows;
             int scrollHeight = std::max(1, (int)std::floor(scale * nrOfRows + 0.5));
-            int scrollStart = (int)std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y-1;
-            for(int y=posLabels.y-1; y<ymax; y++)
+            int scrollStart = (int)std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y;
+            for(int y=posLabels.y; y<ymax; y++)
             {
                 if(y < scrollStart || y >= scrollStart + scrollHeight)
                     mvwaddch(w, y, x, '|');
@@ -389,7 +389,7 @@ void PwdMenu::RenderLabelList()
     //draw header
     wattron(w, A_UNDERLINE | A_ITALIC);
     std::string header = "Labels";
-    mvwprintw(w, posLabels.y-1, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
+    mvwprintw(w, posLabels.y-2, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
 
     wattroff(w, COLOR_PAIR(bg) | A_BOLD);
@@ -404,7 +404,7 @@ void PwdMenu::RenderPasswordDetails()
     int contentWidth = width - 2;
     int height = getmaxy(w) - 3;
     int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE);
+    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
     wattron(w, COLOR_PAIR(bg) | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)

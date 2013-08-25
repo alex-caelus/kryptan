@@ -44,6 +44,15 @@ namespace Kryptan
 			}
 		};
 
+		class KryptanFileVersionException : public KryptanBaseException
+		{
+		public:
+			KryptanFileVersionException(const std::string& msg)
+				: KryptanBaseException(msg)
+			{
+			}
+		};
+
 		class KryptanDecryptException : public KryptanBaseException
 		{
 		public:
@@ -58,6 +67,15 @@ namespace Kryptan
 		public:
 			KryptanDecryptWrongKeyException(const std::string& msg)
 				: KryptanDecryptException(msg)
+			{
+			}
+		};
+
+		class KryptanDuplicatePwdException : public KryptanBaseException
+		{
+		public:
+			KryptanDuplicatePwdException(const std::string& msg)
+				: KryptanBaseException(msg)
 			{
 			}
 		};

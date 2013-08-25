@@ -196,6 +196,7 @@ void SecureString::assign(ssarr str, ssnr maxlen, bool deleteStr){
         memset(str, 0, len);
         delete[] str;
     }
+    resetLinefeedPosition();
 }
 
 void SecureString::assign(c_ssarr str, ssnr maxlen){
@@ -220,6 +221,8 @@ void SecureString::assign(const SecureString& str){
 
     //checksum is already calculated by other instance, no need to do it again
     _checksum = str._checksum;
+
+    resetLinefeedPosition();
 }
 
 SecureString::c_ssarr SecureString::getUnsecureString(){

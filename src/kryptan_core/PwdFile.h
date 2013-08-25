@@ -14,7 +14,7 @@ namespace Kryptan {
             ~PwdFile(void);
 
             void CreateNew();
-            void OpenAndParse(SecureString masterkey);
+            void OpenAndParse(SecureString masterkey, bool useOldFormat = false);
             void Save(SecureString masterkey);
 
             PwdList* GetPasswordList();
