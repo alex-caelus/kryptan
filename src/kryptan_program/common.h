@@ -1,7 +1,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#ifdef _WIN32
 #include <panel.h>
+#else
+#include <ncursesw/panel.h>
+#endif
 #undef MOUSE_MOVED
 
 namespace Kryptan

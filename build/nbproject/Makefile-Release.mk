@@ -65,7 +65,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lcryptopp -lncurses -lpanel -lpthread
+LDLIBSOPTIONS=-lcryptopp -lncursesw -lpthread
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

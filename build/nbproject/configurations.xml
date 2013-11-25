@@ -64,7 +64,8 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -77,8 +78,8 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan</output>
           <linkerLibItems>
             <linkerOptionItem>-lcryptopp</linkerOptionItem>
-            <linkerOptionItem>-lncurses</linkerOptionItem>
-            <linkerOptionItem>-lpanel</linkerOptionItem>
+            <linkerOptionItem>-lncursesw</linkerOptionItem>
+            <linkerOptionItem>-lpanelw</linkerOptionItem>
             <linkerOptionItem>-lpthread</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
@@ -193,7 +194,8 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -217,8 +219,7 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/kryptan</output>
           <linkerLibItems>
             <linkerOptionItem>-lcryptopp</linkerOptionItem>
-            <linkerOptionItem>-lncurses</linkerOptionItem>
-            <linkerOptionItem>-lpanel</linkerOptionItem>
+            <linkerOptionItem>-lncursesw</linkerOptionItem>
             <linkerOptionItem>-lpthread</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
