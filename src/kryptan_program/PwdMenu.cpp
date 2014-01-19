@@ -254,32 +254,29 @@ void PwdMenu::RenderMenuBar()
     
     //enable function keys
     keypad(w, TRUE);
-    
-    int red = Utilities::GetColorPair(COLOR_WHITE, COLOR_RED);
-    int blue = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE);
 
     //print black background first
     mvwprintw(w, 0, 0, "\n");
     
-    wattron(w, COLOR_PAIR(red));
+	wattron(w, KRYPTAN_EXIT_BUTTON_COLOR);
     mvwprintw(w, 0, CloseStart, Close);
-    wattroff(w, COLOR_PAIR(red));
+	wattroff(w, KRYPTAN_EXIT_BUTTON_COLOR);
 
     if (state == PwdMenu::NoEdit)
     {
-        wattron(w, COLOR_PAIR(blue));
+		wattron(w, KRYPTAN_BUTTON_ROW_COLOR);
         mvwprintw(w, 0, EditModeStart, EditMode);
     }
     else
     {
-        wattron(w, COLOR_PAIR(blue));
+		wattron(w, KRYPTAN_BUTTON_ROW_COLOR);
         mvwprintw(w, 0, SaveStart, Save);
         mvwprintw(w, 0, NewLabelStart, NewLabel);
         mvwprintw(w, 0, DeleteEntryStart, DeleteEntry);
     }
 
 
-    wattroff(w, COLOR_PAIR(blue));
+	wattroff(w, KRYPTAN_BUTTON_ROW_COLOR);
 }
 
 void PwdMenu::RenderLabelList()
@@ -290,9 +287,7 @@ void PwdMenu::RenderLabelList()
     const int width = 30;
     int height = getmaxy(w) - 3;
     int nrOfRows = height - 4;
-    int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
-    wattron(w, COLOR_PAIR(bg) | A_BOLD);
+	wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
     {
@@ -360,10 +355,10 @@ void PwdMenu::RenderLabelList()
             {
                 bool isSelected = std::find(selectedLabels.begin(), selectedLabels.end(), printLabels[i]) != selectedLabels.end();
                 if(i == currHighlightedLabel && state == EditLabels)
-                    wattron(w, COLOR_PAIR(fg));
+					wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
                 mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , printLabels[i].getUnsecureString());
                 if(i == currHighlightedLabel && state == EditLabels)
-                    wattron(w, COLOR_PAIR(bg));
+					wattron(w, KRYPTAN_CONTENT_COLOR);
             }
             printLabels[i].UnsecuredStringFinished();
         }
@@ -392,7 +387,7 @@ void PwdMenu::RenderLabelList()
     mvwprintw(w, posLabels.y-2, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
 
-    wattroff(w, COLOR_PAIR(bg) | A_BOLD);
+	wattroff(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
 }
 
 void PwdMenu::RenderPasswordDetails()
@@ -403,9 +398,7 @@ void PwdMenu::RenderPasswordDetails()
     int width = getmaxx(w) - 33;
     int contentWidth = width - 2;
     int height = getmaxy(w) - 3;
-    int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
-    wattron(w, COLOR_PAIR(bg) | A_BOLD);
+	wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
     {
@@ -428,9 +421,9 @@ void PwdMenu::RenderPasswordDetails()
     wattron(w, A_UNDERLINE | A_ITALIC);
     mvwprintw(w, y++, x+(contentWidth/2)-2, "Name"); //print middle
     wattroff(w, A_UNDERLINE | A_ITALIC);
-    if(state == Edit && selectedField == Name) wattron(w, COLOR_PAIR(fg) | A_BOLD);
+	if (state == Edit && selectedField == Name) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
     y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, name.getUnsecureString(), name.length());
-    if(state == Edit && selectedField == Name) wattron(w, COLOR_PAIR(bg) | A_BOLD);
+	if (state == Edit && selectedField == Name) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     name.UnsecuredStringFinished();
     
     y++; //extra space
@@ -438,17 +431,17 @@ void PwdMenu::RenderPasswordDetails()
     wattron(w, A_UNDERLINE | A_ITALIC);
     mvwprintw(w, y++, x+(contentWidth/2)-4, "Username"); //print middle
     wattroff(w, A_UNDERLINE | A_ITALIC);
-    if(state == Edit && selectedField == Username) wattron(w, COLOR_PAIR(fg) | A_BOLD);
+	if (state == Edit && selectedField == Username) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
     y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, username.getUnsecureString(), username.length());
     username.UnsecuredStringFinished();
-    if(state == Edit && selectedField == Username) wattron(w, COLOR_PAIR(bg) | A_BOLD);
+	if (state == Edit && selectedField == Username) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     
     y++; //extra space
         
     wattron(w, A_UNDERLINE | A_ITALIC);
     mvwprintw(w, y++, x+(contentWidth/2)-4, "Password"); //print middle
     wattroff(w, A_UNDERLINE | A_ITALIC);
-    if(state == Edit && selectedField == Password) wattron(w, COLOR_PAIR(fg) | A_BOLD);
+	if (state == Edit && selectedField == Password) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
 
     if(passwordVisible || state != NoEdit)
         y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, password.getUnsecureString(), password.length());
@@ -460,8 +453,8 @@ void PwdMenu::RenderPasswordDetails()
     }
         
     password.UnsecuredStringFinished();
-    if(state == Edit && selectedField == Password) wattron(w, COLOR_PAIR(bg) | A_BOLD);
+	if (state == Edit && selectedField == Password) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     
-    wattroff(w, COLOR_PAIR(bg) | A_BOLD);
+    wattroff(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
 }
 

@@ -27,7 +27,7 @@ namespace Kryptan{
             static int CountStrWidth(std::string string);
             static int CountStrWidth(Core::SecureString string);
             
-            static int GetColorPair(int, int);
+            static int GetColorPair_DEP(int, int);
 
     private:
             static char* _readLine(WINDOW* w, bool echoStar, bool canabort);

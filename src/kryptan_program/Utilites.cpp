@@ -198,7 +198,7 @@ int Utilities::CountStrWidth(Core::SecureString str)
 
 vector<pair<int, int>> Utilities::colors;
 
-int Utilities::GetColorPair(int fg, int bg)
+int Utilities::GetColorPair_DEP(int fg, int bg)
 {
     if(!has_colors())
         return -1;

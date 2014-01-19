@@ -72,9 +72,6 @@ SecureString PromtOrGeneratePass::Prompt()
         DialogBase::Show();
         WINDOW* w = GetWindowPtr();
 
-        int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLACK);
-        int fg = Utilities::GetColorPair(COLOR_BLACK, COLOR_WHITE);
-
         bool descided = false;
         bool generate = true;
         keypad(w, true);
@@ -82,20 +79,20 @@ SecureString PromtOrGeneratePass::Prompt()
         curs_set(0);
         while(!descided)
         {
-            wattron(w, COLOR_PAIR(bg));
+			wattron(w, KRYPTAN_CONTENT_COLOR);
             mvwprintw(w, 0, 0, "Press [Esc] to abort\n\n");
 
             if(generate)
-                wattron(w, COLOR_PAIR(fg));
+				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
             wprintw(w, "[Generate new password]\n\n");
             if(generate)
-                wattroff(w, COLOR_PAIR(fg));
+				wattroff(w, KRYPTAN_CONTENT_SELECTED_COLOR);
 
             if(!generate)
-                wattron(w, COLOR_PAIR(fg));
+				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
             wprintw(w, "[Input custom password]");
             if(!generate)
-                wattroff(w, COLOR_PAIR(fg));
+				wattroff(w, KRYPTAN_CONTENT_SELECTED_COLOR);
 
             switch (wgetch(w))
             {

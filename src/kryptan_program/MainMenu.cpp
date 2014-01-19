@@ -78,7 +78,6 @@ MenuActions MainMenu::Display()
 MenuActions MainMenu::HandleKeypressFilterPwds(int c)
 {
     WINDOW* w = GetWindowPtr();
-    int blue = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE);
     switch (c)
     {
     case KEY_RIGHT:
@@ -117,7 +116,7 @@ MenuActions MainMenu::HandleKeypressFilterPwds(int c)
             char* filter = currFilter.getUnsecureStringM();
             filter[currFilter.length()-1] = '\0';
             currFilter.UnsecuredStringFinished();
-            mvwaddch(w, posFilter.y, posFilter.x+currFilter.length(), ' ' | COLOR_PAIR(blue));
+            mvwaddch(w, posFilter.y, posFilter.x+currFilter.length(), ' ' | KRYPTAN_CONTENT_COLOR);
             wmove(w, posFilter.y, posFilter.x+currFilter.length());
             doFilter();
         }
@@ -127,7 +126,7 @@ MenuActions MainMenu::HandleKeypressFilterPwds(int c)
         str[0] = (char)c;
         str[1] = 0;
         currFilter.append(str, 0, false);
-        mvwaddch(w, posFilter.y, posFilter.x+currFilter.length()-1, c | COLOR_PAIR(blue));
+		mvwaddch(w, posFilter.y, posFilter.x + currFilter.length() - 1, c | KRYPTAN_CONTENT_COLOR);
         currHighlightedPwd = 0;
         doFilter();
         break;
@@ -218,20 +217,17 @@ void MainMenu::InitMenuBar()
 
     WINDOW* w = GetWindowPtr();
     
-    int red = Utilities::GetColorPair(COLOR_WHITE, COLOR_RED);
-    int blue = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE);
-
-    wattron(w, COLOR_PAIR(red));
+	wattron(w, KRYPTAN_EXIT_BUTTON_COLOR);
     mvwprintw(w, 0, QuitStart, Quit);
-    wattroff(w, COLOR_PAIR(red));
+    wattroff(w, KRYPTAN_EXIT_BUTTON_COLOR);
 
-    wattron(w, COLOR_PAIR(blue));
+	wattron(w, KRYPTAN_BUTTON_ROW_COLOR);
     mvwprintw(w, 0, NewPwdStart, NewPwd);
     mvwprintw(w, 0, MasterkeyStart, Masterkey);
     mvwprintw(w, 0, AboutStart, About);
 
 
-    wattroff(w, COLOR_PAIR(blue));
+	wattroff(w, KRYPTAN_BUTTON_ROW_COLOR);
 }
 
 void MainMenu::RenderLabelList()
@@ -242,9 +238,7 @@ void MainMenu::RenderLabelList()
     const int width = 30;
     int height = getmaxy(w) - 3;
     int nrOfRows = height - 3;
-    int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
-    wattron(w, COLOR_PAIR(bg) | A_BOLD);
+    wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
     {
@@ -285,10 +279,10 @@ void MainMenu::RenderLabelList()
         {
             bool isSelected = std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
             if(i == currHighlightedLabel && state == Labels)
-                wattron(w, COLOR_PAIR(fg));
+				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
             mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , allLabels[i].getUnsecureString());
             if(i == currHighlightedLabel && state == Labels)
-                wattron(w, COLOR_PAIR(bg));
+				wattron(w, KRYPTAN_CONTENT_COLOR);
             allLabels[i].UnsecuredStringFinished();
         }
         
@@ -316,7 +310,7 @@ void MainMenu::RenderLabelList()
     mvwprintw(w, posLabels.y-2, posLabels.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
 
-    wattroff(w, COLOR_PAIR(bg) | A_BOLD);
+	wattroff(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
 }
 
 void MainMenu::RenderFilterBar()
@@ -325,8 +319,7 @@ void MainMenu::RenderFilterBar()
     const int starty = 2;
     const int startx = 32;
     int width = getmaxx(w) - 33;
-    int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE);
-    wattron(w, COLOR_PAIR(bg));
+    wattron(w, KRYPTAN_CONTENT_COLOR);
     //draw line
     for(int j = startx; j < startx+width; j++)
     {
@@ -341,7 +334,7 @@ void MainMenu::RenderFilterBar()
     wprintw(w, "%s", currFilter.getUnsecureString());
     currFilter.UnsecuredStringFinished();
     
-    wattroff(w, COLOR_PAIR(bg));
+	wattroff(w, KRYPTAN_CONTENT_COLOR);
 }
 
 void MainMenu::RenderPasswordList()
@@ -352,9 +345,7 @@ void MainMenu::RenderPasswordList()
     int width = getmaxx(w) - 33;
     int height = getmaxy(w) - 5;
     int nrOfRows = height - 3;
-    int bg = Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN);
-    int fg = Utilities::GetColorPair(COLOR_GREEN, COLOR_BLACK);
-    wattron(w, COLOR_PAIR(bg) | A_BOLD);
+    wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     //draw square
     for(int i = starty; i < starty + height; i++)
     {
@@ -405,13 +396,13 @@ void MainMenu::RenderPasswordList()
         {
             if(i == currHighlightedPwd && state == FilterPwds)
             {
-                wattron(w, COLOR_PAIR(fg));
+				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
             }
             SecureString name = allPwds[i]->GetDescription();
             mvwprintw(w, posPwds.y+j, posPwds.x, format, name.getUnsecureString());
             if(i == currHighlightedPwd && state == FilterPwds)
             {
-                wattron(w, COLOR_PAIR(bg));
+				wattron(w, KRYPTAN_CONTENT_COLOR);
             }
             name.UnsecuredStringFinished();
         }
@@ -440,7 +431,7 @@ void MainMenu::RenderPasswordList()
     mvwprintw(w, posPwds.y-2, posPwds.x-1+ width/2 - (header.length()/2), header.c_str());
     wattroff(w, A_UNDERLINE | A_ITALIC);
     
-    wattroff(w, COLOR_PAIR(bg) | A_BOLD);
+	wattroff(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
 }
 
 void MainMenu::doFilter()

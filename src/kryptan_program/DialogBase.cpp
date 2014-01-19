@@ -1,6 +1,7 @@
 #include "DialogBase.h"
 
 #include <stdexcept>
+#include <algorithm>
 #include "common.h"
 
 
