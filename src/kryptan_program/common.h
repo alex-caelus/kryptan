@@ -20,6 +20,8 @@
 #define KRYPTAN_BUTTON_ROW_COLOR COLOR_PAIR(Utilities::GetColorPair(COLOR_WHITE, COLOR_BLUE))
 #define KRYPTAN_CONTENT_COLOR COLOR_PAIR(Utilities::GetColorPair(COLOR_WHITE, COLOR_GREEN))
 #define KRYPTAN_CONTENT_SELECTED_COLOR COLOR_PAIR(Utilities::GetColorPair(COLOR_GREEN, COLOR_WHITE))
+#define KRYPTAN_NOCOLOR COLOR_PAIR(Utilities::GetColorPair(COLOR_WHITE, COLOR_BLACK))
+#define KRYPTAN_NOCOLOR_SELECTED COLOR_PAIR(Utilities::GetColorPair(COLOR_BLACK, COLOR_WHITE))
 #endif
 
 namespace Kryptan
@@ -47,7 +49,7 @@ namespace Kryptan
 	class PwdDataModificationObserver
 	{
 	public:
-		virtual void PwdDataModified() {};
+		virtual void PwdDataModified() = 0;
 	};
 
 }

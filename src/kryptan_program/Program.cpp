@@ -241,9 +241,24 @@ void Program::NewPwd()
             i.Show();
             throw PromtAbortException();
         }
+		bool success = false;
+		Pwd* pwd;
+		while (!success)
+		{
 
-        PromptString p2("Description", "Please input a short description.\nYou may abort password creation with [Esc]", false);
-        SecureString description = p2.Prompt();
+			PromptString p2("Description", "Please input a short description.\nYou may abort password creation with [Esc]", false);
+			SecureString description = p2.Prompt();
+
+			try{
+				pwd = file->GetPasswordList()->CreatePwd(description, newpass);
+				success = true;
+			}
+			catch (KryptanDuplicatePwdException &e)
+			{
+				InfoBox i("Error", e.what(), false);
+				i.Show();
+			}
+		}
 
         SecureString username;
         try{
@@ -251,7 +266,10 @@ void Program::NewPwd()
             username = p2.Prompt();
         }catch(PromtAbortException){};
 
-        OpenPwd( file->GetPasswordList()->CreatePwd(description, username, newpass), true );
+		pwd->SetUsername(username);
+
+		PwdDataModified();
+        OpenPwd(pwd, true );
     }
     catch(PromtAbortException){};
 }

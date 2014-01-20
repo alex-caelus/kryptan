@@ -39,6 +39,7 @@ PwdMenu::~PwdMenu()
 void PwdMenu::Display(bool editmode)
 {
     state = editmode ? Edit : NoEdit;
+	selectedField = Name;
     this->Show();
     
     WINDOW* w = GetWindowPtr();
@@ -178,6 +179,11 @@ void PwdMenu::Display(bool editmode)
                             i.Show();
                         }
                     }
+					catch (KryptanDuplicatePwdException &e)
+					{
+						InfoBox i("Error", e.what(), false);
+						i.Show();
+					}
                     catch(PromtAbortException){};
                     break;
                 case Kryptan::PwdMenu::Username:
