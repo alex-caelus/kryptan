@@ -79,20 +79,20 @@ SecureString PromtOrGeneratePass::Prompt()
         curs_set(0);
         while(!descided)
         {
-			wattron(w, KRYPTAN_CONTENT_COLOR);
-            mvwprintw(w, 0, 0, "Press [Esc] to abort\n\n");
+			wattrset(w, KRYPTAN_NOCOLOR | A_DIM);
+			mvwprintw(w, 0, 0, "Press [Esc] to abort\n\n");
 
             if(generate)
-				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
-            wprintw(w, "[Generate new password]\n\n");
+				wattron(w, KRYPTAN_NOCOLOR_SELECTED);
+			wprintw(w, "[Generate new password]\n\n");
             if(generate)
-				wattroff(w, KRYPTAN_CONTENT_SELECTED_COLOR);
+				wattroff(w, KRYPTAN_NOCOLOR_SELECTED);
 
             if(!generate)
-				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
-            wprintw(w, "[Input custom password]");
+				wattron(w, KRYPTAN_NOCOLOR_SELECTED);
+			wprintw(w, "[Input custom password]");
             if(!generate)
-				wattroff(w, KRYPTAN_CONTENT_SELECTED_COLOR);
+				wattroff(w, KRYPTAN_NOCOLOR_SELECTED);
 
             switch (wgetch(w))
             {
