@@ -2,11 +2,12 @@
 #define PROGRAM_H
 
 #include "../kryptan_core/core.h"
+#include "common.h"
 
 namespace Kryptan
 {
     
-    class Program
+	class Program : PwdDataModificationObserver
     {
 
     public:
@@ -14,6 +15,8 @@ namespace Kryptan
         ~Program();
 
         int run();
+
+		void PwdDataModified() override;
 
     private:
         Core::PwdFile* file;

@@ -40,6 +40,14 @@ namespace Kryptan
     private:
         int code;
     };
+
+
+	class PwdDataModificationObserver
+	{
+	public:
+		virtual void PwdDataModified() {};
+	};
+
 }
 
 #endif

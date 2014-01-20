@@ -94,6 +94,11 @@ PwdFile* Program::GetFileObject()
     return file;
 }
 
+void Program::PwdDataModified()
+{
+	file->Save(masterkey);
+}
+
 void Program::OpenFile(Core::PwdFile* file)
 {
     try{
@@ -253,9 +258,8 @@ void Program::NewPwd()
 
 void Program::OpenPwd(Core::Pwd* pwd, bool editmode)
 {
-    PwdMenu p(file->GetPasswordList(), pwd);
+    PwdMenu p(file, pwd, this);
     p.Display(editmode);
-    file->Save(masterkey);
 }
 
 void Program::ChangeMasterkey()

@@ -3,13 +3,15 @@
 
 #include "../kryptan_core/core.h"
 #include "DialogBase.h"
+#include "common.h"
 
 namespace Kryptan
 {    
     class PwdMenu : DialogBase
     {
     public:
-        PwdMenu(Core::PwdList* list, Core::Pwd* pwd);
+
+		PwdMenu(Core::PwdFile* file, Core::Pwd* pwd, PwdDataModificationObserver* observer);
         virtual ~PwdMenu();
 
         void Display(bool editmode = false);
@@ -37,6 +39,8 @@ namespace Kryptan
 
         Core::Pwd* pwd;
         Core::PwdList* list;
+		Core::PwdFile* file;
+		PwdDataModificationObserver* dataModiefiedObserver;
         point posLabels;
         point posPwd;
         int currHighlightedLabel;

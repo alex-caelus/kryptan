@@ -14,19 +14,23 @@
 using namespace Kryptan;
 using namespace Core;
 
-PwdMenu::PwdMenu(Core::PwdList* list, Pwd* pwd) 
+PwdMenu::PwdMenu(Core::PwdFile* file, Pwd* pwd, PwdDataModificationObserver* observer)
     : DialogBase("", getmaxy(stdscr), getmaxx(stdscr), 0, 0, true, None, 0)
 {
     //validate input
-    if(list == NULL || pwd == NULL)
+    if(file == NULL || pwd == NULL)
         throw std::runtime_error("Arguments of PwdMenu must not be NULL");
+
+	this->pwd = pwd;
+	this->file = file;
+	this->list = file->GetPasswordList();
+	this->dataModiefiedObserver = observer;
+
     allLabels = list->AllLabels();
     selectedLabels = pwd->GetLabels();
     currHighlightedLabel = -1;
     firstVisibleLabel = 0;
     passwordVisible = false;
-    this->pwd = pwd;
-    this->list = list;
 }
 
 PwdMenu::~PwdMenu() 
@@ -78,6 +82,7 @@ void PwdMenu::Display(bool editmode)
                     if (newLabel.length() > 0)
                     {
                         list->AddPwdToLabel(pwd, newLabel);
+						dataModiefiedObserver->PwdDataModified();
                         allLabels = list->AllLabels();
                         selectedLabels = pwd->GetLabels();
                         currHighlightedLabel = -1;
@@ -94,7 +99,8 @@ void PwdMenu::Display(bool editmode)
                 SecureString yes("yes");
                 if(yes == p.Prompt())
                 {
-                    list->DeletePwd(pwd);
+					list->DeletePwd(pwd);
+					dataModiefiedObserver->PwdDataModified();
                     //no password  to display, return to main manu
                     return;
                 }
@@ -162,8 +168,11 @@ void PwdMenu::Display(bool editmode)
                     try{
                         PromptString p("Edit Description", "Please enter the new description, abort with [Esc]",  false);
                         SecureString newName = p.Prompt();
-                        if(newName.length() > 0)
-                            pwd->SetDescription(newName);
+						if (newName.length() > 0)
+						{
+							pwd->SetDescription(newName);
+							dataModiefiedObserver->PwdDataModified();
+						}
                         else
                         {
                             InfoBox i("Edit Description", "Description can not be empty!", false);
@@ -177,6 +186,7 @@ void PwdMenu::Display(bool editmode)
                         PromptString p("Edit Username", "Please enter the new username, abort with [Esc]",  false);
                         SecureString newusername = p.Prompt();
                         pwd->SetUsername(newusername);
+						dataModiefiedObserver->PwdDataModified();
                     }
                     catch(PromtAbortException){};
                     break;
@@ -184,8 +194,11 @@ void PwdMenu::Display(bool editmode)
                     try{
                         PromtOrGeneratePass p;
                         SecureString newpass = p.Prompt();
-                        if(newpass.length() > 0)
-                            pwd->SetPassword(newpass);
+						if (newpass.length() > 0)
+						{
+							pwd->SetPassword(newpass);
+							dataModiefiedObserver->PwdDataModified();
+						}
                         else
                         {
                             InfoBox i("New Password", "Password can not be empty!", false);
@@ -204,12 +217,14 @@ void PwdMenu::Display(bool editmode)
                 if(selectedLabels.end() == it)
                 {
                     selectedLabels.push_back(allLabels[currHighlightedLabel]);
-                    list->AddPwdToLabel(pwd, allLabels[currHighlightedLabel]);
+					list->AddPwdToLabel(pwd, allLabels[currHighlightedLabel]);
+					dataModiefiedObserver->PwdDataModified();
                 }
                 else
                 {
                     selectedLabels.erase(it);
-                    list->RemovePwdFromLabel(pwd, allLabels[currHighlightedLabel]);
+					list->RemovePwdFromLabel(pwd, allLabels[currHighlightedLabel]);
+					dataModiefiedObserver->PwdDataModified();
                 }
             }
 
