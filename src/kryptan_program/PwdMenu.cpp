@@ -14,16 +14,15 @@
 using namespace Kryptan;
 using namespace Core;
 
-PwdMenu::PwdMenu(Core::PwdFile* file, Pwd* pwd, PwdDataModificationObserver* observer)
+PwdMenu::PwdMenu(Core::PwdList* list, Pwd* pwd, PwdDataModificationObserver* observer)
     : DialogBase("", getmaxy(stdscr), getmaxx(stdscr), 0, 0, true, None, 0)
 {
     //validate input
-    if(file == NULL || pwd == NULL)
+	if (list == NULL || pwd == NULL)
         throw std::runtime_error("Arguments of PwdMenu must not be NULL");
 
 	this->pwd = pwd;
-	this->file = file;
-	this->list = file->GetPasswordList();
+	this->list = list;
 	this->dataModiefiedObserver = observer;
 
     allLabels = list->AllLabels();

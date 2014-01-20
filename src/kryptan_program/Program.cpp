@@ -258,7 +258,7 @@ void Program::NewPwd()
 
 void Program::OpenPwd(Core::Pwd* pwd, bool editmode)
 {
-    PwdMenu p(file, pwd, this);
+    PwdMenu p(file->GetPasswordList(), pwd, this);
     p.Display(editmode);
 }
 

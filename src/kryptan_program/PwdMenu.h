@@ -11,7 +11,7 @@ namespace Kryptan
     {
     public:
 
-		PwdMenu(Core::PwdFile* file, Core::Pwd* pwd, PwdDataModificationObserver* observer);
+		PwdMenu(Core::PwdList* list, Core::Pwd* pwd, PwdDataModificationObserver* observer);
         virtual ~PwdMenu();
 
         void Display(bool editmode = false);
@@ -39,7 +39,6 @@ namespace Kryptan
 
         Core::Pwd* pwd;
         Core::PwdList* list;
-		Core::PwdFile* file;
 		PwdDataModificationObserver* dataModiefiedObserver;
         point posLabels;
         point posPwd;
