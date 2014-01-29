@@ -9,7 +9,7 @@ namespace Kryptan
     {
     public:
         InfoBox(std::string title, std::string message, bool modal = true);
-        void Show()
+        void Show(bool waitForInput = true)
         {
             DialogBase::Show();
             //print message
@@ -17,8 +17,11 @@ namespace Kryptan
             wprintw(w, message.c_str());
             wrefresh(w);
             //press any key
-            curs_set(0);
-            getch();
+			if (waitForInput)
+			{
+				curs_set(0);
+				getch();
+			}
         }
     private:
         std::string message;

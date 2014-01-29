@@ -19,6 +19,7 @@
     <ClInclude Include="..\src\kryptan_core\PwdFileWorker.h" />
     <ClInclude Include="..\src\kryptan_core\PwdList.h" />
     <ClInclude Include="..\src\kryptan_core\SecureString.h" />
+    <ClInclude Include="..\src\kryptan_core\SerpentEncryptor.h" />
     <ClInclude Include="..\src\kryptan_program\common.h" />
     <ClInclude Include="..\src\kryptan_program\DialogBase.h" />
     <ClInclude Include="..\src\kryptan_program\MainMenu.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="..\src\kryptan_core\PwdFileWorker.cpp" />
     <ClCompile Include="..\src\kryptan_core\PwdList.cpp" />
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp" />
+    <ClCompile Include="..\src\kryptan_core\SerpentEncryptor.cpp" />
     <ClCompile Include="..\src\kryptan_program\DialogBase.cpp" />
     <ClCompile Include="..\src\kryptan_program\main.cpp" />
     <ClCompile Include="..\src\kryptan_program\MainMenu.cpp" />

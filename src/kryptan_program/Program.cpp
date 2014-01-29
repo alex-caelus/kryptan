@@ -96,6 +96,8 @@ PwdFile* Program::GetFileObject()
 
 void Program::PwdDataModified()
 {
+	InfoBox box("Saving", "Please wait...", false);
+	box.Show(false);
 	file->Save(masterkey);
 }
 
@@ -113,6 +115,8 @@ void Program::OpenFile(Core::PwdFile* file)
                 try
                 {
                     nrOfTries++;
+					InfoBox box("Decrypting", "Please wait...");
+					box.Show(false);
                     file->OpenAndParse(masterkey);
                     done = true;
                 }
@@ -128,6 +132,18 @@ void Program::OpenFile(Core::PwdFile* file)
                         throw KryptanQuit(1000);
                     }
                 }
+				catch (KryptanDecryptMacBadException)
+				{
+					if (nrOfTries < 3)
+					{
+						InfoBox("Error", "Could not verify file integrity.\n\nPerhaps you've used the wrong masterkey?\n\nOtherwise the file has been corrupted.\n\nTry again!").Show();
+					}
+					else
+					{
+						InfoBox("Error", "Max number of attempts exceeded, exiting").Show();
+						throw KryptanQuit(1000);
+					}
+				}
                 catch(KryptanFileNotReadableException &e)
                 {
                     InfoBox("Error", "Error occurred while reading " + (file->GetFilename() + ".\nThe error was:\n") + e.what()).Show();
@@ -203,7 +219,7 @@ void Program::CreateFile(Core::PwdFile* file)
                 {
                     try{
                         file->CreateNew();
-                        file->Save(masterkey);
+						PwdDataModified();
                         done = true;
                     }
                     catch(KryptanFileNotWritableException &e)
@@ -299,7 +315,9 @@ void Program::ChangeMasterkey()
             }
             else
             {
-                try{
+				try{
+					InfoBox box("Saving", "Please wait...", false);
+					box.Show();
                     file->Save(newmasterkey);
                     done = true;
                     masterkey = newmasterkey;
