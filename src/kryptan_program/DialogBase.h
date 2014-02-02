@@ -3,6 +3,7 @@
 
 #include <string>
 #ifdef _WIN32
+#define PDC_WIDE
 #include <panel.h>
 #else
 #include <ncursesw/panel.h>
@@ -22,12 +23,12 @@ namespace Kryptan
 
     public:
         DialogBase(std::string title, int height, int width, int starty, int startx, bool modal,  BorderStyle border, int padding);
-        ~DialogBase();
+		~DialogBase();
+		WINDOW* GetWindowPtr();
 
     protected:
         void Show();
         void Hide();
-        WINDOW* GetWindowPtr();
 
     private:
         WINDOW* window;

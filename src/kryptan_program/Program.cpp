@@ -4,9 +4,11 @@
 #include "../kryptan_core/Exceptions.h"
 #include "Prompts.h"
 #include "MessageBoxes.h"
+#include "QrBox.h"
 #include "Utilities.h"
 #include "MainMenu.h"
 #include "PwdMenu.h"
+#include "../kryptan_core/Server.h"
 
 using namespace Kryptan;
 using namespace Core;
@@ -52,6 +54,9 @@ int Program::run()
             case Kryptan::ABOUT:
                 About();
                 break;
+			case Kryptan::SYNC:
+				Syncronize();
+				break;
             case Kryptan::QUIT:
             case Kryptan::NO_ACTION:
             default:
@@ -292,7 +297,7 @@ void Program::NewPwd()
 
 void Program::OpenPwd(Core::Pwd* pwd, bool editmode)
 {
-    PwdMenu p(file->GetPasswordList(), pwd, this);
+    PwdMenu p(file, pwd, this);
     p.Display(editmode);
 }
 
@@ -317,7 +322,7 @@ void Program::ChangeMasterkey()
             {
 				try{
 					InfoBox box("Saving", "Please wait...", false);
-					box.Show();
+					box.Show(false);
                     file->Save(newmasterkey);
                     done = true;
                     masterkey = newmasterkey;
@@ -348,4 +353,129 @@ void Program::About()
     Message += "Please visit http://www.caelus.org for support and further information.";
 
     InfoBox("About", Message).Show();
+}
+
+void Program::Syncronize()
+{
+	Server* server;
+	InfoBox* box;
+	try{
+		//first let the user confirm the action confirm action
+		if (!ConfirmBox("Confirm syncronization",
+			"To syncronize your password file with a smartphone read this _before_\ncontinuing:\n\n"
+			"1. Open and log in to Krypan on your smarphone.\n"
+			"2. Click the syncronize menu option on your smartphone.\n"
+			"3. Scan the QR code that will appear here when you proceed.\n"
+			"4. Once a successfull connection is established the QR code will dissapear.\n"
+			"5. Press confirm on your smartphone by pressing apply.\n"
+			"6. You are done!", false).Confirm())
+		{
+			return;
+		}
+
+		box = new InfoBox("Generating key", "Please wait...", false);
+		box->Show(false);
+
+		//port
+		int port = 4321;
+
+		//generate one time transmission key
+		SecureString tmpTransmissionKey = PromtOrGeneratePass::GeneratePassword(30, false);
+		string content = file->SaveToString(tmpTransmissionKey);
+		server = Server::CreateServer(port, content);
+
+		//serve current content
+		server->StartAsyncServe();
+
+		//generate QR code
+		delete box;
+		box = 0;
+		QRIpPortKeyBox qrbox("Waiting for conection...");
+		qrbox.Show(port, tmpTransmissionKey);
+
+//		box = new InfoBox("Syncronization", qrMessage, false);
+//		box->Show(false);
+
+		//set timer for getch
+		timeout(100);//ms
+
+		//status message
+		string stsMsg = "";
+		string lastMessage = "";
+		string title = "Syncronization status";
+
+		bool contd = true;
+		while (contd){
+			Server::Status status = server->GetStatus();
+
+			switch (status)
+			{
+			case Server::WAITING_FOR_START:
+			case Server::WAITING_FOR_CONNECTION:
+				stsMsg = ""; //continue to show the QR code
+				break;
+			case Server::SENDING_CONTENT:
+				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data...";
+				break;
+			case Server::WAITING_FOR_CONTENT:
+				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes...";
+				break;
+			case Server::FINISHED:
+				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes... OK!\n\nAll done!\n\nPress any key to continue...";
+				file->ReplaceContent(tmpTransmissionKey, server->getRecievedContent());
+				server->AbortAsyncServe();
+				timeout(-1);
+				contd = false;
+				break;
+			case Server::ABORTING:
+				stsMsg = "Waiting for server to shut down";
+				break;
+			case Server::ABORTED:
+				stsMsg = "Syncronization canceled!\n\nPress any key to continue...";
+				timeout(-1);
+				contd = false;
+				break;
+			case Server::SERVER_ERROR:
+				stsMsg = "Error: " + server->GetErrorMessage() + "\n\nPress any key to continue.";
+				timeout(-1);
+				contd = false;
+				break;
+			}
+
+			if (!stsMsg.empty() && stsMsg != lastMessage)
+			{
+				qrbox.Hide();
+				delete box;
+				box = new InfoBox(title, stsMsg, false);
+				box->Show(false);
+				lastMessage = stsMsg;
+			}
+
+			//check for input
+			int c = getch();
+			if (c == 27) //ESC
+			{
+				contd = false;
+			}
+
+			if (status == Server::FINISHED)
+			{
+				//we're about to quit so let's save the new 
+				//data with the correct masterkey
+				this->PwdDataModified();
+			}
+		}
+
+		timeout(-1);
+		delete server;
+		delete box;
+	}
+	catch (std::exception &ex)
+	{
+		timeout(-1);
+		delete server;
+		delete box;
+		InfoBox e("Error", string("An exception occured, the error was:\n\n") + ex.what() + "\n\nPress any key to continue...", false);
+		e.Show();
+	}
 }

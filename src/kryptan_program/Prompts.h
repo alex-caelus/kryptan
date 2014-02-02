@@ -36,6 +36,8 @@ namespace Kryptan
         PromtOrGeneratePass();
 
         Core::SecureString Prompt();
+
+		static Core::SecureString GeneratePassword(int length, bool useSpecialChars);
     };
 };
 

@@ -15,7 +15,7 @@ using namespace Core;
 MainMenu::MainMenu(Core::PwdFile* file) 
     : DialogBase("", getmaxy(stdscr), getmaxx(stdscr), 0, 0, true, None, 0)
 {
-    list = file->GetPasswordList();
+    this->file = file;
     currHighlightedLabel = -1;
     currHighlightedPwd = -1;
     firstVisibleLabel = 0;
@@ -52,9 +52,11 @@ MenuActions MainMenu::Display()
         else if(c == KEY_F(1))
             action = NEW_PWD;
         else if(c == KEY_F(2))
-            action = CHANGE_MASTER;
-        else if(c == KEY_F(3))
-            action = ABOUT;
+			action = CHANGE_MASTER;
+		else if (c == KEY_F(3))
+			action = SYNC;
+		else if (c == KEY_F(4))
+			action = ABOUT;
         else
         {   
             switch (state)
@@ -198,7 +200,7 @@ void MainMenu::onInitialized(WINDOW* content)
     InitMenuBar();
     //add credits to the bottom of the screen
     mvwprintw(content, getmaxy(content)-1, 1, "Program created by: Alexander Nilsson");
-    const char* version = "Version 3.0";
+    const char* version = "Version 3.1";
     mvwprintw(content, getmaxy(content)-1, getmaxx(content)-strlen(version)-1, version);
     //move cursor to filter
     wmove(content, posFilter.y, posFilter.x);
@@ -206,14 +208,16 @@ void MainMenu::onInitialized(WINDOW* content)
 
 void MainMenu::InitMenuBar()
 {
-    const char* Quit = "Quit(esc)";
+    const char Quit[] = "Quit(esc)";
     const int QuitStart = 1;
-    const char* NewPwd = "New Password(F1)";
-    const int NewPwdStart = QuitStart + 9 +1;
-    const char* Masterkey = "Change Masterkey(F2)";
-    const int MasterkeyStart = NewPwdStart + 16 + 1;
-    const char* About = "About(F3)";
-    const int AboutStart = MasterkeyStart + 20 + 1;
+    const char NewPwd[] = "New Password(F1)";
+	const int NewPwdStart = QuitStart + sizeof(Quit);
+    const char Masterkey[] = "Change Masterkey(F2)";
+	const int MasterkeyStart = NewPwdStart + sizeof(NewPwd);
+	const char Syncronize[] = "Syncronize(F3)";
+	const int SyncronizeStart = MasterkeyStart + sizeof(Masterkey);
+    const char About[] = "About(F4)";
+	const int AboutStart = SyncronizeStart + sizeof(Syncronize);
 
     WINDOW* w = GetWindowPtr();
     
@@ -222,8 +226,9 @@ void MainMenu::InitMenuBar()
     wattroff(w, KRYPTAN_EXIT_BUTTON_COLOR);
 
 	wattron(w, KRYPTAN_BUTTON_ROW_COLOR);
-    mvwprintw(w, 0, NewPwdStart, NewPwd);
-    mvwprintw(w, 0, MasterkeyStart, Masterkey);
+	mvwprintw(w, 0, NewPwdStart, NewPwd);
+	mvwprintw(w, 0, MasterkeyStart, Masterkey);
+	mvwprintw(w, 0, SyncronizeStart, Syncronize);
     mvwprintw(w, 0, AboutStart, About);
 
 
@@ -446,6 +451,6 @@ void MainMenu::doFilter()
             selectedLabels.push_back(*it);
     }
 
-    allPwds = list->Filter(currFilter, selectedLabels);
-    allLabels = list->AllLabels();
+    allPwds = file->GetPasswordList()->Filter(currFilter, selectedLabels);
+    allLabels = file->GetPasswordList()->AllLabels();
 }

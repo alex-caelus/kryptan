@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #ifdef _WIN32
+#define PDC_WIDE
 #include <panel.h>
 #else
 #include <ncursesw/panel.h>

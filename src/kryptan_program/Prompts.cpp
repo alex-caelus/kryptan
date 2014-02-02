@@ -166,10 +166,10 @@ SecureString PromtOrGeneratePass::Prompt()
     }
 }
 
-SecureString GeneratePassword(int length, bool useSpecialChars)
+SecureString PromtOrGeneratePass::GeneratePassword(int length, bool useSpecialChars)
 {
-    const static char* azAZ09 = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-    const static char* SPECIALS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+	const static char* azAZ09 = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+	const static char* SPECIALS = ".,-_+!?\"'`#@*§&%:;^<=>$~(/){|}[\\]";
     const static int azAZ09length = strlen(azAZ09);
     const static int SPECIALSlength = strlen(SPECIALS);
 

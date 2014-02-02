@@ -14,18 +14,18 @@
 using namespace Kryptan;
 using namespace Core;
 
-PwdMenu::PwdMenu(Core::PwdList* list, Pwd* pwd, PwdDataModificationObserver* observer)
+PwdMenu::PwdMenu(Core::PwdFile* file, Pwd* pwd, PwdDataModificationObserver* observer)
     : DialogBase("", getmaxy(stdscr), getmaxx(stdscr), 0, 0, true, None, 0)
 {
     //validate input
-	if (list == NULL || pwd == NULL)
+	if (file == NULL || pwd == NULL)
         throw std::runtime_error("Arguments of PwdMenu must not be NULL");
 
 	this->pwd = pwd;
-	this->list = list;
+	this->file = file;
 	this->dataModiefiedObserver = observer;
 
-    allLabels = list->AllLabels();
+    allLabels = file->GetPasswordList()->AllLabels();
     selectedLabels = pwd->GetLabels();
     currHighlightedLabel = -1;
     firstVisibleLabel = 0;
@@ -81,9 +81,9 @@ void PwdMenu::Display(bool editmode)
                     SecureString newLabel = p.Prompt();
                     if (newLabel.length() > 0)
                     {
-                        list->AddPwdToLabel(pwd, newLabel);
+                        file->GetPasswordList()->AddPwdToLabel(pwd, newLabel);
 						dataModiefiedObserver->PwdDataModified();
-                        allLabels = list->AllLabels();
+                        allLabels = file->GetPasswordList()->AllLabels();
                         selectedLabels = pwd->GetLabels();
                         currHighlightedLabel = -1;
                         firstVisibleLabel = 0; 
@@ -99,7 +99,7 @@ void PwdMenu::Display(bool editmode)
                 SecureString yes("yes");
                 if(yes == p.Prompt())
                 {
-					list->DeletePwd(pwd);
+					file->GetPasswordList()->DeletePwd(pwd);
 					dataModiefiedObserver->PwdDataModified();
                     //no password  to display, return to main manu
                     return;
@@ -222,13 +222,13 @@ void PwdMenu::Display(bool editmode)
                 if(selectedLabels.end() == it)
                 {
                     selectedLabels.push_back(allLabels[currHighlightedLabel]);
-					list->AddPwdToLabel(pwd, allLabels[currHighlightedLabel]);
+					file->GetPasswordList()->AddPwdToLabel(pwd, allLabels[currHighlightedLabel]);
 					dataModiefiedObserver->PwdDataModified();
                 }
                 else
                 {
                     selectedLabels.erase(it);
-					list->RemovePwdFromLabel(pwd, allLabels[currHighlightedLabel]);
+					file->GetPasswordList()->RemovePwdFromLabel(pwd, allLabels[currHighlightedLabel]);
 					dataModiefiedObserver->PwdDataModified();
                 }
             }

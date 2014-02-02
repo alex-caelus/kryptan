@@ -5,7 +5,7 @@
 
 namespace Kryptan
 {
-    class InfoBox : DialogBase
+    class InfoBox : public DialogBase
     {
     public:
         InfoBox(std::string title, std::string message, bool modal = true);
@@ -17,9 +17,9 @@ namespace Kryptan
             wprintw(w, message.c_str());
             wrefresh(w);
             //press any key
+			curs_set(0);
 			if (waitForInput)
 			{
-				curs_set(0);
 				getch();
 			}
         }
@@ -27,7 +27,7 @@ namespace Kryptan
         std::string message;
     };
     
-    class ConfirmBox : DialogBase
+    class ConfirmBox : public DialogBase
     {
     public:
         ConfirmBox(std::string title, std::string message, bool modal = true);

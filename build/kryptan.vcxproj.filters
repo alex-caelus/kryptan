@@ -72,6 +72,12 @@
     <ClInclude Include="..\src\kryptan_core\SerpentEncryptor.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\Server.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\kryptan_program\QrBox.h">
+      <Filter>program\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
@@ -118,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="..\src\kryptan_core\SerpentEncryptor.cpp">
       <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\Server.cpp">
+      <Filter>kryptancore\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\QrBox.cpp">
+      <Filter>program\source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,8 +11,9 @@ namespace Kryptan
         QUIT,
         NEW_PWD,
         OPEN_PWD,
-        CHANGE_MASTER,
-        ABOUT,
+		CHANGE_MASTER,
+		ABOUT,
+		SYNC,
         NO_ACTION
     };
     
@@ -39,7 +40,7 @@ namespace Kryptan
             Labels
         } state;
 
-        Core::PwdList* list;
+        Core::PwdFile* file;
         point posFilter;
         point posLabels;
         point posPwds;

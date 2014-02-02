@@ -29,6 +29,7 @@ namespace Kryptan
         void OpenPwd(Core::Pwd* pwd, bool editmode=false);
         void ChangeMasterkey();
         void About();
+		void Syncronize();
 
     };
 

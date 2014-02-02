@@ -1,6 +1,8 @@
 #include "Utilities.h"
 
 #include <string.h> 
+#include <sstream>
+#include <qrencode.h>
 #include "common.h"
 
 using namespace std;
