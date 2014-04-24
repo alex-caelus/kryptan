@@ -433,7 +433,9 @@ void PwdMenu::RenderPasswordDetails()
     
     SecureString name = pwd->GetDescription();
     SecureString username = pwd->GetUsername();
-    SecureString password = pwd->GetPassword();
+	SecureString password = pwd->GetPassword();
+	std::string timeCreated = pwd->GetTimeCreatedString();
+	std::string timeModified = pwd->GetTimeLastModifiedString();
 
     int y = posPwd.y;
     int x = posPwd.x;
@@ -474,6 +476,21 @@ void PwdMenu::RenderPasswordDetails()
         
     password.UnsecuredStringFinished();
 	if (state == Edit && selectedField == Password) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
+
+
+	y++; //extra space
+
+	wattron(w, A_UNDERLINE | A_ITALIC);
+	mvwprintw(w, y++, x + (contentWidth / 2) - 9, "Last modified date"); //print middle
+	wattroff(w, A_UNDERLINE | A_ITALIC);
+	y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, timeModified.c_str(), timeModified.length());
+
+	y++; //extra space
+
+	wattron(w, A_UNDERLINE | A_ITALIC);
+	mvwprintw(w, y++, x + (contentWidth / 2) - 6, "Created date"); //print middle
+	wattroff(w, A_UNDERLINE | A_ITALIC);
+	y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, timeCreated.c_str(), timeCreated.length());
     
     wattroff(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
 }

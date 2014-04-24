@@ -54,10 +54,10 @@ namespace Kryptan
         
         virtual void onShow() {};
         virtual void onHide() {};
-        virtual void onModalCreated(WINDOW* modal) {};
-        virtual void onBorderDraw(WINDOW* border) {};
-        virtual void onTitleDraw(WINDOW* border) {};
-        virtual void onInitialized(WINDOW* content) {};
+        virtual void onModalCreated(WINDOW*) {};
+        virtual void onBorderDraw(WINDOW*) {};
+        virtual void onTitleDraw(WINDOW*) {};
+        virtual void onInitialized(WINDOW*) {};
     };
 
 }

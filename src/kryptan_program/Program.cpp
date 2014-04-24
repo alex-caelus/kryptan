@@ -363,7 +363,7 @@ void Program::Syncronize()
 		//first let the user confirm the action confirm action
 		if (!ConfirmBox("Confirm syncronization",
 			"To syncronize your password file with a smartphone read this _before_\ncontinuing:\n\n"
-			"1. Open and log in to Krypan on your smarphone.\n"
+			"1. Open and log in to Krypan on your smartphone.\n"
 			"2. Click the syncronize menu option on your smartphone.\n"
 			"3. Scan the QR code that will appear here when you proceed.\n"
 			"4. Once a successfull connection is established the QR code will dissapear.\n"
