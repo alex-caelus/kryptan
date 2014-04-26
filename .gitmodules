@@ -1,3 +1,3 @@
 [submodule "src/kryptan_core"]
 	path = src/kryptan_core
-	url = https://github.com/alex-caelus/kryptan_core
+	url = ssh://git@github.com/alex-caelus/kryptan_core
