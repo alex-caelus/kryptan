@@ -381,7 +381,7 @@ void Program::Syncronize()
 
 		//generate one time transmission key
 		SecureString tmpTransmissionKey = PromtOrGeneratePass::GeneratePassword(30, false);
-		string content = file->SaveToString(tmpTransmissionKey);
+		string content = file->SaveToString(tmpTransmissionKey, 100); //lower mash iterations to 100 for sync with low powered devices
 		server = Server::CreateServer(port, content);
 
 		//serve current content
