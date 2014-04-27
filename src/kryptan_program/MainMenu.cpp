@@ -200,7 +200,7 @@ void MainMenu::onInitialized(WINDOW* content)
     InitMenuBar();
     //add credits to the bottom of the screen
     mvwprintw(content, getmaxy(content)-1, 1, "Program created by: Alexander Nilsson");
-    const char* version = "Version 3.1";
+	const char* version = "Version " KRYPTAN_CURRENT_VERSION;
     mvwprintw(content, getmaxy(content)-1, getmaxx(content)-strlen(version)-1, version);
     //move cursor to filter
     wmove(content, posFilter.y, posFilter.x);

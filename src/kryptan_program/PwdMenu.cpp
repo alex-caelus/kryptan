@@ -252,7 +252,7 @@ void PwdMenu::onInitialized(WINDOW* content)
     RenderPasswordDetails();
     //add credits to the bottom of the screen
     mvwprintw(content, getmaxy(content)-1, 1, "Program created by: Alexander Nilsson");
-    const char* version = "Version 3.0";
+    const char* version = "Version " KRYPTAN_CURRENT_VERSION;
     mvwprintw(content, getmaxy(content)-1, getmaxx(content)-strlen(version)-1, version);
 }
 

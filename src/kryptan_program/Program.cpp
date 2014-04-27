@@ -350,7 +350,7 @@ void Program::ChangeMasterkey()
 void Program::About()
 {
     string Message = "This program is created by Alexander Nilsson.\n\n";
-    Message += "Please visit http://www.caelus.org for support and further information.";
+    Message += "Please visit http://www.caelus.org/proj/kryptan/ for support and further information.";
 
     InfoBox("About", Message).Show();
 }
@@ -424,6 +424,7 @@ void Program::Syncronize()
 				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes... OK!\n\nAll done!\n\nPress any key to continue...";
 				file->ReplaceContent(tmpTransmissionKey, server->getRecievedContent());
 				server->AbortAsyncServe();
+				this->PwdDataModified();
 				timeout(-1);
 				contd = false;
 				break;
@@ -456,13 +457,6 @@ void Program::Syncronize()
 			if (c == 27) //ESC
 			{
 				contd = false;
-			}
-
-			if (status == Server::FINISHED)
-			{
-				//we're about to quit so let's save the new 
-				//data with the correct masterkey
-				this->PwdDataModified();
 			}
 		}
 
