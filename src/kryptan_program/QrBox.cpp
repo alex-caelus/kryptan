@@ -8,7 +8,12 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
-//TODO: find out wich headers is needed
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#define SOCKET_ERROR -1
 #endif
 
 using namespace Kryptan;
@@ -66,6 +71,9 @@ string getMyIP()
 * It's released under the GNU licence.
 */
 
+#ifndef _WIN32
+#define lstrcatW(o,i) strcat((char*)o, (char*)i)
+#endif
 static wchar_t* writeUTF8(QRcode *qrcode)
 {
 	wchar_t* output = new wchar_t[qrcode->width * qrcode->width];

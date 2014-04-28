@@ -420,6 +420,8 @@ void Program::Syncronize()
 			case Server::WAITING_FOR_CONTENT:
 				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes...";
 				break;
+                        case Server::RECEIVING_CONTENT:
+                                break;
 			case Server::FINISHED:
 				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes... OK!\n\nAll done!\n\nPress any key to continue...";
 				file->ReplaceContent(tmpTransmissionKey, server->getRecievedContent());

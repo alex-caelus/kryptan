@@ -23,9 +23,9 @@ namespace Kryptan
 
     public:
         DialogBase(std::string title, int height, int width, int starty, int startx, bool modal,  BorderStyle border, int padding);
-		~DialogBase();
+        virtual ~DialogBase();
 		WINDOW* GetWindowPtr();
-
+ 
     protected:
         void Show();
         void Hide();
