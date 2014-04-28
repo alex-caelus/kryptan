@@ -6,5 +6,6 @@ Release
 secret.pwd
 kryptan.opensdf
 kryptan.sdf
+kryptan
 .SyncIgnore
 ipch

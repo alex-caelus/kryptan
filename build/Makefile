@@ -27,6 +27,7 @@ LIBS = -lcryptopp -lncursesw -lpanelw -lqrencode -lboost_system -lboost_thread -
 
 # define the C source files
 SRCS = $(wildcard ../src/kryptan_program/*.cpp) $(wildcard ../src/kryptan_core/*.cpp)
+ODIR = objs/
 
 # define the C object files 
 #
@@ -77,10 +78,19 @@ depend: $(SRCS)
 ../src/kryptan_program/DialogBase.o: /usr/include/stdio.h
 ../src/kryptan_program/DialogBase.o: /usr/include/features.h
 ../src/kryptan_program/DialogBase.o: /usr/include/stdc-predef.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/predefs.h
+../src/kryptan_program/DialogBase.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/DialogBase.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/types.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/typesizes.h
 ../src/kryptan_program/DialogBase.o: /usr/include/libio.h
 ../src/kryptan_program/DialogBase.o: /usr/include/_G_config.h
 ../src/kryptan_program/DialogBase.o: /usr/include/wchar.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/DialogBase.o: /usr/include/xlocale.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/DialogBase.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/DialogBase.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/DialogBase.o: ../src/kryptan_program/common.h
 ../src/kryptan_program/main.o: ../src/kryptan_program/Program.h
@@ -89,6 +99,11 @@ depend: $(SRCS)
 ../src/kryptan_program/main.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_program/main.o: /usr/include/stdint.h /usr/include/features.h
 ../src/kryptan_program/main.o: /usr/include/stdc-predef.h
+../src/kryptan_program/main.o: /usr/include/bits/predefs.h
+../src/kryptan_program/main.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/main.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/main.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/main.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/main.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_program/main.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_program/main.o: ../src/kryptan_core/Exceptions.h
@@ -96,9 +111,12 @@ depend: $(SRCS)
 ../src/kryptan_program/main.o: /usr/include/ncursesw/panel.h
 ../src/kryptan_program/main.o: /usr/include/ncursesw/curses.h
 ../src/kryptan_program/main.o: /usr/include/ncursesw/ncurses_dll.h
-../src/kryptan_program/main.o: /usr/include/stdio.h /usr/include/libio.h
-../src/kryptan_program/main.o: /usr/include/_G_config.h /usr/include/wchar.h
-../src/kryptan_program/main.o: /usr/include/xlocale.h
+../src/kryptan_program/main.o: /usr/include/stdio.h /usr/include/bits/types.h
+../src/kryptan_program/main.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/main.o: /usr/include/libio.h /usr/include/_G_config.h
+../src/kryptan_program/main.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/main.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/main.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/main.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_program/MainMenu.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_core/core.h
@@ -107,6 +125,11 @@ depend: $(SRCS)
 ../src/kryptan_program/MainMenu.o: /usr/include/stdint.h
 ../src/kryptan_program/MainMenu.o: /usr/include/features.h
 ../src/kryptan_program/MainMenu.o: /usr/include/stdc-predef.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/predefs.h
+../src/kryptan_program/MainMenu.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/MainMenu.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_core/Exceptions.h
@@ -114,10 +137,15 @@ depend: $(SRCS)
 ../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/panel.h
 ../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/curses.h
 ../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/ncurses_dll.h
-../src/kryptan_program/MainMenu.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/MainMenu.o: /usr/include/stdio.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/types.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/MainMenu.o: /usr/include/libio.h
 ../src/kryptan_program/MainMenu.o: /usr/include/_G_config.h
 ../src/kryptan_program/MainMenu.o: /usr/include/wchar.h
 ../src/kryptan_program/MainMenu.o: /usr/include/xlocale.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/MainMenu.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_program/Utilities.h
 ../src/kryptan_program/MainMenu.o: ../src/kryptan_program/common.h
@@ -130,10 +158,19 @@ depend: $(SRCS)
 ../src/kryptan_program/MessageBoxes.o: /usr/include/stdio.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/features.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/stdc-predef.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/predefs.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/types.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/typesizes.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/libio.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/_G_config.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/wchar.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/xlocale.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/MessageBoxes.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/MessageBoxes.o: ../src/kryptan_program/Utilities.h
 ../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/core.h
@@ -151,6 +188,11 @@ depend: $(SRCS)
 ../src/kryptan_program/Program.o: /usr/include/stdint.h
 ../src/kryptan_program/Program.o: /usr/include/features.h
 ../src/kryptan_program/Program.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Program.o: /usr/include/bits/predefs.h
+../src/kryptan_program/Program.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/Program.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/Program.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/Program.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/Program.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_program/Program.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_program/Program.o: ../src/kryptan_core/Exceptions.h
@@ -158,9 +200,14 @@ depend: $(SRCS)
 ../src/kryptan_program/Program.o: /usr/include/ncursesw/panel.h
 ../src/kryptan_program/Program.o: /usr/include/ncursesw/curses.h
 ../src/kryptan_program/Program.o: /usr/include/ncursesw/ncurses_dll.h
-../src/kryptan_program/Program.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/Program.o: /usr/include/stdio.h
+../src/kryptan_program/Program.o: /usr/include/bits/types.h
+../src/kryptan_program/Program.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/Program.o: /usr/include/libio.h
 ../src/kryptan_program/Program.o: /usr/include/_G_config.h
 ../src/kryptan_program/Program.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/Program.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/Program.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/Program.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/Program.o: ../src/kryptan_core/Exceptions.h
 ../src/kryptan_program/Program.o: ../src/kryptan_program/Prompts.h
@@ -180,9 +227,19 @@ depend: $(SRCS)
 ../src/kryptan_program/Prompts.o: /usr/include/stdio.h
 ../src/kryptan_program/Prompts.o: /usr/include/features.h
 ../src/kryptan_program/Prompts.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/predefs.h
+../src/kryptan_program/Prompts.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/Prompts.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/types.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/typesizes.h
 ../src/kryptan_program/Prompts.o: /usr/include/libio.h
 ../src/kryptan_program/Prompts.o: /usr/include/_G_config.h
-../src/kryptan_program/Prompts.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/Prompts.o: /usr/include/wchar.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/wchar.h
+../src/kryptan_program/Prompts.o: /usr/include/xlocale.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/Prompts.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/Prompts.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/Prompts.o: ../src/kryptan_core/core.h
 ../src/kryptan_program/Prompts.o: ../src/kryptan_core/PwdFile.h
@@ -202,6 +259,11 @@ depend: $(SRCS)
 ../src/kryptan_program/PwdMenu.o: /usr/include/stdint.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/features.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/stdc-predef.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/predefs.h
+../src/kryptan_program/PwdMenu.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/PwdMenu.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/Exceptions.h
@@ -209,9 +271,14 @@ depend: $(SRCS)
 ../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/panel.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/curses.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/ncurses_dll.h
-../src/kryptan_program/PwdMenu.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/PwdMenu.o: /usr/include/stdio.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/types.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/PwdMenu.o: /usr/include/libio.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/_G_config.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/PwdMenu.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/common.h
 ../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/Utilities.h
@@ -220,8 +287,48 @@ depend: $(SRCS)
 ../src/kryptan_program/PwdMenu.o: /usr/include/string.h
 ../src/kryptan_program/QrBox.o: /usr/include/string.h /usr/include/features.h
 ../src/kryptan_program/QrBox.o: /usr/include/stdc-predef.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/predefs.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/QrBox.o: /usr/include/gnu/stubs.h
 ../src/kryptan_program/QrBox.o: /usr/include/xlocale.h
+../src/kryptan_program/QrBox.o: /usr/include/qrencode.h
 ../src/kryptan_program/QrBox.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/QrBox.o: /usr/include/unistd.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/posix_opt.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/environments.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/types.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/confname.h
+../src/kryptan_program/QrBox.o: /usr/include/getopt.h /usr/include/ctype.h
+../src/kryptan_program/QrBox.o: /usr/include/endian.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/endian.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/byteswap.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_program/QrBox.o: /usr/include/netdb.h
+../src/kryptan_program/QrBox.o: /usr/include/netinet/in.h
+../src/kryptan_program/QrBox.o: /usr/include/stdint.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/wchar.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/socket.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/uio.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/types.h /usr/include/time.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/select.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/select.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/sigset.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/time.h
+../src/kryptan_program/QrBox.o: /usr/include/sys/sysmacros.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/uio.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/socket.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/socket_type.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/sockaddr.h
+../src/kryptan_program/QrBox.o: /usr/include/asm/socket.h
+../src/kryptan_program/QrBox.o: /usr/include/asm-generic/socket.h
+../src/kryptan_program/QrBox.o: /usr/include/asm/sockios.h
+../src/kryptan_program/QrBox.o: /usr/include/asm-generic/sockios.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/in.h
+../src/kryptan_program/QrBox.o: /usr/include/rpc/netdb.h
+../src/kryptan_program/QrBox.o: /usr/include/bits/netdb.h
+../src/kryptan_program/QrBox.o: /usr/include/arpa/inet.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_program/Utilities.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_core/core.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_core/PwdFile.h
@@ -229,6 +336,11 @@ depend: $(SRCS)
 ../src/kryptan_program/Utilites.o: /usr/include/stdint.h
 ../src/kryptan_program/Utilites.o: /usr/include/features.h
 ../src/kryptan_program/Utilites.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/predefs.h
+../src/kryptan_program/Utilites.o: /usr/include/sys/cdefs.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/wordsize.h
+../src/kryptan_program/Utilites.o: /usr/include/gnu/stubs.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/wchar.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_program/Utilites.o: ../src/kryptan_core/Exceptions.h
@@ -236,15 +348,27 @@ depend: $(SRCS)
 ../src/kryptan_program/Utilites.o: /usr/include/ncursesw/panel.h
 ../src/kryptan_program/Utilites.o: /usr/include/ncursesw/curses.h
 ../src/kryptan_program/Utilites.o: /usr/include/ncursesw/ncurses_dll.h
-../src/kryptan_program/Utilites.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/Utilites.o: /usr/include/stdio.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/types.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/typesizes.h
+../src/kryptan_program/Utilites.o: /usr/include/libio.h
 ../src/kryptan_program/Utilites.o: /usr/include/_G_config.h
 ../src/kryptan_program/Utilites.o: /usr/include/wchar.h
 ../src/kryptan_program/Utilites.o: /usr/include/xlocale.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_program/Utilites.o: /usr/include/ncursesw/unctrl.h
 ../src/kryptan_program/Utilites.o: /usr/include/string.h
+../src/kryptan_program/Utilites.o: /usr/include/qrencode.h
 ../src/kryptan_program/Utilites.o: /usr/include/unistd.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/posix_opt.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/environments.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/confname.h
 ../src/kryptan_program/Utilites.o: /usr/include/getopt.h /usr/include/ctype.h
 ../src/kryptan_program/Utilites.o: /usr/include/endian.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/endian.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/byteswap.h
+../src/kryptan_program/Utilites.o: /usr/include/bits/byteswap-16.h
 ../src/kryptan_core/ModifiedEncryptor.o: ../src/kryptan_core/ModifiedEncryptor.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/sha.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/iterhash.h
@@ -254,9 +378,33 @@ depend: $(SRCS)
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/assert.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/features.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/stdc-predef.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/predefs.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/gnu/stubs.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/limits.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/posix1_lim.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/local_lim.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/linux/limits.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/posix2_lim.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/stdlib.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/waitflags.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/waitstatus.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/endian.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/endian.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/byteswap.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/types.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/sys/types.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/time.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/sys/select.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/select.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/sigset.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/time.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/sys/sysmacros.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/alloca.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/bits/stdlib-float.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/string.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/xlocale.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/secblock.h
@@ -275,16 +423,24 @@ depend: $(SRCS)
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/argnames.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/pch.h
 ../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/queue.h
-../src/kryptan_core/ModifiedEncryptor.o: /usr/include/time.h
 ../src/kryptan_core/Pwd.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_core/Pwd.o: ../src/kryptan_core/Exceptions.h
 ../src/kryptan_core/Pwd.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/Pwd.o: /usr/include/stdint.h /usr/include/features.h
 ../src/kryptan_core/Pwd.o: /usr/include/stdc-predef.h
+../src/kryptan_core/Pwd.o: /usr/include/bits/predefs.h
+../src/kryptan_core/Pwd.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/Pwd.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/Pwd.o: /usr/include/gnu/stubs.h /usr/include/bits/wchar.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/PwdFile.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/PwdFile.o: /usr/include/stdint.h /usr/include/features.h
 ../src/kryptan_core/PwdFile.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/predefs.h
+../src/kryptan_core/PwdFile.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/PwdFile.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/Exceptions.h
@@ -295,7 +451,27 @@ depend: $(SRCS)
 ../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/cryptlib.h
 ../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/stdcpp.h
 ../src/kryptan_core/PwdFile.o: /usr/include/assert.h /usr/include/limits.h
-../src/kryptan_core/PwdFile.o: /usr/include/stdlib.h /usr/include/alloca.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/posix1_lim.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/local_lim.h
+../src/kryptan_core/PwdFile.o: /usr/include/linux/limits.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/posix2_lim.h
+../src/kryptan_core/PwdFile.o: /usr/include/stdlib.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/waitflags.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/waitstatus.h
+../src/kryptan_core/PwdFile.o: /usr/include/endian.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/endian.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/byteswap.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/types.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_core/PwdFile.o: /usr/include/sys/types.h /usr/include/time.h
+../src/kryptan_core/PwdFile.o: /usr/include/sys/select.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/select.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/sigset.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/time.h
+../src/kryptan_core/PwdFile.o: /usr/include/sys/sysmacros.h
+../src/kryptan_core/PwdFile.o: /usr/include/alloca.h
+../src/kryptan_core/PwdFile.o: /usr/include/bits/stdlib-float.h
 ../src/kryptan_core/PwdFile.o: /usr/include/string.h /usr/include/xlocale.h
 ../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/smartptr.h
 ../src/kryptan_core/PwdFile.o: ../src/kryptan_core/ModifiedEncryptor.h
@@ -322,6 +498,11 @@ depend: $(SRCS)
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/stdint.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/features.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/predefs.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/PwdList.h
 ../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/Pwd.h
 ../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/Exceptions.h
@@ -333,8 +514,28 @@ depend: $(SRCS)
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/stdcpp.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/assert.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/limits.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/posix1_lim.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/local_lim.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/linux/limits.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/posix2_lim.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/stdlib.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/waitflags.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/waitstatus.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/endian.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/endian.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/byteswap.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/types.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/sys/types.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/time.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/sys/select.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/select.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/sigset.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/time.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/sys/sysmacros.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/alloca.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/bits/stdlib-float.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/string.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/xlocale.h
 ../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/secblock.h
@@ -360,21 +561,41 @@ depend: $(SRCS)
 ../src/kryptan_core/PwdList.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/PwdList.o: /usr/include/stdint.h /usr/include/features.h
 ../src/kryptan_core/PwdList.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdList.o: /usr/include/bits/predefs.h
+../src/kryptan_core/PwdList.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/PwdList.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/PwdList.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/PwdList.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/PwdList.o: /usr/include/string.h /usr/include/xlocale.h
 ../src/kryptan_core/SecureString.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/SecureString.o: /usr/include/stdint.h
 ../src/kryptan_core/SecureString.o: /usr/include/features.h
 ../src/kryptan_core/SecureString.o: /usr/include/stdc-predef.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/predefs.h
+../src/kryptan_core/SecureString.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/SecureString.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/SecureString.o: /usr/include/string.h
 ../src/kryptan_core/SecureString.o: /usr/include/xlocale.h
-../src/kryptan_core/SecureString.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_core/SecureString.o: /usr/include/stdio.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/types.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/SecureString.o: /usr/include/libio.h
 ../src/kryptan_core/SecureString.o: /usr/include/_G_config.h
 ../src/kryptan_core/SecureString.o: /usr/include/wchar.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_core/SecureString.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_core/SerpentEncryptor.o: ../src/kryptan_core/SerpentEncryptor.h
 ../src/kryptan_core/SerpentEncryptor.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdint.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/features.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdc-predef.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/predefs.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/secblock.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/config.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/misc.h
@@ -382,8 +603,28 @@ depend: $(SRCS)
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/stdcpp.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/assert.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/limits.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/posix1_lim.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/local_lim.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/linux/limits.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/posix2_lim.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdlib.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/waitflags.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/waitstatus.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/endian.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/endian.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/byteswap.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/types.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/sys/types.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/time.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/sys/select.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/select.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/sigset.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/time.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/sys/sysmacros.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/alloca.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/bits/stdlib-float.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/string.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/xlocale.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/smartptr.h
@@ -412,6 +653,7 @@ depend: $(SRCS)
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/base64.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/basecode.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/sha3.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/pwdbased.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/hmac.h
 ../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/hrtimer.h
@@ -420,6 +662,11 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: ../src/kryptan_core/SecureString.h
 ../src/kryptan_core/Server.o: /usr/include/stdint.h /usr/include/features.h
 ../src/kryptan_core/Server.o: /usr/include/stdc-predef.h
+../src/kryptan_core/Server.o: /usr/include/bits/predefs.h
+../src/kryptan_core/Server.o: /usr/include/sys/cdefs.h
+../src/kryptan_core/Server.o: /usr/include/bits/wordsize.h
+../src/kryptan_core/Server.o: /usr/include/gnu/stubs.h
+../src/kryptan_core/Server.o: /usr/include/bits/wchar.h
 ../src/kryptan_core/Server.o: /usr/include/boost/asio.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_datagram_socket.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/config.hpp
@@ -453,6 +700,10 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/cstdint.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/limits.hpp
 ../src/kryptan_core/Server.o: /usr/include/limits.h
+../src/kryptan_core/Server.o: /usr/include/bits/posix1_lim.h
+../src/kryptan_core/Server.o: /usr/include/bits/local_lim.h
+../src/kryptan_core/Server.o: /usr/include/linux/limits.h
+../src/kryptan_core/Server.o: /usr/include/bits/posix2_lim.h
 ../src/kryptan_core/Server.o: /usr/include/boost/assert.hpp
 ../src/kryptan_core/Server.o: /usr/include/assert.h
 ../src/kryptan_core/Server.o: /usr/include/boost/current_function.hpp
@@ -497,12 +748,50 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/fd_set_adapter.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/posix_fd_set_adapter.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/socket_types.hpp
-../src/kryptan_core/Server.o: /usr/include/fcntl.h /usr/include/time.h
+../src/kryptan_core/Server.o: /usr/include/sys/ioctl.h
+../src/kryptan_core/Server.o: /usr/include/bits/ioctls.h
+../src/kryptan_core/Server.o: /usr/include/asm/ioctls.h
+../src/kryptan_core/Server.o: /usr/include/asm-generic/ioctls.h
+../src/kryptan_core/Server.o: /usr/include/linux/ioctl.h
+../src/kryptan_core/Server.o: /usr/include/asm/ioctl.h
+../src/kryptan_core/Server.o: /usr/include/asm-generic/ioctl.h
+../src/kryptan_core/Server.o: /usr/include/bits/ioctl-types.h
+../src/kryptan_core/Server.o: /usr/include/sys/ttydefaults.h
+../src/kryptan_core/Server.o: /usr/include/sys/poll.h
+../src/kryptan_core/Server.o: /usr/include/bits/poll.h
+../src/kryptan_core/Server.o: /usr/include/sys/types.h
+../src/kryptan_core/Server.o: /usr/include/bits/types.h
+../src/kryptan_core/Server.o: /usr/include/bits/typesizes.h
+../src/kryptan_core/Server.o: /usr/include/time.h /usr/include/endian.h
+../src/kryptan_core/Server.o: /usr/include/bits/endian.h
+../src/kryptan_core/Server.o: /usr/include/bits/byteswap.h
+../src/kryptan_core/Server.o: /usr/include/bits/byteswap-16.h
+../src/kryptan_core/Server.o: /usr/include/sys/select.h
+../src/kryptan_core/Server.o: /usr/include/bits/select.h
+../src/kryptan_core/Server.o: /usr/include/bits/sigset.h
+../src/kryptan_core/Server.o: /usr/include/bits/time.h
+../src/kryptan_core/Server.o: /usr/include/sys/sysmacros.h
+../src/kryptan_core/Server.o: /usr/include/sys/stat.h
+../src/kryptan_core/Server.o: /usr/include/bits/stat.h /usr/include/fcntl.h
+../src/kryptan_core/Server.o: /usr/include/bits/fcntl.h
+../src/kryptan_core/Server.o: /usr/include/bits/fcntl-linux.h
+../src/kryptan_core/Server.o: /usr/include/sys/socket.h
+../src/kryptan_core/Server.o: /usr/include/sys/uio.h /usr/include/bits/uio.h
+../src/kryptan_core/Server.o: /usr/include/bits/socket.h
+../src/kryptan_core/Server.o: /usr/include/bits/socket_type.h
+../src/kryptan_core/Server.o: /usr/include/bits/sockaddr.h
+../src/kryptan_core/Server.o: /usr/include/asm/socket.h
+../src/kryptan_core/Server.o: /usr/include/asm-generic/socket.h
+../src/kryptan_core/Server.o: /usr/include/asm/sockios.h
+../src/kryptan_core/Server.o: /usr/include/asm-generic/sockios.h
+../src/kryptan_core/Server.o: /usr/include/sys/un.h /usr/include/string.h
 ../src/kryptan_core/Server.o: /usr/include/xlocale.h
-../src/kryptan_core/Server.o: /usr/include/netinet/in.h /usr/include/endian.h
+../src/kryptan_core/Server.o: /usr/include/netinet/in.h
+../src/kryptan_core/Server.o: /usr/include/bits/in.h
 ../src/kryptan_core/Server.o: /usr/include/netinet/tcp.h
 ../src/kryptan_core/Server.o: /usr/include/arpa/inet.h /usr/include/netdb.h
-../src/kryptan_core/Server.o: /usr/include/rpc/netdb.h /usr/include/net/if.h
+../src/kryptan_core/Server.o: /usr/include/rpc/netdb.h
+../src/kryptan_core/Server.o: /usr/include/bits/netdb.h /usr/include/net/if.h
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/win_fd_set_adapter.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor_op.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor_op_queue.hpp
@@ -512,8 +801,11 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/select_interrupter.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/pipe_select_interrupter.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/pipe_select_interrupter.ipp
-../src/kryptan_core/Server.o: /usr/include/unistd.h /usr/include/getopt.h
-../src/kryptan_core/Server.o: /usr/include/ctype.h
+../src/kryptan_core/Server.o: /usr/include/unistd.h
+../src/kryptan_core/Server.o: /usr/include/bits/posix_opt.h
+../src/kryptan_core/Server.o: /usr/include/bits/environments.h
+../src/kryptan_core/Server.o: /usr/include/bits/confname.h
+../src/kryptan_core/Server.o: /usr/include/getopt.h /usr/include/ctype.h
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/throw_error.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/throw_error.ipp
 ../src/kryptan_core/Server.o: /usr/include/boost/system/system_error.hpp
@@ -761,6 +1053,7 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_serial_port.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/serial_port_base.hpp
 ../src/kryptan_core/Server.o: /usr/include/termios.h
+../src/kryptan_core/Server.o: /usr/include/bits/termios.h
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/serial_port_base.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/serial_port_base.ipp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/serial_port_service.hpp
@@ -777,6 +1070,12 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/signal_set_service.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_set_service.hpp
 ../src/kryptan_core/Server.o: /usr/include/signal.h
+../src/kryptan_core/Server.o: /usr/include/bits/signum.h
+../src/kryptan_core/Server.o: /usr/include/bits/siginfo.h
+../src/kryptan_core/Server.o: /usr/include/bits/sigaction.h
+../src/kryptan_core/Server.o: /usr/include/bits/sigcontext.h
+../src/kryptan_core/Server.o: /usr/include/bits/sigstack.h
+../src/kryptan_core/Server.o: /usr/include/sys/ucontext.h
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_handler.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_op.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/signal_set_service.ipp
@@ -885,7 +1184,11 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/regex_fwd.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/regex_fwd.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/regex/config.hpp
-../src/kryptan_core/Server.o: /usr/include/stdlib.h /usr/include/alloca.h
+../src/kryptan_core/Server.o: /usr/include/stdlib.h
+../src/kryptan_core/Server.o: /usr/include/bits/waitflags.h
+../src/kryptan_core/Server.o: /usr/include/bits/waitstatus.h
+../src/kryptan_core/Server.o: /usr/include/alloca.h
+../src/kryptan_core/Server.o: /usr/include/bits/stdlib-float.h
 ../src/kryptan_core/Server.o: /usr/include/boost/regex/v4/regex_fwd.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/regex/v4/match_flags.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/read_until.hpp
@@ -1017,6 +1320,8 @@ depend: $(SRCS)
 ../src/kryptan_core/Server.o: /usr/include/boost/integer_traits.hpp
 ../src/kryptan_core/Server.o: /usr/include/wchar.h /usr/include/stdio.h
 ../src/kryptan_core/Server.o: /usr/include/libio.h /usr/include/_G_config.h
+../src/kryptan_core/Server.o: /usr/include/bits/stdio_lim.h
+../src/kryptan_core/Server.o: /usr/include/bits/sys_errlist.h
 ../src/kryptan_core/Server.o: /usr/include/boost/type_traits/has_trivial_copy.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_volatile.hpp
 ../src/kryptan_core/Server.o: /usr/include/boost/type_traits/composite_traits.hpp
