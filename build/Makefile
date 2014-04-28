@@ -1,128 +1,1034 @@
 #
-#  There exist several targets which are by default empty and which can be 
-#  used for execution of your targets. These targets are usually executed 
-#  before and after some main targets. They are: 
+# 'make depend' uses makedepend to automatically generate dependencies 
+#               (dependencies are added to end of Makefile)
+# 'make'        build executable file 'mycc'
+# 'make clean'  removes all .o and executable files
 #
-#     .build-pre:              called before 'build' target
-#     .build-post:             called after 'build' target
-#     .clean-pre:              called before 'clean' target
-#     .clean-post:             called after 'clean' target
-#     .clobber-pre:            called before 'clobber' target
-#     .clobber-post:           called after 'clobber' target
-#     .all-pre:                called before 'all' target
-#     .all-post:               called after 'all' target
-#     .help-pre:               called before 'help' target
-#     .help-post:              called after 'help' target
+
+# define the C compiler to use
+CC = g++
+
+# define any compile-time flags
+CFLAGS = -Wall -g -std=c++11
+
+# define any directories containing header files other than /usr/include
 #
-#  Targets beginning with '.' are not intended to be called on their own.
+INCLUDES = 
+
+# define library paths in addition to /usr/lib
+#   if I wanted to include libraries not in /usr/lib I'd specify
+#   their path using -Lpath, something like:
+LFLAGS = 
+
+# define any libraries to link into executable:
+#   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
+#   option, something like (this will link in libmylib.so and libm.so:
+LIBS = -lcryptopp -lncursesw -lpanelw -lqrencode -lboost_system -lboost_thread -lpthread
+
+# define the C source files
+SRCS = $(wildcard ../src/kryptan_program/*.cpp) $(wildcard ../src/kryptan_core/*.cpp)
+
+# define the C object files 
 #
-#  Main targets can be executed directly, and they are:
-#  
-#     build                    build a specific configuration
-#     clean                    remove built files from a configuration
-#     clobber                  remove all built files
-#     all                      build all configurations
-#     help                     print help mesage
-#  
-#  Targets .build-impl, .clean-impl, .clobber-impl, .all-impl, and
-#  .help-impl are implemented in nbproject/makefile-impl.mk.
+# This uses Suffix Replacement within a macro:
+#   $(name:string1=string2)
+#         For each word in 'name' replace 'string1' with 'string2'
+# Below we are replacing the suffix .c of all words in the macro SRCS
+# with the .o suffix
 #
-#  Available make variables:
+OBJS = $(SRCS:.cpp=.o)
+
+# define the executable file 
+MAIN = kryptan
+
 #
-#     CND_BASEDIR                base directory for relative paths
-#     CND_DISTDIR                default top distribution directory (build artifacts)
-#     CND_BUILDDIR               default top build directory (object files, ...)
-#     CONF                       name of current configuration
-#     CND_PLATFORM_${CONF}       platform name (current configuration)
-#     CND_ARTIFACT_DIR_${CONF}   directory of build artifact (current configuration)
-#     CND_ARTIFACT_NAME_${CONF}  name of build artifact (current configuration)
-#     CND_ARTIFACT_PATH_${CONF}  path to build artifact (current configuration)
-#     CND_PACKAGE_DIR_${CONF}    directory of package (current configuration)
-#     CND_PACKAGE_NAME_${CONF}   name of package (current configuration)
-#     CND_PACKAGE_PATH_${CONF}   path to package (current configuration)
+# The following part of the makefile is generic; it can be used to 
+# build any executable just by changing the definitions above and by
+# deleting dependencies appended to the file from 'make depend'
 #
-# NOCDDL
 
+.PHONY: depend clean
 
-# Environment 
-MKDIR=mkdir
-CP=cp
-CCADMIN=CCadmin
+all:    $(MAIN)
+	@echo  Kryptan has been compiled
 
+$(MAIN): $(OBJS) 
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-# build
-build: .build-post
+# this is a suffix replacement rule for building .o's from .c's
+# it uses automatic variables $<: the name of the prerequisite of
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# (see the gnu make manual section about automatic variables)
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
-.build-pre:
-# Add your pre 'build' code here...
+clean:
+	$(RM) $(SRCS) *~ $(MAIN)
 
-.build-post: .build-impl
-# Add your post 'build' code here...
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^
 
+# DO NOT DELETE THIS LINE -- make depend needs it
 
-# clean
-clean: .clean-post
-
-.clean-pre:
-# Add your pre 'clean' code here...
-
-.clean-post: .clean-impl
-# Add your post 'clean' code here...
-
-
-# clobber
-clobber: .clobber-post
-
-.clobber-pre:
-# Add your pre 'clobber' code here...
-
-.clobber-post: .clobber-impl
-# Add your post 'clobber' code here...
-
-
-# all
-all: .all-post
-
-.all-pre:
-# Add your pre 'all' code here...
-
-.all-post: .all-impl
-# Add your post 'all' code here...
-
-
-# build tests
-build-tests: .build-tests-post
-
-.build-tests-pre:
-# Add your pre 'build-tests' code here...
-
-.build-tests-post: .build-tests-impl
-# Add your post 'build-tests' code here...
-
-
-# run tests
-test: .test-post
-
-.test-pre:
-# Add your pre 'test' code here...
-
-.test-post: .test-impl
-# Add your post 'test' code here...
-
-
-# help
-help: .help-post
-
-.help-pre:
-# Add your pre 'help' code here...
-
-.help-post: .help-impl
-# Add your post 'help' code here...
-
-
-
-# include project implementation makefile
-include nbproject/Makefile-impl.mk
-
-# include project make variables
-include nbproject/Makefile-variables.mk
+../src/kryptan_program/DialogBase.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/DialogBase.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/DialogBase.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/DialogBase.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/DialogBase.o: /usr/include/stdio.h
+../src/kryptan_program/DialogBase.o: /usr/include/features.h
+../src/kryptan_program/DialogBase.o: /usr/include/stdc-predef.h
+../src/kryptan_program/DialogBase.o: /usr/include/libio.h
+../src/kryptan_program/DialogBase.o: /usr/include/_G_config.h
+../src/kryptan_program/DialogBase.o: /usr/include/wchar.h
+../src/kryptan_program/DialogBase.o: /usr/include/xlocale.h
+../src/kryptan_program/DialogBase.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/DialogBase.o: ../src/kryptan_program/common.h
+../src/kryptan_program/main.o: ../src/kryptan_program/Program.h
+../src/kryptan_program/main.o: ../src/kryptan_core/core.h
+../src/kryptan_program/main.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/main.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/main.o: /usr/include/stdint.h /usr/include/features.h
+../src/kryptan_program/main.o: /usr/include/stdc-predef.h
+../src/kryptan_program/main.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/main.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/main.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/main.o: ../src/kryptan_program/common.h
+../src/kryptan_program/main.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/main.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/main.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/main.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/main.o: /usr/include/_G_config.h /usr/include/wchar.h
+../src/kryptan_program/main.o: /usr/include/xlocale.h
+../src/kryptan_program/main.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_program/MainMenu.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/core.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/MainMenu.o: /usr/include/stdint.h
+../src/kryptan_program/MainMenu.o: /usr/include/features.h
+../src/kryptan_program/MainMenu.o: /usr/include/stdc-predef.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/MainMenu.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/MainMenu.o: /usr/include/_G_config.h
+../src/kryptan_program/MainMenu.o: /usr/include/wchar.h
+../src/kryptan_program/MainMenu.o: /usr/include/xlocale.h
+../src/kryptan_program/MainMenu.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/MainMenu.o: ../src/kryptan_program/common.h
+../src/kryptan_program/MainMenu.o: /usr/include/string.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_program/MessageBoxes.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/stdio.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/features.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/stdc-predef.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/libio.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/_G_config.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/wchar.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/xlocale.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/core.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/MessageBoxes.o: /usr/include/stdint.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/MessageBoxes.o: ../src/kryptan_program/common.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/Program.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/core.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/Program.o: /usr/include/stdint.h
+../src/kryptan_program/Program.o: /usr/include/features.h
+../src/kryptan_program/Program.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/common.h
+../src/kryptan_program/Program.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/Program.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/Program.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/Program.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/Program.o: /usr/include/_G_config.h
+../src/kryptan_program/Program.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/Program.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/Prompts.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/MessageBoxes.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/QrBox.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/MainMenu.h
+../src/kryptan_program/Program.o: ../src/kryptan_program/PwdMenu.h
+../src/kryptan_program/Program.o: ../src/kryptan_core/Server.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_program/Prompts.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/Prompts.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/Prompts.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/Prompts.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/Prompts.o: /usr/include/stdio.h
+../src/kryptan_program/Prompts.o: /usr/include/features.h
+../src/kryptan_program/Prompts.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Prompts.o: /usr/include/libio.h
+../src/kryptan_program/Prompts.o: /usr/include/_G_config.h
+../src/kryptan_program/Prompts.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/Prompts.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/core.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/Prompts.o: /usr/include/stdint.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_program/common.h
+../src/kryptan_program/Prompts.o: ../src/kryptan_program/MessageBoxes.h
+../src/kryptan_program/Prompts.o: /usr/include/string.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/PwdMenu.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/core.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/PwdMenu.o: /usr/include/stdint.h
+../src/kryptan_program/PwdMenu.o: /usr/include/features.h
+../src/kryptan_program/PwdMenu.o: /usr/include/stdc-predef.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/DialogBase.h
+../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/PwdMenu.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/PwdMenu.o: /usr/include/_G_config.h
+../src/kryptan_program/PwdMenu.o: /usr/include/wchar.h /usr/include/xlocale.h
+../src/kryptan_program/PwdMenu.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/common.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/Prompts.h
+../src/kryptan_program/PwdMenu.o: ../src/kryptan_program/MessageBoxes.h
+../src/kryptan_program/PwdMenu.o: /usr/include/string.h
+../src/kryptan_program/QrBox.o: /usr/include/string.h /usr/include/features.h
+../src/kryptan_program/QrBox.o: /usr/include/stdc-predef.h
+../src/kryptan_program/QrBox.o: /usr/include/xlocale.h
+../src/kryptan_program/QrBox.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_program/Utilities.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/core.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_program/Utilites.o: /usr/include/stdint.h
+../src/kryptan_program/Utilites.o: /usr/include/features.h
+../src/kryptan_program/Utilites.o: /usr/include/stdc-predef.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_program/Utilites.o: ../src/kryptan_program/common.h
+../src/kryptan_program/Utilites.o: /usr/include/ncursesw/panel.h
+../src/kryptan_program/Utilites.o: /usr/include/ncursesw/curses.h
+../src/kryptan_program/Utilites.o: /usr/include/ncursesw/ncurses_dll.h
+../src/kryptan_program/Utilites.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_program/Utilites.o: /usr/include/_G_config.h
+../src/kryptan_program/Utilites.o: /usr/include/wchar.h
+../src/kryptan_program/Utilites.o: /usr/include/xlocale.h
+../src/kryptan_program/Utilites.o: /usr/include/ncursesw/unctrl.h
+../src/kryptan_program/Utilites.o: /usr/include/string.h
+../src/kryptan_program/Utilites.o: /usr/include/unistd.h
+../src/kryptan_program/Utilites.o: /usr/include/getopt.h /usr/include/ctype.h
+../src/kryptan_program/Utilites.o: /usr/include/endian.h
+../src/kryptan_core/ModifiedEncryptor.o: ../src/kryptan_core/ModifiedEncryptor.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/iterhash.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/cryptlib.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/config.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/stdcpp.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/assert.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/features.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/stdc-predef.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/limits.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/stdlib.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/alloca.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/string.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/xlocale.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/misc.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/smartptr.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/simple.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/hmac.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/seckey.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/aes.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/rijndael.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/queue.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/algparam.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/modes.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/strciphr.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/argnames.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/pch.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/cryptopp/queue.h
+../src/kryptan_core/ModifiedEncryptor.o: /usr/include/time.h
+../src/kryptan_core/Pwd.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_core/Pwd.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_core/Pwd.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/Pwd.o: /usr/include/stdint.h /usr/include/features.h
+../src/kryptan_core/Pwd.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/PwdFile.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/PwdFile.o: /usr/include/stdint.h /usr/include/features.h
+../src/kryptan_core/PwdFile.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/SerpentEncryptor.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/config.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/misc.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/cryptlib.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/stdcpp.h
+../src/kryptan_core/PwdFile.o: /usr/include/assert.h /usr/include/limits.h
+../src/kryptan_core/PwdFile.o: /usr/include/stdlib.h /usr/include/alloca.h
+../src/kryptan_core/PwdFile.o: /usr/include/string.h /usr/include/xlocale.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/smartptr.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/ModifiedEncryptor.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/iterhash.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/simple.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/hmac.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/seckey.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/aes.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/rijndael.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/queue.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/algparam.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/modes.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/strciphr.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/argnames.h
+../src/kryptan_core/PwdFile.o: ../src/kryptan_core/PwdFileWorker.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/hex.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/basecode.h
+../src/kryptan_core/PwdFile.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/PwdFileWorker.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/stdint.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/features.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_core/PwdFileWorker.o: ../src/kryptan_core/ModifiedEncryptor.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/iterhash.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/cryptlib.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/config.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/stdcpp.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/assert.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/limits.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/stdlib.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/alloca.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/string.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/xlocale.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/misc.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/smartptr.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/simple.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/hmac.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/seckey.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/aes.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/rijndael.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/queue.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/algparam.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/modes.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/strciphr.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/argnames.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/hex.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/basecode.h
+../src/kryptan_core/PwdFileWorker.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/PwdList.o: ../src/kryptan_core/PwdList.h
+../src/kryptan_core/PwdList.o: ../src/kryptan_core/Pwd.h
+../src/kryptan_core/PwdList.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_core/PwdList.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/PwdList.o: /usr/include/stdint.h /usr/include/features.h
+../src/kryptan_core/PwdList.o: /usr/include/stdc-predef.h
+../src/kryptan_core/PwdList.o: /usr/include/string.h /usr/include/xlocale.h
+../src/kryptan_core/SecureString.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/SecureString.o: /usr/include/stdint.h
+../src/kryptan_core/SecureString.o: /usr/include/features.h
+../src/kryptan_core/SecureString.o: /usr/include/stdc-predef.h
+../src/kryptan_core/SecureString.o: /usr/include/string.h
+../src/kryptan_core/SecureString.o: /usr/include/xlocale.h
+../src/kryptan_core/SecureString.o: /usr/include/stdio.h /usr/include/libio.h
+../src/kryptan_core/SecureString.o: /usr/include/_G_config.h
+../src/kryptan_core/SecureString.o: /usr/include/wchar.h
+../src/kryptan_core/SerpentEncryptor.o: ../src/kryptan_core/SerpentEncryptor.h
+../src/kryptan_core/SerpentEncryptor.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdint.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/features.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdc-predef.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/config.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/misc.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/cryptlib.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/stdcpp.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/assert.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/limits.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/stdlib.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/alloca.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/string.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/xlocale.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/smartptr.h
+../src/kryptan_core/SerpentEncryptor.o: ../src/kryptan_core/Exceptions.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/osrng.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/randpool.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/rng.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/aes.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/rijndael.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/seckey.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/simple.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/secblock.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/iterhash.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/fips140.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/gcm.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/authenc.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/modes.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/strciphr.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/argnames.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/algparam.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/serpent.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/filters.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/queue.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/base64.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/basecode.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/sha.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/pwdbased.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/hmac.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/hrtimer.h
+../src/kryptan_core/SerpentEncryptor.o: /usr/include/cryptopp/integer.h
+../src/kryptan_core/Server.o: ../src/kryptan_core/Server.h
+../src/kryptan_core/Server.o: ../src/kryptan_core/SecureString.h
+../src/kryptan_core/Server.o: /usr/include/stdint.h /usr/include/features.h
+../src/kryptan_core/Server.o: /usr/include/stdc-predef.h
+../src/kryptan_core/Server.o: /usr/include/boost/asio.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_datagram_socket.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/select_compiler_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/compiler/gcc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/select_platform_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/suffix.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/version.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_socket.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_io_object.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/io_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/noncopyable.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/noncopyable.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/detail/workaround.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/push_options.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/pop_options.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/service_registry_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/wrapped_handler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/bind_handler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/handler_alloc_helpers.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility/addressof.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/handler_alloc_hook.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/handler_invoke_helpers.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/handler_invoke_hook.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/system/error_code.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/system/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/system/api_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/auto_link.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/cstdint.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/limits.hpp
+../src/kryptan_core/Server.o: /usr/include/limits.h
+../src/kryptan_core/Server.o: /usr/include/boost/assert.hpp
+../src/kryptan_core/Server.o: /usr/include/assert.h
+../src/kryptan_core/Server.o: /usr/include/boost/current_function.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/operators.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility/enable_if.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/cerrno.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/abi_prefix.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/abi_suffix.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/task_io_service_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/io_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/handler_type_requirements.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/service_registry.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/scoped_lock.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/service_registry.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/service_registry.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/throw_exception.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/attribute_noreturn.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/task_io_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/atomic_count.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/call_stack.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/tss_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_tss_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/op_queue.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/select_reactor_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/task_io_service_operation.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/handler_tracking.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/handler_tracking.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/task_io_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/completion_handler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/fenced_block.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_fenced_block.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/operation.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/task_io_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/event.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_event.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/select_reactor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/fd_set_adapter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/posix_fd_set_adapter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/socket_types.hpp
+../src/kryptan_core/Server.o: /usr/include/fcntl.h /usr/include/time.h
+../src/kryptan_core/Server.o: /usr/include/xlocale.h
+../src/kryptan_core/Server.o: /usr/include/netinet/in.h /usr/include/endian.h
+../src/kryptan_core/Server.o: /usr/include/netinet/tcp.h
+../src/kryptan_core/Server.o: /usr/include/arpa/inet.h /usr/include/netdb.h
+../src/kryptan_core/Server.o: /usr/include/rpc/netdb.h /usr/include/net/if.h
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/win_fd_set_adapter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactor_op_queue.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/hash_map.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/error.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/error.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/select_interrupter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/pipe_select_interrupter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/pipe_select_interrupter.ipp
+../src/kryptan_core/Server.o: /usr/include/unistd.h /usr/include/getopt.h
+../src/kryptan_core/Server.o: /usr/include/ctype.h
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/throw_error.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/throw_error.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/system/system_error.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_queue_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_queue_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_queue_set.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/timer_queue_set.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/wait_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/select_reactor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/select_reactor.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_blocker.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_signal_blocker.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/socket_ops.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/shared_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/shared_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/shared_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/no_tr1/memory.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/checked_delete.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/shared_count.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/bad_weak_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/sp_counted_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/sp_has_sync.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/sp_counted_base_gcc_x86.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/detail/sp_typeinfo.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/sp_counted_impl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/sp_convertible.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/spinlock.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/spinlock_nt.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/memory_order.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/detail/operator_bool.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/weak_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/weak_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/weak_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/socket_ops.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/io_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/scoped_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/socket_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/io_control.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/socket_option.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/datagram_socket_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/array_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_const.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/cv_traits_impl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/yes_no_type.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_lvalue_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/bool_trait_def.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/template_arity_spec.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/int.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/int_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/adl_barrier.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/adl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/msvc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/intel.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/gcc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/workaround.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/nttp_decl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/nttp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/cat.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/config/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/integral_wrapper.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/integral_c_tag.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/static_constant.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/static_cast.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/template_arity_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/preprocessor/params.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/preprocessor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/comma_if.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/punctuation/comma_if.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/if.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/iif.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/logical/bool.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/facilities/empty.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/punctuation/comma.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repeat.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/repeat.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/debug/error.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/detail/auto_rec.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/tuple/eat.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/inc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/inc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/lambda.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/ttp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/ctps.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/overload_resolution.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/integral_constant.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/bool.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/bool_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/integral_c.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/integral_c_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/lambda_support.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/yes_no.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/arrays.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/na_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/preprocessor/enum.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/tuple/to_list.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/facilities/overload.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/variadic/size.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/for_each_i.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/adt.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/detail/is_binary.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/detail/check.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/logical/compl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/for.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/detail/for.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/expr_iif.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/tuple/elem.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/tuple/rem.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/variadic/elem.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/bool_trait_undef.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_rvalue_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/ice.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/ice_or.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/ice_and.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/ice_not.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/ice_eq.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/buffer_sequence_adapter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_null_buffers_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_accept_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/socket_holder.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_connect_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_recvfrom_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_sendto_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_service_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_recv_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_recvmsg_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_socket_send_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/reactive_socket_service_base.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_deadline_timer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/deadline_timer_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/deadline_timer_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_queue.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/date_time_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_scheduler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_scheduler_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/wait_handler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/time_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/posix_time_types.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_clock.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/c_time.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/compiler_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/locale_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/microsec_time_clock.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/filetime_functions.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/ptime.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/posix_time_system.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/posix_time_config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/no_tr1/cmath.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_duration.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_defs.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/special_defs.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_resolution_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/int_adapter.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/gregorian_types.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/year_month_day.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/period.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_calendar.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_weekday.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/constrained_value.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/if.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/value_wknd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/integral.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/eti.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/na_spec.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/lambda_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/void_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/na.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/arity.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/dtp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/preprocessor/def_params_tail.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/limits/arity.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/logical/and.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/logical/bitand.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/identity.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/facilities/identity.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/empty.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/add.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/dec.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/while.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/fold_left.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/detail/fold_left.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/fold_right.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/detail/fold_right.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/list/reverse.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/detail/while.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/sub.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/lambda_arity_param.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_base_of.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_base_and_derived.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/intrinsics.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_class.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_union.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/remove_cv.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/broken_compiler_spec.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/type_trait_def.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/type_trait_undef.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_same.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_convertible.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_array.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/add_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_arithmetic.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_integral.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_float.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_void.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_abstract.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/static_assert.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/add_rvalue_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_defs.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_day_of_year.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian_calendar.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian_calendar.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_ymd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_day.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_year.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_month.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_duration.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_duration.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_duration_types.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_duration_types.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/greg_date.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/adjust_functors.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/wrapping_int.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_generators.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_clock_device.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/date_iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_system_split.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_system_counted.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/date_duration_operators.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/posix_time_duration.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/time_period.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/time_iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/dst_rules.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/timer_queue_ptime.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/timer_queue_ptime.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_raw_socket.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/raw_socket_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_seq_packet_socket.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/seq_packet_socket_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_serial_port.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/serial_port_base.hpp
+../src/kryptan_core/Server.o: /usr/include/termios.h
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/serial_port_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/serial_port_base.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/serial_port_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_serial_port_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/descriptor_ops.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/descriptor_ops.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/reactive_descriptor_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/descriptor_read_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/descriptor_write_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/reactive_descriptor_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/reactive_serial_port_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/win_iocp_serial_port_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_signal_set.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/signal_set_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_set_service.hpp
+../src/kryptan_core/Server.o: /usr/include/signal.h
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_handler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/signal_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/signal_set_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/static_mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_static_mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_socket_acceptor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/socket_acceptor_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_socket_iostream.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility/base_from_member.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/enum_binary_params.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/enum_params.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/repeat_from_to.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_socket_streambuf.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/array.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/array.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/swap.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility/swap.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/detail/iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/stream_socket_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_stream_socket.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_streambuf.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_streambuf_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/basic_waitable_timer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/wait_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/waitable_timer_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/chrono_time_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_read_stream_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_read_stream.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/remove_reference.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/buffer_resize_guard.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/buffered_stream_storage.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_stream_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_stream.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_write_stream.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffered_write_stream_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/completion_condition.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/write.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/write.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/base_from_completion_cond.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/consuming_buffers.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/dependent_type.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/buffers_iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/add_const.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/connect.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/connect.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/deadline_timer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/address.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/address_v4.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/winsock_init.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address_v4.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address_v4.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/address_v6.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address_v6.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address_v6.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/address.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/basic_endpoint.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/detail/endpoint.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/detail/impl/endpoint.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/basic_endpoint.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/basic_resolver.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/basic_resolver_iterator.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/basic_resolver_entry.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/basic_resolver_query.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/resolver_query_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/resolver_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/resolver_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/resolve_endpoint_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/resolve_op.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/resolver_service_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/thread.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/null_thread.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/resolver_service_base.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/host_name.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/impl/host_name.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/icmp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/multicast.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/detail/socket_option.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/tcp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/udp.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/unicast.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/ip/v6_only.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/is_read_buffered.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/is_write_buffered.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/local/basic_endpoint.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/local/connect_pair.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/local/datagram_protocol.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/local/stream_protocol.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/placeholders.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/arg.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/is_placeholder.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/posix/basic_descriptor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/posix/descriptor_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/posix/basic_stream_descriptor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/posix/stream_descriptor_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/posix/stream_descriptor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/read.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/read.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/read_at.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/read_at.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/read_until.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_function.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/false_result.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/is_function_ptr_helper.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/remove_pointer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/regex_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/regex_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/regex/config.hpp
+../src/kryptan_core/Server.o: /usr/include/stdlib.h /usr/include/alloca.h
+../src/kryptan_core/Server.o: /usr/include/boost/regex/v4/regex_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/regex/v4/match_flags.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/read_until.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/serial_port.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/signal_set.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/strand.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/strand_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/strand_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/detail/impl/strand_service.ipp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/streambuf.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/version.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/basic_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/basic_object_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/basic_random_access_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/basic_stream_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/object_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/object_handle_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/overlapped_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/random_access_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/random_access_handle_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/stream_handle.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/windows/stream_handle_service.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/write_at.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/asio/impl/write_at.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/thread.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/platform.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/requires_threads.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/thread.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/exceptions.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/config.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/platform.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/move.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/move/move.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/and.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/use_preprocessed.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/nested_type_wknd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/include_preprocessed.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/aux_/config/compiler.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/stringize.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/not.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/identity.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/has_trivial_destructor.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_pod.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_scalar.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_enum.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_pointer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_member_pointer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_member_function_pointer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/xtime.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/thread_time.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/posix_time/conversion.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/date_time/gregorian/conversion.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/thread_heap_alloc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/utility/binary.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/control/deduce_d.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/cat.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/fold_left.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/seq.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/elem.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/size.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/seq/transform.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/mod.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/arithmetic/detail/div_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/comparison/less_equal.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/logical/not.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/next_prior.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/ref.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/bind.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mem_fn.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/mem_fn.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/get_pointer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/mem_fn_template.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/mem_fn_cc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/visit_each.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/storage.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/bind_template.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/bind_cc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/bind_mf_cc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/bind_mf2_cc.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/bind/placeholders.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/io/ios_state.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/io_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/thread_interruption.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/detail/thread_group.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/shared_mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/condition_variable.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/once.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/recursive_mutex.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/tss.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/locks.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/barrier.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/thread/future.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/exception_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/exception.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/info.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/to_string_stub.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/to_string.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/is_output_streamable.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/object_hex_dump.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/type_info.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/units/detail/utility.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/error_info_impl.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/diagnostic_information.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/get_error_info.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/exception/detail/clone_current_exception.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/scoped_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/scoped_ptr.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_fundamental.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/function.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/iterate.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/iteration/iterate.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/array/elem.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/array/data.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/array/size.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/slot/slot.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/slot/detail/def.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/function/detail/prologue.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/config/no_tr1/functional.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/function/function_base.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/integer.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/integer_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/integer_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/wchar.h /usr/include/stdio.h
+../src/kryptan_core/Server.o: /usr/include/libio.h /usr/include/_G_config.h
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/has_trivial_copy.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/is_volatile.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/composite_traits.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/alignment_of.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/size_t_trait_def.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/size_t.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/mpl/size_t_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/type_traits/detail/size_t_trait_undef.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/function_equal.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/function/function_fwd.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/enum.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/repetition/enum.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/preprocessor/enum_params.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/scoped_array.hpp
+../src/kryptan_core/Server.o: /usr/include/boost/smart_ptr/scoped_array.hpp
