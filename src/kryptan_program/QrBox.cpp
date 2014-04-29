@@ -8,6 +8,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
+#include <wchar.h>
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/socket.h>
@@ -72,7 +73,7 @@ string getMyIP()
 */
 
 #ifndef _WIN32
-#define lstrcatW(o,i) strcat((char*)o, (char*)i)
+#define lstrcatW(o,i) wcscat(o, i)
 #endif
 static wchar_t* writeUTF8(QRcode *qrcode)
 {
@@ -87,9 +88,9 @@ static wchar_t* writeUTF8(QRcode *qrcode)
 	for (int i = 0; i < realwidth; i++)
 	{
 		lstrcatW(output, L"█");
-	}
-
-	/* data */
+	} 
+    
+    /* data */
 	for (y = 0; y < qrcode->width; y += 2) {
 		unsigned char *row1, *row2;
 		row1 = qrcode->data + y*qrcode->width;

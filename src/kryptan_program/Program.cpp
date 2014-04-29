@@ -1,5 +1,7 @@
 #include "Program.h"
 
+#include <locale>
+
 #include "common.h"
 #include "../kryptan_core/Exceptions.h"
 #include "Prompts.h"
@@ -16,6 +18,7 @@ using namespace std;
 
 Program::Program(bool useAntiKeylogging)
 {
+    std::locale::global (std::locale ("en_US.UTF-8"));
     //initialize screen
     initscr();
     start_color();
@@ -54,9 +57,9 @@ int Program::run()
             case Kryptan::ABOUT:
                 About();
                 break;
-			case Kryptan::SYNC:
-				Syncronize();
-				break;
+            case Kryptan::SYNC:
+                Syncronize();
+                break;
             case Kryptan::QUIT:
             case Kryptan::NO_ACTION:
             default:
@@ -101,9 +104,9 @@ PwdFile* Program::GetFileObject()
 
 void Program::PwdDataModified()
 {
-	InfoBox box("Saving", "Please wait...", false);
-	box.Show(false);
-	file->Save(masterkey);
+    InfoBox box("Saving", "Please wait...", false);
+    box.Show(false);
+    file->Save(masterkey);
 }
 
 void Program::OpenFile(Core::PwdFile* file)
@@ -120,8 +123,8 @@ void Program::OpenFile(Core::PwdFile* file)
                 try
                 {
                     nrOfTries++;
-					InfoBox box("Decrypting", "Please wait...");
-					box.Show(false);
+                    InfoBox box("Decrypting", "Please wait...");
+                    box.Show(false);
                     file->OpenAndParse(masterkey);
                     done = true;
                 }
@@ -137,18 +140,18 @@ void Program::OpenFile(Core::PwdFile* file)
                         throw KryptanQuit(1000);
                     }
                 }
-				catch (KryptanDecryptMacBadException)
-				{
-					if (nrOfTries < 3)
-					{
-						InfoBox("Error", "Could not verify file integrity.\n\nPerhaps you've used the wrong masterkey?\n\nOtherwise the file has been corrupted.\n\nTry again!").Show();
-					}
-					else
-					{
-						InfoBox("Error", "Max number of attempts exceeded, exiting").Show();
-						throw KryptanQuit(1000);
-					}
-				}
+                catch (KryptanDecryptMacBadException)
+                {
+                    if (nrOfTries < 3)
+                    {
+                        InfoBox("Error", "Could not verify file integrity.\n\nPerhaps you've used the wrong masterkey?\n\nOtherwise the file has been corrupted.\n\nTry again!").Show();
+                    }
+                    else
+                    {
+                        InfoBox("Error", "Max number of attempts exceeded, exiting").Show();
+                        throw KryptanQuit(1000);
+                    }
+                }
                 catch(KryptanFileNotReadableException &e)
                 {
                     InfoBox("Error", "Error occurred while reading " + (file->GetFilename() + ".\nThe error was:\n") + e.what()).Show();
@@ -224,7 +227,7 @@ void Program::CreateFile(Core::PwdFile* file)
                 {
                     try{
                         file->CreateNew();
-						PwdDataModified();
+                        PwdDataModified();
                         done = true;
                     }
                     catch(KryptanFileNotWritableException &e)
@@ -262,24 +265,24 @@ void Program::NewPwd()
             i.Show();
             throw PromtAbortException();
         }
-		bool success = false;
-		Pwd* pwd;
-		while (!success)
-		{
+        bool success = false;
+        Pwd* pwd;
+        while (!success)
+        {
 
-			PromptString p2("Description", "Please input a short description.\nYou may abort password creation with [Esc]", false);
-			SecureString description = p2.Prompt();
+            PromptString p2("Description", "Please input a short description.\nYou may abort password creation with [Esc]", false);
+            SecureString description = p2.Prompt();
 
-			try{
-				pwd = file->GetPasswordList()->CreatePwd(description, newpass);
-				success = true;
-			}
-			catch (KryptanDuplicatePwdException &e)
-			{
-				InfoBox i("Error", e.what(), false);
-				i.Show();
-			}
-		}
+            try{
+                pwd = file->GetPasswordList()->CreatePwd(description, newpass);
+                success = true;
+            }
+            catch (KryptanDuplicatePwdException &e)
+            {
+                InfoBox i("Error", e.what(), false);
+                i.Show();
+            }
+        }
 
         SecureString username;
         try{
@@ -287,9 +290,9 @@ void Program::NewPwd()
             username = p2.Prompt();
         }catch(PromtAbortException){};
 
-		pwd->SetUsername(username);
+        pwd->SetUsername(username);
 
-		PwdDataModified();
+        PwdDataModified();
         OpenPwd(pwd, true );
     }
     catch(PromtAbortException){};
@@ -320,9 +323,9 @@ void Program::ChangeMasterkey()
             }
             else
             {
-				try{
-					InfoBox box("Saving", "Please wait...", false);
-					box.Show(false);
+                try{
+                    InfoBox box("Saving", "Please wait...", false);
+                    box.Show(false);
                     file->Save(newmasterkey);
                     done = true;
                     masterkey = newmasterkey;
@@ -357,121 +360,121 @@ void Program::About()
 
 void Program::Syncronize()
 {
-	Server* server;
-	InfoBox* box;
-	try{
-		//first let the user confirm the action confirm action
-		if (!ConfirmBox("Confirm syncronization",
-			"To syncronize your password file with a smartphone read this _before_\ncontinuing:\n\n"
-			"1. Open and log in to Krypan on your smartphone.\n"
-			"2. Click the syncronize menu option on your smartphone.\n"
-			"3. Scan the QR code that will appear here when you proceed.\n"
-			"4. Once a successfull connection is established the QR code will dissapear.\n"
-			"5. Press confirm on your smartphone by pressing apply.\n"
-			"6. You are done!", false).Confirm())
-		{
-			return;
-		}
+    Server* server;
+    InfoBox* box;
+    try{
+        //first let the user confirm the action confirm action
+        if (!ConfirmBox("Confirm syncronization",
+            "To syncronize your password file with a smartphone read this _before_\ncontinuing:\n\n"
+            "1. Open and log in to Krypan on your smartphone.\n"
+            "2. Click the syncronize menu option on your smartphone.\n"
+            "3. Scan the QR code that will appear here when you proceed.\n"
+            "4. Once a successfull connection is established the QR code will dissapear.\n"
+            "5. Press confirm on your smartphone by pressing apply.\n"
+            "6. You are done!", false).Confirm())
+        {
+            return;
+        }
 
-		box = new InfoBox("Generating key", "Please wait...", false);
-		box->Show(false);
+        box = new InfoBox("Generating key", "Please wait...", false);
+        box->Show(false);
 
-		//port
-		int port = 4321;
+        //port
+        int port = 4321;
 
-		//generate one time transmission key
-		SecureString tmpTransmissionKey = PromtOrGeneratePass::GeneratePassword(30, false);
-		string content = file->SaveToString(tmpTransmissionKey, 100); //lower mash iterations to 100 for sync with low powered devices
-		server = Server::CreateServer(port, content);
+        //generate one time transmission key
+        SecureString tmpTransmissionKey = PromtOrGeneratePass::GeneratePassword(30, false);
+        string content = file->SaveToString(tmpTransmissionKey, 100); //lower mash iterations to 100 for sync with low powered devices
+        server = Server::CreateServer(port, content);
 
-		//serve current content
-		server->StartAsyncServe();
+        //serve current content
+        server->StartAsyncServe();
 
-		//generate QR code
-		delete box;
-		box = 0;
-		QRIpPortKeyBox qrbox("Waiting for conection...");
-		qrbox.Show(port, tmpTransmissionKey);
+        //generate QR code
+        delete box;
+        box = 0;
+        QRIpPortKeyBox qrbox("Waiting for conection...");
+        qrbox.Show(port, tmpTransmissionKey);
 
-//		box = new InfoBox("Syncronization", qrMessage, false);
-//		box->Show(false);
+//      box = new InfoBox("Syncronization", qrMessage, false);
+//      box->Show(false);
 
-		//set timer for getch
-		timeout(100);//ms
+        //set timer for getch
+        timeout(100);//ms
 
-		//status message
-		string stsMsg = "";
-		string lastMessage = "";
-		string title = "Syncronization status";
+        //status message
+        string stsMsg = "";
+        string lastMessage = "";
+        string title = "Syncronization status";
 
-		bool contd = true;
-		while (contd){
-			Server::Status status = server->GetStatus();
+        bool contd = true;
+        while (contd){
+            Server::Status status = server->GetStatus();
 
-			switch (status)
-			{
-			case Server::WAITING_FOR_START:
-			case Server::WAITING_FOR_CONNECTION:
-				stsMsg = ""; //continue to show the QR code
-				break;
-			case Server::SENDING_CONTENT:
-				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data...";
-				break;
-			case Server::WAITING_FOR_CONTENT:
-				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes...";
-				break;
+            switch (status)
+            {
+            case Server::WAITING_FOR_START:
+            case Server::WAITING_FOR_CONNECTION:
+                stsMsg = ""; //continue to show the QR code
+                break;
+            case Server::SENDING_CONTENT:
+                stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data...";
+                break;
+            case Server::WAITING_FOR_CONTENT:
+                stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes...";
+                break;
                         case Server::RECEIVING_CONTENT:
                                 break;
-			case Server::FINISHED:
-				stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes... OK!\n\nAll done!\n\nPress any key to continue...";
-				file->ReplaceContent(tmpTransmissionKey, server->getRecievedContent());
-				server->AbortAsyncServe();
-				this->PwdDataModified();
-				timeout(-1);
-				contd = false;
-				break;
-			case Server::ABORTING:
-				stsMsg = "Waiting for server to shut down";
-				break;
-			case Server::ABORTED:
-				stsMsg = "Syncronization canceled!\n\nPress any key to continue...";
-				timeout(-1);
-				contd = false;
-				break;
-			case Server::SERVER_ERROR:
-				stsMsg = "Error: " + server->GetErrorMessage() + "\n\nPress any key to continue.";
-				timeout(-1);
-				contd = false;
-				break;
-			}
+            case Server::FINISHED:
+                stsMsg = "You can quit at any time by pressing the ESC button.\n\nWaiting for connection... OK!\n\nSending data... OK!\n\nWaiting for other device to confirm changes... OK!\n\nAll done!\n\nPress any key to continue...";
+                file->ReplaceContent(tmpTransmissionKey, server->getRecievedContent());
+                server->AbortAsyncServe();
+                this->PwdDataModified();
+                timeout(-1);
+                contd = false;
+                break;
+            case Server::ABORTING:
+                stsMsg = "Waiting for server to shut down";
+                break;
+            case Server::ABORTED:
+                stsMsg = "Syncronization canceled!\n\nPress any key to continue...";
+                timeout(-1);
+                contd = false;
+                break;
+            case Server::SERVER_ERROR:
+                stsMsg = "Error: " + server->GetErrorMessage() + "\n\nPress any key to continue.";
+                timeout(-1);
+                contd = false;
+                break;
+            }
 
-			if (!stsMsg.empty() && stsMsg != lastMessage)
-			{
-				qrbox.Hide();
-				delete box;
-				box = new InfoBox(title, stsMsg, false);
-				box->Show(false);
-				lastMessage = stsMsg;
-			}
+            if (!stsMsg.empty() && stsMsg != lastMessage)
+            {
+                qrbox.Hide();
+                delete box;
+                box = new InfoBox(title, stsMsg, false);
+                box->Show(false);
+                lastMessage = stsMsg;
+            }
 
-			//check for input
-			int c = getch();
-			if (c == 27) //ESC
-			{
-				contd = false;
-			}
-		}
+            //check for input
+            int c = getch();
+            if (c == 27) //ESC
+            {
+                contd = false;
+            }
+        }
 
-		timeout(-1);
-		delete server;
-		delete box;
-	}
-	catch (std::exception &ex)
-	{
-		timeout(-1);
-		delete server;
-		delete box;
-		InfoBox e("Error", string("An exception occured, the error was:\n\n") + ex.what() + "\n\nPress any key to continue...", false);
-		e.Show();
-	}
+        timeout(-1);
+        delete server;
+        delete box;
+    }
+    catch (std::exception &ex)
+    {
+        timeout(-1);
+        delete server;
+        delete box;
+        InfoBox e("Error", string("An exception occured, the error was:\n\n") + ex.what() + "\n\nPress any key to continue...", false);
+        e.Show();
+    }
 }
