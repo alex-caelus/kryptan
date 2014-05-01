@@ -1,4 +1,4 @@
-#include "PwdMenu.h"
+﻿#include "PwdMenu.h"
 #include "Utilities.h"
 #include "Prompts.h"
 #include "MessageBoxes.h"
@@ -367,7 +367,7 @@ void PwdMenu::RenderLabelList()
 
         for(int i=firstVisibleLabel, j=0; i < visibleLabelEnd; i++, j++)
         {
-			int arrLen = allLabels[i].length() + 8;
+			int arrLen = printLabels[i].length() + 5;
             if(state == NoEdit)
             {
 				wchar_t* label = new wchar_t[arrLen];
@@ -404,10 +404,10 @@ void PwdMenu::RenderLabelList()
             int scrollStart = (int)std::floor(firstVisibleLabel*scale + 0.5) + posLabels.y;
             for(int y=posLabels.y; y<ymax; y++)
             {
-                if(y < scrollStart || y >= scrollStart + scrollHeight)
-                    mvwaddch(w, y, x, '|');
-                else
-                    mvwaddch(w, y, x, '#');
+				if (y < scrollStart || y >= scrollStart + scrollHeight)
+					mvwaddwstr(w, y, x, L"▒");
+				else
+					mvwaddwstr(w, y, x, L"█");
             } 
         }
     }

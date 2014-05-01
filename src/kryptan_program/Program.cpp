@@ -19,10 +19,10 @@ using namespace std;
 Program::Program(bool useAntiKeylogging)
 {
 #ifndef _WIN32
-    std::locale::global (std::locale ("en_US.UTF-8"));
+	std::locale::global (std::locale ("en_US.UTF-8"));
+	//remove delay of escape button on linux
+	ESCDELAY = 0;
 #endif
-    //remove delay of escape button on linux
-    ESCDELAY = 0;
     //initialize screen
     initscr();
     start_color();
