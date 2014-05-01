@@ -109,8 +109,13 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
         {
             mvwaddch(w, y, i, ' ');
         }
-		wchar_t* toPrint = new wchar_t[length+1];
+		wchar_t* toPrint = new wchar_t[length+2];
+#ifdef _WIN32
 		swprintf(toPrint, length+1, L"%S", (wchar_t*)string);
+#else
+        swprintf(toPrint, length+1, L"%s", (wchar_t*)string);
+#endif
+        toPrint[length+1] = 0;
 		mvwaddwstr(w, y, x + maxWidth / 2 - length / 2, toPrint);
 		memset(toPrint, 0, length+1);
 		delete[] toPrint;

@@ -48,6 +48,7 @@ namespace Kryptan
         int currHighlightedPwd;
         int firstVisibleLabel;
         int firstVisiblePwd;
+        int currFilterLength;
         Core::SecureString currFilter;
         Core::PwdLabelVector selectedLabels;
         Core::PwdLabelVector allLabels;

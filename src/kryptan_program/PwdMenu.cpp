@@ -337,17 +337,17 @@ void PwdMenu::RenderLabelList()
         if(state == NoEdit)
         {
 #ifdef _WIN32
-            swprintf_s<20>(format, L"%%-%d.%dS", width-3, width-3);
+            swprintf(format, 20, L"%%-%d.%dS", width-3, width-3);
 #else
-            snprintf(format, 20, L"%%-%d.%dS", width-3, width-3);
+            swprintf(format, 20, L"%%-%d.%ds", width-3, width-3);
 #endif
         }
         else
         {
 #ifdef _WIN32
-            swprintf_s<20>(format, L"[%%c] %%-%d.%dS", width-7, width-7);
+            swprintf(format, 20, L"[%%c] %%-%d.%dS", width-7, width-7);
 #else
-            swnprintf(format, 20, L"[%%c] %%-%d.%dS", width-7, width-7);
+            swprintf(format, 20, L"[%%c] %%-%d.%ds", width-7, width-7);
 #endif
         }
 
@@ -367,11 +367,12 @@ void PwdMenu::RenderLabelList()
 
         for(int i=firstVisibleLabel, j=0; i < visibleLabelEnd; i++, j++)
         {
-			int arrLen = allLabels[i].length() + 5;
+			int arrLen = allLabels[i].length() + 8;
             if(state == NoEdit)
             {
 				wchar_t* label = new wchar_t[arrLen];
-				swprintf(label, arrLen, format, (wchar_t*)printLabels[i].getUnsecureString());
+				swprintf(label, arrLen, format, printLabels[i].getUnsecureString());
+                label[arrLen-1] = 0;
 				mvwaddwstr(w, posLabels.y + j, posLabels.x, label);
 				memset(label, 0, arrLen);
 				delete[] label;
@@ -382,7 +383,8 @@ void PwdMenu::RenderLabelList()
                 if(i == currHighlightedLabel && state == EditLabels)
 					wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
 				wchar_t* label = new wchar_t[arrLen];
-				swprintf(label, arrLen, format, isSelected ? '#' : ' ', (wchar_t*)printLabels[i].getUnsecureString());
+				swprintf(label, arrLen, format, isSelected ? '#' : ' ', printLabels[i].getUnsecureString());
+                label[arrLen-1] = 0;
 				mvwaddwstr(w, posLabels.y + j, posLabels.x, label);
 				memset(label, 0, arrLen);
 				delete[] label;
