@@ -8,11 +8,12 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
+#include <system_error>
 #include <wchar.h>
 #include <sys/types.h>
 #include <ifaddrs.h>
-#include <netinet/in.h> 
-#include <string.h> 
+#include <netinet/in.h>
+#include <string.h>
 #include <arpa/inet.h>
 #endif
 
@@ -60,11 +61,16 @@ string getMyIP()
 	struct ifaddrs * ifa = NULL;
 	void * tmpAddrPtr = NULL;
 
-	getifaddrs(&ifAddrStruct);
+	if(getifaddrs(&ifAddrStruct) != 0)
+        throw std::system_error(errno, std::generic_category());
 
+    int i=0;
 	for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) 
 	{
 		string sIp;
+        if(ifa->ifa_addr == NULL)
+            continue;
+
 		if (ifa->ifa_addr->sa_family == AF_INET)
 		{   
 			// check it is IP4
@@ -85,13 +91,20 @@ string getMyIP()
 		}
 		else
 		{
-			break;
+			continue;
 		}
-		if (i > 0)
+		if(sIp == "127.0.0.1" || sIp == "::1")
+        {
+            //we dont care about localhost addresses
+            continue;
+        }
+        
+        if (i > 0)
 		{
 			myIPs += ",";
 		}
 		myIPs += sIp;
+        i++;
 	}
 	if (ifAddrStruct != NULL) freeifaddrs(ifAddrStruct);
 #endif
@@ -213,7 +226,7 @@ void QRIpPortKeyBox::Show(int port, Kryptan::Core::SecureString key, bool waitFo
 	if (localIps.empty())
 		throw runtime_error("Could not get local ip address!");
 
-	string toConvert = localIps + ":" + to_string(port) + ":" + key.getUnsecureString();
+	string toConvert = localIps + "," + to_string(port) + "," + key.getUnsecureString();
 
 	key.UnsecuredStringFinished();
 
