@@ -333,21 +333,21 @@ void PwdMenu::RenderLabelList()
     if (printLabels.size() > 0)
     {
         //create printf format string
-        char format[20];
+        wchar_t format[20];
         if(state == NoEdit)
         {
 #ifdef _WIN32
-            sprintf_s<20>(format, "%%-%d.%ds", width-3, width-3);
+            swprintf_s<20>(format, L"%%-%d.%dS", width-3, width-3);
 #else
-            snprintf(format, 20, "%%-%d.%ds", width-3, width-3);
+            snprintf(format, 20, L"%%-%d.%dS", width-3, width-3);
 #endif
         }
         else
         {
 #ifdef _WIN32
-            sprintf_s<20>(format, "[%%c] %%-%d.%ds", width-7, width-7);
+            swprintf_s<20>(format, L"[%%c] %%-%d.%dS", width-7, width-7);
 #else
-            snprintf(format, 20, "[%%c] %%-%d.%ds", width-7, width-7);
+            swnprintf(format, 20, L"[%%c] %%-%d.%dS", width-7, width-7);
 #endif
         }
 
@@ -367,16 +367,25 @@ void PwdMenu::RenderLabelList()
 
         for(int i=firstVisibleLabel, j=0; i < visibleLabelEnd; i++, j++)
         {
+			int arrLen = allLabels[i].length() + 5;
             if(state == NoEdit)
             {
-                mvwprintw(w, posLabels.y+j, posLabels.x, format , printLabels[i].getUnsecureString());
+				wchar_t* label = new wchar_t[arrLen];
+				swprintf(label, arrLen, format, (wchar_t*)printLabels[i].getUnsecureString());
+				mvwaddwstr(w, posLabels.y + j, posLabels.x, label);
+				memset(label, 0, arrLen);
+				delete[] label;
             }
             else
             {
                 bool isSelected = std::find(selectedLabels.begin(), selectedLabels.end(), printLabels[i]) != selectedLabels.end();
                 if(i == currHighlightedLabel && state == EditLabels)
 					wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
-                mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , printLabels[i].getUnsecureString());
+				wchar_t* label = new wchar_t[arrLen];
+				swprintf(label, arrLen, format, isSelected ? '#' : ' ', (wchar_t*)printLabels[i].getUnsecureString());
+				mvwaddwstr(w, posLabels.y + j, posLabels.x, label);
+				memset(label, 0, arrLen);
+				delete[] label;
                 if(i == currHighlightedLabel && state == EditLabels)
 					wattron(w, KRYPTAN_CONTENT_COLOR);
             }
@@ -454,7 +463,7 @@ void PwdMenu::RenderPasswordDetails()
     mvwprintw(w, y++, x+(contentWidth/2)-4, "Username"); //print middle
     wattroff(w, A_UNDERLINE | A_ITALIC);
 	if (state == Edit && selectedField == Username) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
-    y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, username.getUnsecureString(), username.length());
+	y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, username.getUnsecureString(), username.length());
     username.UnsecuredStringFinished();
 	if (state == Edit && selectedField == Username) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     
@@ -466,11 +475,11 @@ void PwdMenu::RenderPasswordDetails()
 	if (state == Edit && selectedField == Password) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
 
     if(passwordVisible || state != NoEdit)
-        y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, password.getUnsecureString(), password.length());
+		y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, password.getUnsecureString(), password.length());
     else
     {
         wattroff(w, A_BOLD);
-        y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w)-y-1, "<press-space-to-toggle>", 23);
+		y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, "<press-space-to-toggle>", 23);
         wattron(w, A_BOLD);
     }
         

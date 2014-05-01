@@ -18,7 +18,6 @@ using namespace std;
 
 Program::Program(bool useAntiKeylogging)
 {
-    std::locale::global (std::locale ("en_US.UTF-8"));
     //initialize screen
     initscr();
     start_color();

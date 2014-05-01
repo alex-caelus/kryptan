@@ -109,14 +109,21 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
         {
             mvwaddch(w, y, i, ' ');
         }
-        mvwprintw(w, y, x+maxWidth/2-length/2, string);
+		wchar_t* toPrint = new wchar_t[length+1];
+		swprintf(toPrint, length+1, L"%S", (wchar_t*)string);
+		mvwaddwstr(w, y, x + maxWidth / 2 - length / 2, toPrint);
+		memset(toPrint, 0, length+1);
+		delete[] toPrint;
     }
     else
     {
         int maxX =x + maxWidth;
         for(int i=0; length > 0 || i % maxWidth != 0; i++, length--)
         {
-            mvwaddch(w, y, x++, (length > 0) ? string[i] : ' ');
+			wchar_t toPrint[2]; //char + NULL;
+			swprintf(toPrint, 2, L"%C", (length > 0) ? string[i] : ' ');
+			mvwaddwstr(w, y, x++, toPrint);
+			memset(toPrint, 0, 2);
             if(x>=maxX && length > 0)
             {
                 x -= maxWidth;

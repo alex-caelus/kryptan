@@ -127,7 +127,7 @@ MenuActions MainMenu::HandleKeypressFilterPwds(int c)
         char str[2];
         str[0] = (char)c;
         str[1] = 0;
-        currFilter.append(str, 0, false);
+		currFilter.append(str, 0, false);
 		mvwaddch(w, posFilter.y, posFilter.x + currFilter.length() - 1, c | KRYPTAN_CONTENT_COLOR);
         currHighlightedPwd = 0;
         doFilter();
@@ -259,11 +259,11 @@ void MainMenu::RenderLabelList()
     if (allLabels.size() > 0)
     {
         //create printf format string
-        char format[20];
+        wchar_t format[20];
 #ifdef _WIN32
-        sprintf_s<20>(format, "[%%c] %%-%d.%ds", width-7, width-7);
+        swprintf_s<20>(format, L"[%%c] %%-%d.%dS", width-7, width-7);
 #else
-        snprintf(format, 20, "[%%c] %%-%d.%ds", width-7, width-7);
+        swnprintf(format, 20, L"[%%c] %%-%d.%dS", width-7, width-7);
 #endif
 
         int visibleLabelEnd = std::min( firstVisibleLabel + nrOfRows, (int)allLabels.size());
@@ -285,7 +285,12 @@ void MainMenu::RenderLabelList()
             bool isSelected = std::find(selectedLabels.begin(), selectedLabels.end(), allLabels[i]) != selectedLabels.end();
             if(i == currHighlightedLabel && state == Labels)
 				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
-            mvwprintw(w, posLabels.y+j, posLabels.x, format, isSelected ? '#' : ' ' , allLabels[i].getUnsecureString());
+			int arrLen = allLabels[i].length() + 5;
+			wchar_t* label = new wchar_t[arrLen];
+			swprintf(label, arrLen, format, isSelected ? '#' : ' ' , (wchar_t*)allLabels[i].getUnsecureString());
+			mvwaddwstr(w, posLabels.y + j, posLabels.x, label);
+			memset(label, 0, arrLen);
+			delete[] label;
             if(i == currHighlightedLabel && state == Labels)
 				wattron(w, KRYPTAN_CONTENT_COLOR);
             allLabels[i].UnsecuredStringFinished();
@@ -336,8 +341,14 @@ void MainMenu::RenderFilterBar()
     
     //store label filter position
     posFilter = point(getcury(w), getcurx(w));
-    wprintw(w, "%s", currFilter.getUnsecureString());
-    currFilter.UnsecuredStringFinished();
+
+	//print current filter
+	wchar_t* toPrint = new wchar_t[currFilter.length() + 1];
+	swprintf(toPrint, currFilter.length() + 1, L"%S", (wchar_t*)currFilter.getUnsecureString());
+	waddwstr(w, toPrint);
+	memset(toPrint, 0, currFilter.length() + 1);
+	delete[] toPrint;
+	currFilter.UnsecuredStringFinished();
     
 	wattroff(w, KRYPTAN_CONTENT_COLOR);
 }
@@ -364,11 +375,11 @@ void MainMenu::RenderPasswordList()
     posPwds = point(starty+2, startx+1);
     
     //create printf format string
-    char format[20];
+	wchar_t format[20];
 #ifdef _WIN32
-    sprintf_s<20>(format, "%%-%d.%ds", width-2, width-2);
+    swprintf_s<20>(format, L"%%-%d.%dS", width-2, width-2);
 #else
-        snprintf(format, 20, "%%-%d.%ds", width-2, width-2);
+        snprintf(format, 20, L"%%-%d.%dS", width-2, width-2);
 #endif
     
     if(currHighlightedPwd == -1 && allPwds.size() > 0)
@@ -404,7 +415,12 @@ void MainMenu::RenderPasswordList()
 				wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR);
             }
             SecureString name = allPwds[i]->GetDescription();
-            mvwprintw(w, posPwds.y+j, posPwds.x, format, name.getUnsecureString());
+			int arrLen = name.length() + 1;
+			wchar_t* nameArr = new wchar_t[arrLen];
+			swprintf(nameArr, arrLen, format, (wchar_t*)name.getUnsecureString());
+			mvwaddwstr(w, posPwds.y + j, posPwds.x, nameArr);
+			memset(nameArr, 0, arrLen);
+			delete[] nameArr;
             if(i == currHighlightedPwd && state == FilterPwds)
             {
 				wattron(w, KRYPTAN_CONTENT_COLOR);
