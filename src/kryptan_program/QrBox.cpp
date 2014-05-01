@@ -9,12 +9,11 @@
 #include <windows.h>
 #else
 #include <wchar.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <sys/types.h>
+#include <ifaddrs.h>
+#include <netinet/in.h> 
+#include <string.h> 
 #include <arpa/inet.h>
-#define SOCKET_ERROR -1
 #endif
 
 using namespace Kryptan;
@@ -22,31 +21,26 @@ using namespace std;
 
 string getMyIP()
 {
-	char szBuffer[1024];
 	string myIPs;
+#ifdef _WIN32
+	char szBuffer[1024];
 
-#ifdef WIN32
 	WSADATA wsaData;
 	WORD wVersionRequested = MAKEWORD(2, 0);
 	if (::WSAStartup(wVersionRequested, &wsaData) != 0)
 		return "";
-#endif
 
 
 	if (gethostname(szBuffer, sizeof(szBuffer)) == SOCKET_ERROR)
 	{
-#ifdef WIN32
 		WSACleanup();
-#endif
 		return "";
 	}
 
 	struct hostent *host = gethostbyname(szBuffer);
 	if (host == NULL)
 	{
-#ifdef WIN32
 		WSACleanup();
-#endif
 		return "";
 	}
 
@@ -60,9 +54,46 @@ string getMyIP()
 		myIPs += inet_ntoa(addr);
 	}
 
-
-#ifdef WIN32
 	WSACleanup();
+#else
+	struct ifaddrs * ifAddrStruct=NULL;
+	struct ifaddrs * ifa = NULL;
+	void * tmpAddrPtr = NULL;
+
+	getifaddrs(&ifAddrStruct);
+
+	for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) 
+	{
+		string sIp;
+		if (ifa->ifa_addr->sa_family == AF_INET)
+		{   
+			// check it is IP4
+			// is a valid IP4 Address
+			tmpAddrPtr = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
+			char addressBuffer[INET_ADDRSTRLEN];
+			inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+			sIp = addressBuffer;
+		}
+		else if (ifa->ifa_addr->sa_family == AF_INET6) 
+		{   
+			// check it is IP6
+			// is a valid IP6 Address
+			tmpAddrPtr = &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr;
+			char addressBuffer[INET6_ADDRSTRLEN];
+			inet_ntop(AF_INET6, tmpAddrPtr, addressBuffer, INET6_ADDRSTRLEN);
+			sIp = addressBuffer;
+		}
+		else
+		{
+			break;
+		}
+		if (i > 0)
+		{
+			myIPs += ",";
+		}
+		myIPs += sIp;
+	}
+	if (ifAddrStruct != NULL) freeifaddrs(ifAddrStruct);
 #endif
 	return myIPs;
 }
