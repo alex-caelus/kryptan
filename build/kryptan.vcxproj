@@ -48,7 +48,7 @@
     <ClCompile Include="..\src\kryptan_program\Prompts.cpp" />
     <ClCompile Include="..\src\kryptan_program\PwdMenu.cpp" />
     <ClCompile Include="..\src\kryptan_program\QrBox.cpp" />
-    <ClCompile Include="..\src\kryptan_program\Utilites.cpp" />
+    <ClCompile Include="..\src\kryptan_program\Utilities.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A064B998-8052-45B2-9200-AC0A7C694FAE}</ProjectGuid>

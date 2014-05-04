@@ -102,7 +102,7 @@ char* Utilities::_readLine(WINDOW* w, bool echoStar, bool canabort){
 int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeight, const char* string, int length)
 {
     int lines = 1;
-    if(length < maxWidth)
+    if(CountCharacters(string, length) < maxWidth)
     {
         //print spaces first
         for(int i = x; i < x+maxWidth; i++)
@@ -122,18 +122,19 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
     }
     else
     {
-        int maxX =x + maxWidth;
+        //TODO: add support for utf-8 and windows code pages
+        int maxX = x + maxWidth;
         for(int i=0; length > 0 || i % maxWidth != 0; i++, length--)
         {
-			wchar_t toPrint[2]; //char + NULL;
-			swprintf(toPrint, 2, L"%C", (length > 0) ? string[i] : ' ');
-			mvwaddwstr(w, y, x++, toPrint);
-			memset(toPrint, 0, 2);
-            if(x>=maxX && length > 0)
+            wchar_t toPrint[2]; //char + NULL;
+            swprintf(toPrint, 2, L"%C", (length > 0) ? string[i] : ' ');
+            mvwaddwstr(w, y, x++, toPrint);
+            memset(toPrint, 0, 2);
+            if (x >= maxX && length > 0)
             {
                 x -= maxWidth;
                 y++;
-                if(lines >= maxHeight)
+                if (lines >= maxHeight)
                 {
                     return lines;
                 }
@@ -144,9 +145,39 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
     return lines;
 }
 
+int Utilities::CountCharacters(const char* data, int dataLength)
+{
+#ifdef _WIN32
+    //count characters according to windows current default code page
+    return MultiByteToWideChar(CP_ACP, 0, data, dataLength, 0, 0);
+#else
+    //count utf-8 characters
+    int count = 0;
+    char p = data.getUnsecureString();
+    while (*p != 0)
+    {
+        if ((s[i] & 0xC0) != 0x80)
+            count++;
+        ++p;
+    }
+    data.UnsecuredStringFinished();
+
+    return count;
+#endif
+}
+
+int Utilities::CountCharacters(Core::SecureString& data)
+{
+    int ret = CountCharacters(data.getUnsecureString(), data.length());
+    data.UnsecuredStringFinished();
+    return ret;
+}
+
 int Utilities::CountLines(const char* str, int length, int maxwidth)
 {
     int lines = 0;
+#ifdef _WIN32
+    //windows uses code pages (single byte)
     char* lastLinebreak = (char*)str;
     for(char* p = (char *)str; p - str < length && p != '\0'; p++)
     {
@@ -156,6 +187,24 @@ int Utilities::CountLines(const char* str, int length, int maxwidth)
             lines++;
         }
     }
+#else
+    //linux uses utf-8, which may be multiple byte per character
+    int nCharsInLine = 0;
+    for (int byte = 0; byte < length; byte++)
+    {
+        char c = str[byte];
+        //if c is first byte of a utf-8 character
+        if ((c & 0xC0) != 0x80)
+        {
+            nCharsInLine++;
+            if (c == '\n' || nCharsInLine % maxwidth == 0)
+            {
+                nCharsInLine = 0;
+                lines++;
+            }
+        }
+    }
+#endif
     return lines;
 }
 
@@ -171,13 +220,15 @@ int Utilities::CountLines(string str, int maxwidth)
 
 int Utilities::CountLines(Core::SecureString str, int maxwidth)
 {
-    int i = CountLines(str.getUnsecureString(), str.length(), maxwidth);
+    int i = CountLines(str.getUnsecureString(), CountCharacters(str), maxwidth);
     str.UnsecuredStringFinished();
     return i;
 }
 
 int Utilities::CountStrWidth(const char* str, int length)
 {
+#ifdef _WIN32
+    //windows uses code pages (single byte)
     int curWith = 0;
     int maxWith = 0;
     for(char* p = (char *)str; p - str < length && p != '\0'; p++)
@@ -191,6 +242,26 @@ int Utilities::CountStrWidth(const char* str, int length)
         }
     }
     return maxWith;
+#else
+    //linux uses utf-8, which may be multiple byte per character
+    int curWith = 0;
+    int maxWith = 0;
+    for (int byte = 0; byte < length; byte++)
+    {
+        char c = str[byte];
+        //if c is first byte of a utf-8 character
+        if ((c & 0xC0) != 0x80)
+        {
+            curWith++;
+            if (curWith > maxWith)
+                maxWith = curWith;
+            if (c == '\n')
+            {
+                curWith = 0;
+            }
+        }
+    }
+#endif
 }
 
 int Utilities::CountStrWidth(const char* str)

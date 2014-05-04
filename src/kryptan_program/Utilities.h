@@ -16,6 +16,9 @@ namespace Kryptan{
             static char* ReadLinePwd(WINDOW*, bool canabort = false);
 
             static int PrintMultiline(WINDOW* w, int y, int x, int maxwidth, int maxHeight, const char* string, int length);
+
+            static int CountCharacters(const char* data, int dataLength);
+            static int CountCharacters(Core::SecureString& data);
             
             static int CountLines(const char* string, int maxwidth);
             static int CountLines(const char* string, int length, int maxwidth);

@@ -104,9 +104,6 @@
     <ClCompile Include="..\src\kryptan_program\Program.cpp">
       <Filter>program\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\kryptan_program\Utilites.cpp">
-      <Filter>program\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\kryptan_program\DialogBase.cpp">
       <Filter>program\source</Filter>
     </ClCompile>
@@ -129,6 +126,9 @@
       <Filter>kryptancore\source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\kryptan_program\QrBox.cpp">
+      <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_program\Utilities.cpp">
       <Filter>program\source</Filter>
     </ClCompile>
   </ItemGroup>
