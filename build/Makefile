@@ -9,7 +9,7 @@
 CC = g++
 
 # define any compile-time flags
-CFLAGS = -Wall -g -std=c++11 -finput-charset=UTF-8 
+CFLAGS = -O3 -Wall -std=c++11 -finput-charset=UTF-8 
 
 # define any directories containing header files other than /usr/include
 #
@@ -20,10 +20,10 @@ INCLUDES =
 #   their path using -Lpath, something like:
 LFLAGS = 
 
-# define any libraries to link into executable:
+# define any libraries to link into taticxecutable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = -lcryptopp -lncursesw -lpanelw -lqrencode -lboost_system -lboost_thread -lpthread
+LIBS = -lcryptopp -lncursesw -lpanelw -lboost_system -lboost_thread -lpthread -lqrencode
 
 # define the C source files
 SRCS = $(wildcard ../src/kryptan_program/*.cpp) $(wildcard ../src/kryptan_core/*.cpp)

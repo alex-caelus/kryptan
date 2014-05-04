@@ -270,7 +270,7 @@ void Program::NewPwd()
             throw PromtAbortException();
         }
         bool success = false;
-        Pwd* pwd;
+        Pwd* pwd = NULL;
         while (!success)
         {
 
@@ -364,8 +364,8 @@ void Program::About()
 
 void Program::Syncronize()
 {
-    Server* server;
-    InfoBox* box;
+    Server* server = NULL;
+    InfoBox* box = NULL;
     try{
         //first let the user confirm the action confirm action
         if (!ConfirmBox("Confirm syncronization",
