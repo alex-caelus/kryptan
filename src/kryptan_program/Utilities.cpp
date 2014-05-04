@@ -122,7 +122,7 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
     }
     else
     {
-        //TODO: add support for utf-8 and windows code pages
+#ifdef _WIN32
         int maxX = x + maxWidth;
         for(int i=0; length > 0 || i % maxWidth != 0; i++, length--)
         {
@@ -141,6 +141,41 @@ int Utilities::PrintMultiline(WINDOW* w, int y, int x, int maxWidth, int maxHeig
                 lines++;
             }
         }
+#else
+        lines = 0;
+        char* startLine;
+        int charsInLine = 0;
+        for(int byte=0; byte < length; byte++)
+        {
+            char c = string[byte];
+            //if c is first byte of a utf-8 character
+            if ((c & 0xC0) != 0x80)
+            {
+                if (charsInLine == 0)
+                {
+                    startLine = const_cast<char*>(string + byte);
+                }
+                charsInLine++;
+                if (c == '\n' || charsInLine % maxWidth == 0 || byte >= length-1)
+                {
+                    //print
+                    wchar_t* toPrint = new wchar_t[charsInLine + 2];
+                    swprintf(toPrint, charsInLine + 1, L"%.*s", charsInLine, (wchar_t*)startLine);
+                    toPrint[length + 1] = 0;
+                    mvwaddwstr(w, y+lines, x, toPrint);
+                    memset(toPrint, 0, charsInLine + 1);
+                    delete[] toPrint;
+
+                    //prepare for next line
+                    charsInLine = 0;
+                    lines++;
+
+                    if (lines >= maxHeight)
+                        return lines;
+                }
+            }
+        }
+#endif
     }
     return lines;
 }
@@ -153,15 +188,13 @@ int Utilities::CountCharacters(const char* data, int dataLength)
 #else
     //count utf-8 characters
     int count = 0;
-    char p = data.getUnsecureString();
+    const char *p = data;
     while (*p != 0)
     {
-        if ((s[i] & 0xC0) != 0x80)
+        if (((*p) & 0xC0) != 0x80)
             count++;
         ++p;
     }
-    data.UnsecuredStringFinished();
-
     return count;
 #endif
 }
@@ -175,7 +208,7 @@ int Utilities::CountCharacters(Core::SecureString& data)
 
 int Utilities::CountLines(const char* str, int length, int maxwidth)
 {
-    int lines = 0;
+    int lines = 1;
 #ifdef _WIN32
     //windows uses code pages (single byte)
     char* lastLinebreak = (char*)str;
@@ -261,6 +294,7 @@ int Utilities::CountStrWidth(const char* str, int length)
             }
         }
     }
+    return maxWith;
 #endif
 }
 

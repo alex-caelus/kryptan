@@ -455,7 +455,7 @@ void PwdMenu::RenderPasswordDetails()
     mvwprintw(w, y++, x+(contentWidth/2)-2, "Name"); //print middle
     wattroff(w, A_UNDERLINE | A_ITALIC);
 	if (state == Edit && selectedField == Name) wattron(w, KRYPTAN_CONTENT_SELECTED_COLOR | A_BOLD);
-    y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, name.getUnsecureString(), Utilities::CountCharacters(name));
+    y += Utilities::PrintMultiline(w, y, x, contentWidth, getmaxy(w) - y - 1, name.getUnsecureString(), name.length());
 	if (state == Edit && selectedField == Name) wattron(w, KRYPTAN_CONTENT_COLOR | A_BOLD);
     name.UnsecuredStringFinished();
     
