@@ -8,7 +8,7 @@ using namespace Kryptan;
 using namespace Core;
 
 
-#ifndef _WIN32
+#ifndef A_ITALIC
 #define A_ITALIC A_BOLD
 #endif
 

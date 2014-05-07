@@ -1,0 +1,104 @@
+DialogBase.o: ../src/kryptan_program/DialogBase.cpp \
+ ../src/kryptan_program/DialogBase.h ../src/kryptan_program/common.h
+main.o: ../src/kryptan_program/main.cpp ../src/kryptan_program/Program.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/common.h
+MainMenu.o: ../src/kryptan_program/MainMenu.cpp \
+ ../src/kryptan_program/MainMenu.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/DialogBase.h ../src/kryptan_program/Utilities.h \
+ ../src/kryptan_program/common.h
+MessageBoxes.o: ../src/kryptan_program/MessageBoxes.cpp \
+ ../src/kryptan_program/MessageBoxes.h \
+ ../src/kryptan_program/DialogBase.h ../src/kryptan_program/Utilities.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/common.h
+Program.o: ../src/kryptan_program/Program.cpp \
+ ../src/kryptan_program/Program.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/common.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/Prompts.h ../src/kryptan_program/DialogBase.h \
+ ../src/kryptan_program/MessageBoxes.h ../src/kryptan_program/QrBox.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/Utilities.h ../src/kryptan_program/MainMenu.h \
+ ../src/kryptan_program/PwdMenu.h \
+ ../src/kryptan_program/../kryptan_core/Server.h
+Prompts.o: ../src/kryptan_program/Prompts.cpp \
+ ../src/kryptan_program/Prompts.h ../src/kryptan_program/DialogBase.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/Utilities.h ../src/kryptan_program/common.h \
+ ../src/kryptan_program/MessageBoxes.h
+PwdMenu.o: ../src/kryptan_program/PwdMenu.cpp \
+ ../src/kryptan_program/PwdMenu.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/DialogBase.h ../src/kryptan_program/common.h \
+ ../src/kryptan_program/Utilities.h ../src/kryptan_program/Prompts.h \
+ ../src/kryptan_program/MessageBoxes.h
+QrBox.o: ../src/kryptan_program/QrBox.cpp ../src/kryptan_program/QrBox.h \
+ ../src/kryptan_program/MessageBoxes.h \
+ ../src/kryptan_program/DialogBase.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h
+Utilities.o: ../src/kryptan_program/Utilities.cpp \
+ ../src/kryptan_program/Utilities.h \
+ ../src/kryptan_program/../kryptan_core/core.h \
+ ../src/kryptan_program/../kryptan_core/PwdFile.h \
+ ../src/kryptan_program/../kryptan_core/SecureString.h \
+ ../src/kryptan_program/../kryptan_core/PwdList.h \
+ ../src/kryptan_program/../kryptan_core/Pwd.h \
+ ../src/kryptan_program/../kryptan_core/Exceptions.h \
+ ../src/kryptan_program/common.h
+ModifiedEncryptor.o: ../src/kryptan_core/ModifiedEncryptor.cpp \
+ ../src/kryptan_core/ModifiedEncryptor.h
+Pwd.o: ../src/kryptan_core/Pwd.cpp ../src/kryptan_core/Pwd.h \
+ ../src/kryptan_core/Exceptions.h ../src/kryptan_core/SecureString.h
+PwdFile.o: ../src/kryptan_core/PwdFile.cpp ../src/kryptan_core/PwdFile.h \
+ ../src/kryptan_core/SecureString.h ../src/kryptan_core/PwdList.h \
+ ../src/kryptan_core/Pwd.h ../src/kryptan_core/Exceptions.h \
+ ../src/kryptan_core/SerpentEncryptor.h \
+ ../src/kryptan_core/ModifiedEncryptor.h \
+ ../src/kryptan_core/PwdFileWorker.h
+PwdFileWorker.o: ../src/kryptan_core/PwdFileWorker.cpp \
+ ../src/kryptan_core/PwdFileWorker.h ../src/kryptan_core/SecureString.h \
+ ../src/kryptan_core/PwdList.h ../src/kryptan_core/Pwd.h \
+ ../src/kryptan_core/Exceptions.h ../src/kryptan_core/ModifiedEncryptor.h
+PwdList.o: ../src/kryptan_core/PwdList.cpp ../src/kryptan_core/PwdList.h \
+ ../src/kryptan_core/Pwd.h ../src/kryptan_core/Exceptions.h \
+ ../src/kryptan_core/SecureString.h
+SecureString.o: ../src/kryptan_core/SecureString.cpp \
+ ../src/kryptan_core/SecureString.h
+SerpentEncryptor.o: ../src/kryptan_core/SerpentEncryptor.cpp \
+ ../src/kryptan_core/SerpentEncryptor.h \
+ ../src/kryptan_core/SecureString.h ../src/kryptan_core/Exceptions.h
+Server.o: ../src/kryptan_core/Server.cpp ../src/kryptan_core/Server.h \
+ ../src/kryptan_core/SecureString.h
