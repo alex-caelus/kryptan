@@ -3,7 +3,7 @@
 
 #include <string>
 #include "MessageBoxes.h"
-#include "../kryptan_core/SecureString.h"
+#include "../kryptan_core/SecureString/SecureString.h"
 
 namespace Kryptan
 {

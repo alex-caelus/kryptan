@@ -2,7 +2,7 @@
 #include <string.h> 
 #include <sstream>
 #include <qrencode.h>
-#include "../kryptan_core/SecureString.h"
+#include "../kryptan_core/SecureString/SecureString.h"
 
 
 #ifdef _WIN32

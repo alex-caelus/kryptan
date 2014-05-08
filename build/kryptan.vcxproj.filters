@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\kryptan_core\SecureString.h">
-      <Filter>kryptancore\headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\kryptan_core\ModifiedEncryptor.h">
       <Filter>kryptancore\headers</Filter>
     </ClInclude>
@@ -78,11 +75,11 @@
     <ClInclude Include="..\src\kryptan_program\QrBox.h">
       <Filter>program\headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\kryptan_core\SecureString\SecureString.h">
+      <Filter>kryptancore\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\kryptan_core\SecureString.cpp">
-      <Filter>kryptancore\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\kryptan_core\PwdFile.cpp">
       <Filter>kryptancore\source</Filter>
     </ClCompile>
@@ -130,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="..\src\kryptan_program\Utilities.cpp">
       <Filter>program\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\kryptan_core\SecureString\SecureString.cpp">
+      <Filter>kryptancore\source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
