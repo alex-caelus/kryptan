@@ -12,7 +12,7 @@ well as a standalone Windows desktop application.
 * The encryption key is generated from your Master-Key using industry standard PBKDF2 with a 2 second iteration time (in short: the security of your password file increases with the processing speed of your CPU).
 * Local standalone application (No reliance on 3rd pary servers you don't trust).
 * Manual and easy syncronization with smarthpone applications, using direct and ecnrypted TCP connections (again, no reliance on 3rd party servers).
-* Multi platform, works on Windows (desktop) and linux (command line).
+* Multi platform, works on Windows (desktop) and linux (command line). *Now also available on [Android](https://github.com/alex-caelus/kryptan_android/releases)!*
 * Open Source, if you don't trust me, check the code.
 
 Where to get it?
