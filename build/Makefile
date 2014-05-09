@@ -26,7 +26,9 @@ LFLAGS =
 LIBS = -lcryptopp -lncursesw -lpanelw -lboost_system -lboost_thread -lpthread -lqrencode
 
 # define the C source files
-SRCS = $(wildcard ../src/kryptan_program/*.cpp) $(wildcard ../src/kryptan_core/*.cpp)
+SRCS = $(wildcard ../src/kryptan_program/*.cpp) \
+	   $(wildcard ../src/kryptan_core/*.cpp) \
+	   $(wildcard ../src/kryptan_core/SecureString/*.cpp)
 
 # define the C object files 
 #
