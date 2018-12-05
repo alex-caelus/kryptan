@@ -49,7 +49,7 @@ namespace Kryptan
         int firstVisibleLabel;
         int firstVisiblePwd;
         int currFilterLength;
-        Core::SecureString currFilter;
+        Caelus::Utilities::SecureString currFilter;
         Core::PwdLabelVector selectedLabels;
         Core::PwdLabelVector allLabels;
         Core::PwdList::PwdVector allPwds;

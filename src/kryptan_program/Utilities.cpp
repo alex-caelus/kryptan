@@ -199,7 +199,7 @@ int Utilities::CountCharacters(const char* data, int dataLength)
 #endif
 }
 
-int Utilities::CountCharacters(Core::SecureString& data)
+int Utilities::CountCharacters(Caelus::Utilities::SecureString& data)
 {
     int ret = CountCharacters(data.getUnsecureString(), data.length());
     data.UnsecuredStringFinished();
@@ -251,7 +251,7 @@ int Utilities::CountLines(string str, int maxwidth)
     return CountLines(str.c_str(), str.length(), maxwidth);
 }
 
-int Utilities::CountLines(Core::SecureString str, int maxwidth)
+int Utilities::CountLines(Caelus::Utilities::SecureString str, int maxwidth)
 {
     int i = CountLines(str.getUnsecureString(), CountCharacters(str), maxwidth);
     str.UnsecuredStringFinished();
@@ -308,7 +308,7 @@ int Utilities::CountStrWidth(string str)
     return CountStrWidth(str.c_str(), str.length());
 }
 
-int Utilities::CountStrWidth(Core::SecureString str)
+int Utilities::CountStrWidth(Caelus::Utilities::SecureString str)
 {
     int i = CountStrWidth(str.getUnsecureString(), str.length());
     str.UnsecuredStringFinished();

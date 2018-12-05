@@ -14,7 +14,7 @@ namespace Kryptan
     public:
         PromptPass(std::string title, std::string message, bool modal = true);
 
-        Core::SecureString Prompt();
+        Caelus::Utilities::SecureString Prompt();
     private:
         std::string message;
     };
@@ -24,7 +24,7 @@ namespace Kryptan
     public:
         PromptString(std::string title, std::string message, bool modal = true);
 
-        Core::SecureString Prompt();
+        Caelus::Utilities::SecureString Prompt();
 
     private:
         std::string message;
@@ -35,9 +35,9 @@ namespace Kryptan
     public:
         PromtOrGeneratePass();
 
-        Core::SecureString Prompt();
+        Caelus::Utilities::SecureString Prompt();
 
-		static Core::SecureString GeneratePassword(int length, bool useSpecialChars);
+		static Caelus::Utilities::SecureString GeneratePassword(int length, bool useSpecialChars);
     };
 };
 

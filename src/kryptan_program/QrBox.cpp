@@ -212,7 +212,7 @@ QRIpPortKeyBox::~QRIpPortKeyBox()
 	delete box;
 }
 
-void QRIpPortKeyBox::Show(int port, Kryptan::Core::SecureString key, bool waitForInput)
+void QRIpPortKeyBox::Show(int port, Caelus::Utilities::SecureString key, bool waitForInput)
 {
 	int height;
 	int width;

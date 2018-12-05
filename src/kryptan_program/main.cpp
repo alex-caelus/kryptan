@@ -20,6 +20,15 @@
 #define new DEBUG_NEW
 #endif
 
+/**
+ * Hack for linking with old panel.lib 
+ */
+FILE _iob[] = { *stdin, *stdout, *stderr };
+
+extern "C" FILE * __cdecl __iob_func(void)
+{
+    return _iob;
+}
 
 /**
  * Here is windows (without console window) :)

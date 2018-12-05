@@ -12,7 +12,7 @@ namespace Kryptan
 	public:
 		QRIpPortKeyBox(std::string title);
 
-		void Show(int port, Kryptan::Core::SecureString key, bool waitForInput=true);
+		void Show(int port, Caelus::Utilities::SecureString key, bool waitForInput=true);
 		void Hide();
 
 		~QRIpPortKeyBox();

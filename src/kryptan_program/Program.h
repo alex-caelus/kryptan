@@ -20,7 +20,7 @@ namespace Kryptan
 
     private:
         Core::PwdFile* file;
-        Core::SecureString masterkey;
+        Caelus::Utilities::SecureString masterkey;
 
         Core::PwdFile* GetFileObject();
         void OpenFile(Core::PwdFile* file);

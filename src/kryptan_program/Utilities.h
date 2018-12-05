@@ -18,17 +18,17 @@ namespace Kryptan{
             static int PrintMultiline(WINDOW* w, int y, int x, int maxwidth, int maxHeight, const char* string, int length);
 
             static int CountCharacters(const char* data, int dataLength);
-            static int CountCharacters(Core::SecureString& data);
+            static int CountCharacters(Caelus::Utilities::SecureString& data);
             
             static int CountLines(const char* string, int maxwidth);
             static int CountLines(const char* string, int length, int maxwidth);
             static int CountLines(std::string string, int maxwidth);
-            static int CountLines(Core::SecureString string, int maxwidth);
+            static int CountLines(Caelus::Utilities::SecureString string, int maxwidth);
 
             static int CountStrWidth(const char* string);
             static int CountStrWidth(const char* string, int length);
             static int CountStrWidth(std::string string);
-            static int CountStrWidth(Core::SecureString string);
+            static int CountStrWidth(Caelus::Utilities::SecureString string);
             
             static int GetColorPair_DEP(int, int);
 

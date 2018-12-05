@@ -1,7 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define KRYPTAN_CURRENT_VERSION "3.1.2"
+#define KRYPTAN_CURRENT_VERSION "3.1.3"
 
 #ifdef _WIN32
 #define PDC_WIDE
